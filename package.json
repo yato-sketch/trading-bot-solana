@@ -1,16 +1,32 @@
 {
-  "name": "gravy-stack",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "axios": "^1.4.0",
-    "grammy": "^1.17.2"
-  }
+	"name": "gravy-stack",
+	"version": "1.0.0",
+	"description": "",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev": "nodemon bot.ts",
+		"start": "node start"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"dependencies": {
+		"@1inch/limit-order-protocol": "^2.0.4",
+		"@grammyjs/conversations": "^1.1.2",
+		"@grammyjs/i18n": "^1.0.1",
+		"@grammyjs/menu": "^1.2.1",
+		"@grammyjs/router": "^2.0.0",
+		"@supabase/supabase-js": "^2.31.0",
+		"axios": "^1.4.0",
+		"ethers": "^6.7.0",
+		"grammy": "^1.17.2",
+		"ts-node-dev": "^2.0.0"
+	},
+	"devDependencies": {
+		"@types/node": "^20.4.7",
+		"nodemon": "^3.0.1",
+		"tsc-node": "0.0.3",
+		"typescript": "^5.1.6"
+	}
 }
