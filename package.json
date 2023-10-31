@@ -4,9 +4,12 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
+		"test": "",
 		"dev": "nodemon bot.ts",
-		"start": "node start"
+		"build": "npx tsc",
+		"start": "node dist/bot.js",
+		"prod": "bun run build && bun run start",
+		"generate-types": "bunx typechain --target ethers-v6 --out-dir types/contracts 'web3/abis/betting.json'"
 	},
 	"keywords": [],
 	"author": "",
@@ -21,7 +24,8 @@
 		"axios": "^1.4.0",
 		"ethers": "^6.7.0",
 		"grammy": "^1.17.2",
-		"ts-node-dev": "^2.0.0"
+		"ts-node-dev": "^2.0.0",
+		"typechain": "^8.3.2"
 	},
 	"devDependencies": {
 		"@types/node": "^20.4.7",
