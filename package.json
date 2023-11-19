@@ -20,6 +20,7 @@
 		"@grammyjs/i18n": "^1.0.1",
 		"@grammyjs/menu": "^1.2.1",
 		"@grammyjs/router": "^2.0.0",
+		"@grammyjs/runner": "^2.0.3",
 		"@supabase/supabase-js": "^2.31.0",
 		"axios": "^1.4.0",
 		"ethers": "^6.7.0",
