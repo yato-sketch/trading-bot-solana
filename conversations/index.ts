@@ -1,1 +1,1 @@
-export {};
+export async function initConversation() {}
