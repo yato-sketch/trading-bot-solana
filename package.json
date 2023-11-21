@@ -23,6 +23,7 @@
 		"@grammyjs/runner": "^2.0.3",
 		"@supabase/supabase-js": "^2.31.0",
 		"axios": "^1.4.0",
+		"dotenv": "^16.3.1",
 		"ethers": "^6.7.0",
 		"grammy": "^1.17.2",
 		"graphql-request": "^6.1.0",
