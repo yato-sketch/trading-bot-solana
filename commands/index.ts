@@ -1,11 +1,17 @@
 import { Composer } from "grammy";
 import { helpCommand } from "./help.command";
 import { startCommand } from "./start.command";
+import { MyTokenCommand } from "./myTokens.command";
+import { ManageCommand } from "./manage.command";
+import { WalletCommand } from "./wallet.command";
 let commandsComposer = new Composer();
 
 let commands: any[] = [
 	{ name: "help", command: helpCommand },
 	{ name: "start", command: startCommand },
+	{ name: "tokens", command: MyTokenCommand },
+	{ name: "manage", command: ManageCommand },
+	{ name: "wallet", command: WalletCommand },
 ];
 
 for (let index = 0; index < commands.length; index++) {

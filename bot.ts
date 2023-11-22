@@ -8,14 +8,26 @@ import {
 } from "grammy";
 import { session } from "grammy";
 import { commandsComposer } from "./commands";
-import { initConversation } from "./conversations";
+import {
+	initConversation,
+	setCustomTotalSupply,
+	setCustomInitTax,
+	setTokenMetadataConversation,
+	setCustomFinalTaxConversation,
+} from "./conversations";
 import {
 	ConversationFlavor,
 	conversations,
 	createConversation,
 } from "@grammyjs/conversations";
 import { callbackHandler } from "./handlers";
-import { CreateTokenMenu } from "./views";
+import {
+	CreateTokenMenu,
+	GetTotalSupplyMenu,
+	initTaxMenu,
+	finalTaxMenu,
+	decimalMenu,
+} from "./views";
 import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
 import validate from "./validations/config.validation";
@@ -34,6 +46,8 @@ interface SessionData {
 	symbolIsSet: boolean;
 	tokenSymbol: string;
 	marketingWalletIsSet: boolean;
+	marketingWalletAddress: string;
+	tokenName: string;
 	tokenNameIsSet: boolean;
 	tokenDecimalsSet: boolean;
 	tokendecimal: number;
@@ -55,6 +69,8 @@ function initial(): SessionData {
 		tokendecimal: 0,
 		totalSupply: 0,
 		tokenSymbol: "",
+		marketingWalletAddress: "",
+		tokenName: "",
 		finTax: 0,
 		initTax: 0,
 	};
@@ -69,15 +85,38 @@ const i18n = new I18n<MyContext>({
 // grammY will call the listeners when users send messages to your bot.
 
 // bot.use(conversations() as any);
-bot.use(session({ initial }));
-bot.use(CreateTokenMenu);
-bot.api.setMyCommands([
-	{ command: "help", description: "Contact our Help Channel" },
-	{ command: "start", description: "Get Started with the Token Deployer" },
-]);
 
+bot.use(session({ initial }));
 bot.use(conversations());
-bot.use(createConversation(initConversation, "initConversation") as any);
+bot.use(
+	createConversation(setCustomTotalSupply, "setCustomTotalSupply") as any
+);
+bot.use(createConversation(setCustomInitTax, "setCustomInitTax"));
+bot.use(
+	createConversation(
+		setTokenMetadataConversation,
+		"setTokenMetadataConversation"
+	)
+);
+bot.use(
+	createConversation(
+		setCustomFinalTaxConversation,
+		"setCustomFinalTaxConversation"
+	)
+);
+bot.use(decimalMenu);
+bot.use(initTaxMenu);
+bot.use(finalTaxMenu);
+bot.use(GetTotalSupplyMenu);
+bot.use(CreateTokenMenu);
+
+bot.api.setMyCommands([
+	{ command: "help", description: " Help and Support " },
+	{ command: "start", description: "Get Started with the Token Deployer" },
+	{ command: "tokens", description: "My deployed tokens" },
+	{ command: "manage", description: "Manage deployed token" },
+	{ command: "wallet", description: "My wallet details" },
+]);
 
 // Handle the /start command.
 bot.use(callBackQueryComposer);
