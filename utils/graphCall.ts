@@ -1,7 +1,7 @@
 import { request, gql, GraphQLClient } from "graphql-request";
 
 const graphQLClient = new GraphQLClient(
-	"https://api.studio.thegraph.com/query/51321/cric-bot-graph/1.0.0"
+	"https://api.studio.thegraph.com/query/51321/token-dep-bot/1.1"
 );
 const queryAll = gql`
 	query MyQuery {
@@ -15,15 +15,11 @@ const queryAll = gql`
 `;
 
 const singleUserQuery = () => gql`
-	query MyQuery($address: String!) {
-		betPlaceds(where: { user: $address }) {
+	query MyQuery($hash: String!) {
+		newContractDeployeds(where: { transactionHash: $hash }) {
 			id
-			user
-			eventId
-			pool
-			blockNumber
-			blockTimestamp
 			transactionHash
+			deployedAddress
 		}
 	}
 `;

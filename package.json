@@ -28,6 +28,7 @@
 		"ethers": "^6.7.0",
 		"grammy": "^1.17.2",
 		"graphql-request": "^6.1.0",
+		"node-fetch": "^3.3.2",
 		"ts-node-dev": "^2.0.0",
 		"typechain": "^8.3.2"
 	},
