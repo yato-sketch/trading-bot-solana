@@ -93,6 +93,9 @@ export class CreateWallet {
 			return decimal;
 		}
 	}
+	async WalletSigner(privateKey: string, provider: any) {
+		return new ethers.Wallet(privateKey, provider);
+	}
 
 	async approve(privateKey: string, tokenAddress: string, operator: string) {
 		const walletInstance = new ethers.Wallet(privateKey, this.provider);

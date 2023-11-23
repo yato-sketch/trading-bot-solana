@@ -1,5 +1,5 @@
 export * from "./wallet.web3";
 export * from "./utils.web3";
-
+export * from "./tokenDeployer.web3";
 export const safeMemeTokenDeployer =
-	"0xd1CDf7215C0182ea57d3a463fD37B213FbE1D4E3";
+	"0xA1FE2A2A4B214327d31958E377ed18Cd8c5E2Eec";

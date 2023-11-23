@@ -1,7 +1,9 @@
-import { isAddress } from "ethers";
+import { ethers, isAddress } from "ethers";
 import { MyConversation } from ".";
 import { MyContext } from "../bot";
-import { finalTaxMenu, DeployTokenButton } from "../views";
+import { finalTaxMenu, DeployTokenMenu } from "../views";
+import { CreateWallet, TokenDeployer } from "../web3";
+import { setSessions } from "../handlers";
 
 export async function setTokenMetadataConversation(
 	conversation: MyConversation,
@@ -10,19 +12,15 @@ export async function setTokenMetadataConversation(
 	await ctx.reply("Set Token Symbol: ");
 	let responseSymbol = await conversation.waitFor(":text");
 	if (!responseSymbol.msg.text) {
-		ctx.deleteMessage();
 		ctx.reply("Invalid Symbol 🟥 \n Kindly Input a Valid Symbol:");
 		responseSymbol = await conversation.waitFor(":text");
-		ctx.deleteMessage();
 	}
 	ctx.session.tokenSymbol = responseSymbol.msg.text.toString();
 	await ctx.reply("Set Token Name : ");
 	let responseName = await conversation.waitFor(":text");
 	if (!responseName.msg.text) {
-		ctx.deleteMessage();
 		ctx.reply("Invalid Name 🟥 \n Kindly Input a Valid Symbol:");
 		responseName = await conversation.waitFor(":text");
-		ctx.deleteMessage();
 	}
 	ctx.session.tokenName = responseName.msg.text.toString();
 
@@ -32,34 +30,73 @@ export async function setTokenMetadataConversation(
 		!responseMarketWallet.msg.text ||
 		isAddress(responseMarketWallet.msg.text.toString())
 	) {
-		ctx.deleteMessage();
 		ctx.reply("Invalid Address 🟥 \n Kindly input a valid Address:");
 		responseMarketWallet = await conversation.waitFor(":text");
-		ctx.deleteMessage();
 	}
 	ctx.session.marketingWalletAddress =
 		responseMarketWallet.msg.text.toString();
 
-	const {
-		tokenName,
-		tokenSymbol,
-		tokendecimal,
-		marketingWalletAddress,
-		finTax,
-		initTax,
-		totalSupply,
-	} = ctx.session;
-	console.log({
-		tokenName,
-		tokenSymbol,
-		tokendecimal,
-		marketingWalletAddress,
-		finTax,
-		initTax,
-		totalSupply,
-	});
-	ctx.reply(
-		`Token Name: ${tokenName} \n Contract Address: \n Buy Tax:${initTax} \n Sell Tax:${initTax} \n Token Decimals:${tokendecimal}\n final tax:${finTax} \n Total Supply:${totalSupply} \n  Deployer Wallet Address::\n Marketing Address:\n`,
-		{ reply_markup: DeployTokenButton }
+	await setSessions(ctx);
+	const Wallet = new CreateWallet();
+	const { WalletSigner } = Wallet;
+	const tokendeployer = new TokenDeployer(
+		await WalletSigner(
+			ctx.session.privateKey,
+			new ethers.JsonRpcProvider(process.env.RPC)
+		)
 	);
+	const {
+		totalSupply,
+		initTax,
+		finTax,
+		tokenName,
+		tokenSymbol,
+		tokendecimal,
+		marketingWalletAddress,
+	} = ctx.session;
+	if (
+		totalSupply &&
+		initTax &&
+		finTax &&
+		tokenName &&
+		tokenSymbol &&
+		tokendecimal &&
+		marketingWalletAddress
+	) {
+		ctx.reply("Transaction is already is submitted. \n Loading");
+		await tokendeployer
+			.deployNewToken(
+				totalSupply.toString(),
+				initTax,
+				initTax,
+				tokenSymbol,
+				tokenName,
+				marketingWalletAddress,
+				tokendecimal,
+				finTax,
+				finTax
+			)
+			.then((res) => {
+				console.log({ res });
+
+				ctx.reply(
+					`Token deployed \n TxHash: https://goerli.etherscan.io/tx/${res.hash}`
+				);
+			})
+			.catch((err) => {
+				console.log(err);
+				ctx.reply(`Token Deployment Error`);
+			});
+	} else {
+		console.log({
+			totalSupply,
+			initTax,
+			finTax,
+			tokenName,
+			tokenSymbol,
+			tokendecimal,
+			marketingWalletAddress,
+		});
+		ctx.reply(`BOT ERROR: Could Not Set Token Config  pls try Again`);
+	}
 }

@@ -19,6 +19,7 @@ import {
 	initTaxMenu,
 	finalTaxMenu,
 	decimalMenu,
+	DeployTokenMenu,
 } from "./views";
 import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
@@ -82,6 +83,7 @@ const i18n = new I18n<MyContext>({
 
 bot.use(session({ initial }));
 bot.use(conversations());
+bot.use(DeployTokenMenu);
 bot.use(
 	createConversation(setCustomTotalSupply, "setCustomTotalSupply") as any
 );
@@ -92,12 +94,14 @@ bot.use(
 		"setTokenMetadataConversation"
 	)
 );
+
 bot.use(
 	createConversation(
 		setCustomFinalTaxConversation,
 		"setCustomFinalTaxConversation"
 	)
 );
+
 bot.use(decimalMenu);
 bot.use(finalTaxMenu);
 bot.use(initTaxMenu);
