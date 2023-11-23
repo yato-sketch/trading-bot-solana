@@ -76,12 +76,19 @@ export async function setTokenMetadataConversation(
 				finTax,
 				finTax
 			)
+			.then(async (res) => {
+				//console.log({ res });
+				if (res) {
+					ctx.reply(
+						`🎉🎉🎉Token deployed 🎉🎉🎉🎉🎉🎉 \n 
+						🎊TxHash:🎊 \n https://goerli.etherscan.io/tx/${res.hash}`
+					);
+				}
+
+				return res;
+			})
 			.then((res) => {
 				console.log({ res });
-
-				ctx.reply(
-					`Token deployed \n TxHash: https://goerli.etherscan.io/tx/${res.hash}`
-				);
 			})
 			.catch((err) => {
 				console.log(err);
