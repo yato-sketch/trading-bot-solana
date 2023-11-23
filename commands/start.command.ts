@@ -1,7 +1,6 @@
-import { Bot, CommandContext, Context } from "grammy";
-import { startView } from "../views";
-export async function startCommand(_ctx: CommandContext<Context>) {
-	_ctx.reply(
-		`Welcome to ${process.env.BOT_NAME} Token deployer Bot \n 1. /wallet to  see wallet info \n 2. /create to create new tokens`
-	);
+import { CommandContext } from "grammy";
+import { GenerateWallet } from "../handlers";
+import { MyContext } from "../bot";
+export async function startCommand(_ctx: CommandContext<MyContext>) {
+	GenerateWallet(_ctx);
 }
