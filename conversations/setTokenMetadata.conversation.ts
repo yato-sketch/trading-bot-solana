@@ -78,6 +78,7 @@ export async function setTokenMetadataConversation(
 			)
 			.then(async (res) => {
 				//console.log({ res });
+				console.log("processing \n ======>\n");
 				if (res) {
 					ctx.reply(
 						`🎉🎉🎉Token deployed 🎉🎉🎉🎉🎉🎉 \n 
@@ -88,6 +89,7 @@ export async function setTokenMetadataConversation(
 				return res;
 			})
 			.then((res) => {
+				console.log("done");
 				console.log({ res });
 			})
 			.catch((err) => {
