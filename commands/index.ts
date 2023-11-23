@@ -4,6 +4,7 @@ import { startCommand } from "./start.command";
 import { MyTokenCommand } from "./myTokens.command";
 import { ManageCommand } from "./manage.command";
 import { WalletCommand } from "./wallet.command";
+import { createCommand } from "./create.command";
 let commandsComposer = new Composer();
 
 let commands: any[] = [
@@ -12,6 +13,7 @@ let commands: any[] = [
 	{ name: "tokens", command: MyTokenCommand },
 	{ name: "manage", command: ManageCommand },
 	{ name: "wallet", command: WalletCommand },
+	{ name: "create", command: createCommand },
 ];
 
 for (let index = 0; index < commands.length; index++) {
