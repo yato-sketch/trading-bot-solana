@@ -1,15 +1,7 @@
-import {
-	Bot,
-	CommandContext,
-	Context,
-	GrammyError,
-	HttpError,
-	SessionFlavor,
-} from "grammy";
+import { Bot, Context, GrammyError, HttpError, SessionFlavor } from "grammy";
 import { session } from "grammy";
 import { commandsComposer } from "./commands";
 import {
-	initConversation,
 	setCustomTotalSupply,
 	setCustomInitTax,
 	setTokenMetadataConversation,
@@ -51,6 +43,7 @@ interface SessionData {
 	tokenNameIsSet: boolean;
 	tokenDecimalsSet: boolean;
 	tokendecimal: number;
+	privateKey: string;
 }
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -73,6 +66,7 @@ function initial(): SessionData {
 		tokenName: "",
 		finTax: 0,
 		initTax: 0,
+		privateKey: "",
 	};
 }
 
@@ -111,11 +105,12 @@ bot.use(GetTotalSupplyMenu);
 bot.use(CreateTokenMenu);
 
 bot.api.setMyCommands([
-	{ command: "help", description: " Help and Support " },
+	{ command: "help", description: "Help and Support " },
 	{ command: "start", description: "Get Started with the Token Deployer" },
 	{ command: "tokens", description: "My deployed tokens" },
 	{ command: "manage", description: "Manage deployed token" },
 	{ command: "wallet", description: "My wallet details" },
+	{ command: "create", description: "Create ERC20 token" },
 ]);
 
 // Handle the /start command.

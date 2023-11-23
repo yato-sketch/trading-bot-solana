@@ -9,7 +9,7 @@
 		"build": "npx tsc",
 		"start": "node dist/bot.js",
 		"prod": "bun run build && bun run start",
-		"generate-types": "bunx typechain --target ethers-v6 --out-dir types/contracts 'web3/abis/betting.json'"
+		"gen-types": "bunx typechain --target ethers-v6 --out-dir types/contracts 'web3/abis/*.json'"
 	},
 	"keywords": [],
 	"author": "",
@@ -22,6 +22,7 @@
 		"@grammyjs/router": "^2.0.0",
 		"@grammyjs/runner": "^2.0.3",
 		"@supabase/supabase-js": "^2.31.0",
+		"@typechain/ethers-v6": "^0.5.1",
 		"axios": "^1.4.0",
 		"dotenv": "^16.3.1",
 		"ethers": "^6.7.0",
