@@ -15,10 +15,10 @@ export async function setCustomInitTax(
 		ctx.deleteMessage();
 		ctx.reply("Invalid Tax 🟥 \n Kindly input something above 1 :");
 		response = await conversation.waitFor(":text");
-		ctx.deleteMessage();
-		ctx.session.initTax = parseInt(response.msg.text);
-		ctx.session.isInitTaxSet = true;
-		ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
-		ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 	}
+	await ctx.deleteMessage();
+	ctx.session.initTax = parseInt(response.msg.text);
+	ctx.session.isInitTaxSet = true;
+	await ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
+	await ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 }

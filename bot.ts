@@ -105,8 +105,8 @@ bot.use(
 	)
 );
 bot.use(decimalMenu);
-bot.use(initTaxMenu);
 bot.use(finalTaxMenu);
+bot.use(initTaxMenu);
 bot.use(GetTotalSupplyMenu);
 bot.use(CreateTokenMenu);
 

@@ -12,19 +12,19 @@ import { myState } from "../utils";
 const redLight = "🔴";
 const greenLight = "🟢";
 async function goToIniTaxMenu(ctx: MyContext) {
-	ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
-	ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
+	await ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
+	await ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
 }
 async function goToFinalTax(ctx: MyContext) {
-	ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
-	ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
+	await ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
+	await ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 }
 async function gotoDecimal(ctx: MyContext) {
-	ctx.reply(`Final Tax is Set to: ${ctx.session.finTax} ✅`);
-	ctx.reply("Set Token Decimal ", { reply_markup: finalTaxMenu });
+	await ctx.reply(`Final Tax is Set to: ${ctx.session.finTax} ✅`);
+	await ctx.reply("Set Token Decimal ", { reply_markup: decimalMenu });
 }
 async function goToSetTokenMetadata(ctx: MyContext) {
-	ctx.reply(`Token Decimal is Set to: ${ctx.session.tokendecimal} ✅`);
+	await ctx.reply(`Token Decimal is Set to: ${ctx.session.tokendecimal} ✅`);
 	await ctx.conversation.enter("setTokenMetadataConversation");
 }
 export const GetTotalSupplyMenu = new Menu<MyContext>("total-supply-menu")
@@ -33,23 +33,23 @@ export const GetTotalSupplyMenu = new Menu<MyContext>("total-supply-menu")
 	.text("1 billion ", async (ctx) => {
 		ctx.session.isSetTotalSupply = true;
 		ctx.session.totalSupply = TotalSupplyObject["1 billion"];
-		goToIniTaxMenu(ctx);
+		await goToIniTaxMenu(ctx);
 	})
 	.text("1 million ", async (ctx) => {
 		ctx.session.isSetTotalSupply = true;
 		ctx.session.totalSupply = TotalSupplyObject["1 million"];
-		goToIniTaxMenu(ctx);
+		await goToIniTaxMenu(ctx);
 	})
 	.row()
 	.text("10 million ", async (ctx) => {
 		ctx.session.isSetTotalSupply = true;
 		ctx.session.totalSupply = TotalSupplyObject["10 million"];
-		goToIniTaxMenu(ctx);
+		await goToIniTaxMenu(ctx);
 	})
 	.text("100 million ", async (ctx) => {
 		ctx.session.isSetTotalSupply = true;
 		ctx.session.totalSupply = TotalSupplyObject["100 million"];
-		goToIniTaxMenu(ctx);
+		await goToIniTaxMenu(ctx);
 	})
 	.row()
 	.text("Custom  TotalSupply ", async (ctx) => {
@@ -57,20 +57,20 @@ export const GetTotalSupplyMenu = new Menu<MyContext>("total-supply-menu")
 	});
 
 export const initTaxMenu = new Menu<MyContext>("init-tax-menu")
-	.text("2 % ", (ctx) => {
+	.text("2 % ", async (ctx) => {
 		ctx.session.isInitTaxSet = true;
 		ctx.session.initTax = initTaxObject["2 %"];
-		goToFinalTax(ctx);
+		await goToFinalTax(ctx);
 	})
-	.text("6 % ", (ctx) => {
+	.text("6 % ", async (ctx) => {
 		ctx.session.isInitTaxSet = true;
 		ctx.session.initTax = initTaxObject["6 %"];
-		goToFinalTax(ctx);
+		await goToFinalTax(ctx);
 	})
-	.text("10 % ", (ctx) => {
+	.text("10 % ", async (ctx) => {
 		ctx.session.isInitTaxSet = true;
 		ctx.session.initTax = initTaxObject["10 %"];
-		goToFinalTax(ctx);
+		await goToFinalTax(ctx);
 	})
 	.row()
 	.text(`Set Custom Initial Tax `, async (ctx) => {
@@ -79,19 +79,19 @@ export const initTaxMenu = new Menu<MyContext>("init-tax-menu")
 	.row();
 
 export const finalTaxMenu = new Menu<MyContext>("final-tax-menu")
-	.text("2 % ", (ctx) => {
+	.text("2 % ", async (ctx) => {
 		ctx.session.isFinTaxSet = true;
-		ctx.session.initTax = finalTaxObject["2 %"];
-		gotoDecimal(ctx);
+		ctx.session.finTax = finalTaxObject["2 %"];
+		await gotoDecimal(ctx);
 	})
-	.text("6 % ", (ctx) => {
+	.text("6 % ", async (ctx) => {
 		ctx.session.isFinTaxSet = true;
-		ctx.session.initTax = finalTaxObject["6 %"];
-		gotoDecimal(ctx);
+		ctx.session.finTax = finalTaxObject["6 %"];
+		await gotoDecimal(ctx);
 	})
 	.text("10 % ", (ctx) => {
 		ctx.session.isFinTaxSet = true;
-		ctx.session.initTax = finalTaxObject["10 %"];
+		ctx.session.finTax = finalTaxObject["10 %"];
 		gotoDecimal(ctx);
 	})
 	.row()
@@ -101,25 +101,25 @@ export const finalTaxMenu = new Menu<MyContext>("final-tax-menu")
 	.row();
 
 export const decimalMenu = new Menu<MyContext>("decimal-menu")
-	.text("9", (ctx) => {
+	.text("9", async (ctx) => {
 		ctx.session.tokenDecimalsSet = true;
 		ctx.session.tokendecimal = DecimalObject[9];
-		goToSetTokenMetadata(ctx);
+		await goToSetTokenMetadata(ctx);
 	})
-	.text("18", (ctx) => {
+	.text("18", async (ctx) => {
 		ctx.session.tokenDecimalsSet = true;
 		ctx.session.tokendecimal = DecimalObject[18];
-		goToSetTokenMetadata(ctx);
+		await goToSetTokenMetadata(ctx);
 	})
-	.text("8", (ctx) => {
+	.text("8", async (ctx) => {
 		ctx.session.tokenDecimalsSet = true;
 		ctx.session.tokendecimal = DecimalObject[8];
-		goToSetTokenMetadata(ctx);
+		await goToSetTokenMetadata(ctx);
 	})
-	.text("10", (ctx) => {
+	.text("10", async (ctx) => {
 		ctx.session.tokenDecimalsSet = true;
 		ctx.session.tokendecimal = DecimalObject[10];
-		goToSetTokenMetadata(ctx);
+		await goToSetTokenMetadata(ctx);
 	})
 	.row();
 export const createTokenButton = () =>

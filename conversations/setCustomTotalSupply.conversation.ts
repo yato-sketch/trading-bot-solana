@@ -17,12 +17,10 @@ export async function setCustomTotalSupply(
 			"Invalid Total Supply 🟥 \n Kindly input somthing above 1 thousand:"
 		);
 		ttSup = await conversation.waitFor(":text");
-		ctx.deleteMessage();
-		ctx.session.totalSupply = parseInt(ttSup.msg.text);
-		ctx.session.isSetTotalSupply = true;
-		ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply}`);
-		ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
-		return 0;
-		//ctx.menu.update()
 	}
+	ctx.deleteMessage();
+	ctx.session.totalSupply = parseInt(ttSup.msg.text);
+	ctx.session.isSetTotalSupply = true;
+	ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply}`);
+	ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
 }

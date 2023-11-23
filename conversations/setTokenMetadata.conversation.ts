@@ -7,7 +7,7 @@ export async function setTokenMetadataConversation(
 	conversation: MyConversation,
 	ctx: MyContext
 ) {
-	ctx.reply("Set Token Symbol: ");
+	await ctx.reply("Set Token Symbol: ");
 	let responseSymbol = await conversation.waitFor(":text");
 	if (!responseSymbol.msg.text) {
 		ctx.deleteMessage();
@@ -16,7 +16,7 @@ export async function setTokenMetadataConversation(
 		ctx.deleteMessage();
 	}
 	ctx.session.tokenSymbol = responseSymbol.msg.text.toString();
-	ctx.reply("Set Token Name : ");
+	await ctx.reply("Set Token Name : ");
 	let responseName = await conversation.waitFor(":text");
 	if (!responseName.msg.text) {
 		ctx.deleteMessage();
@@ -26,7 +26,7 @@ export async function setTokenMetadataConversation(
 	}
 	ctx.session.tokenName = responseName.msg.text.toString();
 
-	ctx.reply("Set Maketing Wallet Address: ");
+	await ctx.reply("Set Maketing Wallet Address: ");
 	let responseMarketWallet = await conversation.waitFor(":text");
 	if (
 		!responseMarketWallet.msg.text ||
@@ -49,6 +49,15 @@ export async function setTokenMetadataConversation(
 		initTax,
 		totalSupply,
 	} = ctx.session;
+	console.log({
+		tokenName,
+		tokenSymbol,
+		tokendecimal,
+		marketingWalletAddress,
+		finTax,
+		initTax,
+		totalSupply,
+	});
 	ctx.reply(
 		`Token Name: ${tokenName} \n Contract Address: \n Buy Tax:${initTax} \n Sell Tax:${initTax} \n Token Decimals:${tokendecimal}\n final tax:${finTax} \n Total Supply:${totalSupply} \n  Deployer Wallet Address::\n Marketing Address:\n`,
 		{ reply_markup: DeployTokenButton }
