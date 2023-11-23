@@ -1,7 +1,7 @@
 import { ethers, Wallet } from "ethers";
 import { WalletGenerated } from "../types/web3";
 
-export default class CreateWallet {
+export class CreateWallet {
 	chainRPC = process.env.RPC;
 	tokenABI = [
 		// Standard ERC-20 functions
