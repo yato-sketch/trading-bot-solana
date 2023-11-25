@@ -4,6 +4,7 @@ import { MyConversation } from ".";
 import { MyContext } from "../bot";
 import { Menu } from "@grammyjs/menu";
 import { finalTaxMenu } from "../views";
+import { myState, objectModifier } from "../utils";
 
 export async function setCustomInitTax(
 	conversation: MyConversation,
@@ -19,6 +20,12 @@ export async function setCustomInitTax(
 	await ctx.deleteMessage();
 	ctx.session.initTax = parseInt(response.msg.text);
 	ctx.session.isInitTaxSet = true;
+	const getUserState = await myState.getStore(ctx.chat?.id?.toString());
+
+	await myState.setStore(
+		ctx.chat?.id?.toString(),
+		objectModifier(getUserState, "initTax", ctx.session.initTax)
+	);
 	await ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
 	await ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 }

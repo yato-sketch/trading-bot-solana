@@ -1,7 +1,31 @@
+export type customStateContext = {
+	totalSupply: number;
+	initTax: number;
+	finTax: number;
+};
 class State {
-	counter = 0;
-	inc(num) {
-		this.counter = num;
+	totalSupply: number;
+	initTax: number;
+	finTax: number;
+	tokenName: string;
+	tokenSymbol: string;
+	tokendecimal: number;
+	marketingWalletAddress: string;
+
+	state: object;
+	constructor() {
+		this.state = {};
+	}
+
+	async setStore(k: string, value: customStateContext) {
+		//	console.log({ k, value });
+		return (this.state[k] = value);
+	}
+	async getStore(k: string): Promise<customStateContext> {
+		return this.state[k];
+	}
+	async setDefaultState(k: string) {
+		return (this.state[k] = { totalSupply: 0 });
 	}
 }
 

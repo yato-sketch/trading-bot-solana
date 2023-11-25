@@ -21,6 +21,7 @@
 		"@grammyjs/menu": "^1.2.1",
 		"@grammyjs/router": "^2.0.0",
 		"@grammyjs/runner": "^2.0.3",
+		"@grammyjs/storage-free": "^2.4.0",
 		"@supabase/supabase-js": "^2.31.0",
 		"@typechain/ethers-v6": "^0.5.1",
 		"axios": "^1.4.0",

@@ -4,6 +4,7 @@ import { MyContext } from "../bot";
 import { finalTaxMenu, DeployTokenMenu } from "../views";
 import { CreateWallet, TokenDeployer } from "../web3";
 import { setSessions } from "../handlers";
+import { myState } from "../utils";
 
 export async function setTokenMetadataConversation(
 	conversation: MyConversation,
@@ -36,6 +37,12 @@ export async function setTokenMetadataConversation(
 	ctx.session.marketingWalletAddress =
 		responseMarketWallet.msg.text.toString();
 
+	console.log(
+		ctx.chat?.id?.toString(),
+		"final total",
+		myState.getStore(ctx.chat?.id?.toString())
+	);
+
 	await setSessions(ctx);
 	const Wallet = new CreateWallet();
 	const { WalletSigner } = Wallet;
@@ -54,10 +61,11 @@ export async function setTokenMetadataConversation(
 		tokendecimal,
 		marketingWalletAddress,
 	} = ctx.session;
+	const mainState = await myState.getStore(ctx.chat?.id?.toString());
 	if (
-		totalSupply &&
-		initTax &&
-		finTax &&
+		mainState.totalSupply.toString() &&
+		mainState.initTax &&
+		mainState.totalSupply &&
 		tokenName &&
 		tokenSymbol &&
 		tokendecimal &&

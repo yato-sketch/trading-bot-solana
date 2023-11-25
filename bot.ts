@@ -1,4 +1,11 @@
-import { Bot, Context, GrammyError, HttpError, SessionFlavor } from "grammy";
+import {
+	Bot,
+	Context,
+	GrammyError,
+	HttpError,
+	MemorySessionStorage,
+	SessionFlavor,
+} from "grammy";
 import { session } from "grammy";
 import { commandsComposer } from "./commands";
 import {
@@ -12,15 +19,16 @@ import {
 	conversations,
 	createConversation,
 } from "@grammyjs/conversations";
-import { callbackHandler } from "./handlers";
+import { callbackHandler, listenerComposer } from "./handlers";
 import {
 	CreateTokenMenu,
-	GetTotalSupplyMenu,
 	initTaxMenu,
 	finalTaxMenu,
 	decimalMenu,
 	DeployTokenMenu,
+	menuComposer,
 } from "./views";
+import { freeStorage } from "@grammyjs/storage-free";
 import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
 import validate from "./validations/config.validation";
@@ -81,12 +89,17 @@ const i18n = new I18n<MyContext>({
 
 // bot.use(conversations() as any);
 
-bot.use(session({ initial }));
+bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
-bot.use(DeployTokenMenu);
-bot.use(
-	createConversation(setCustomTotalSupply, "setCustomTotalSupply") as any
-);
+bot.use(createConversation(setCustomTotalSupply, "setCustomTotalSupply"));
+bot.use(menuComposer);
+// bot.use(DeployTokenMenu);
+// bot.use(decimalMenu);
+// bot.use(finalTaxMenu);
+// bot.use(initTaxMenu);
+// bot.use(GetTotalSupplyMenu);
+// bot.use(CreateTokenMenu);
+
 bot.use(createConversation(setCustomInitTax, "setCustomInitTax"));
 bot.use(
 	createConversation(
@@ -102,12 +115,6 @@ bot.use(
 	)
 );
 
-bot.use(decimalMenu);
-bot.use(finalTaxMenu);
-bot.use(initTaxMenu);
-bot.use(GetTotalSupplyMenu);
-bot.use(CreateTokenMenu);
-
 bot.api.setMyCommands([
 	{ command: "help", description: "Help and Support " },
 	{ command: "start", description: "Get Started with the Token Deployer" },
@@ -122,6 +129,14 @@ bot.use(callBackQueryComposer);
 
 bot.use(commandsComposer);
 bot.use(callbackHandler);
+bot.use(listenerComposer);
+
+bot.on("message", (ctx) => {
+	console.log("jj");
+	if (ctx.chat.type === "group") {
+		console.log("here");
+	}
+});
 
 bot.catch((err: { ctx: MyContext; error: any }) => {
 	const ctx = err.ctx;
