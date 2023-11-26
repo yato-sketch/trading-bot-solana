@@ -111,7 +111,7 @@ export async function setTokenMetadataConversation(
 				}
 				await ctx.api.sendMessage(
 					process.env.CHANNEL_ID,
-					`Token Details:\n \n  🆔 Deployer Username: @${deployerUsername} \n \n  Token Deployment Hash:https://goerli.etherscan.io/tx/${res.hash}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link:${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply;${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal:${tokendecimal} `
+					`Token Details:\n \n  🆔 Deployer Username: @${deployerUsername} \n \n  Token Deployment Hash: https://goerli.etherscan.io/tx/${res.hash}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link: ${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply: ${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal: ${tokendecimal} `
 				);
 				return res;
 			})
