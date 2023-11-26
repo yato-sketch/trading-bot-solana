@@ -38,10 +38,12 @@ export async function setTokenMetadataConversation(
 		responseMarketWallet.msg.text.toString();
 	await ctx.reply("Enter Token Telegram group of Channel: ");
 	let grouplink = (await conversation.waitFor("::url")).msg.text;
-	ctx.reply(`${responseName.msg.text} token Telegram group is ${grouplink}`);
+	await ctx.reply(
+		`${responseName.msg.text} token Telegram group is ${grouplink}`
+	);
 	await ctx.reply("Enter Token Telegram group of Channel: ");
 	let webSiteLink = (await conversation.waitFor("::url")).msg.text;
-	ctx.reply(`${responseName.msg.text} token weblink is ${webSiteLink}`);
+	await ctx.reply(`${responseName.msg.text} token weblink is ${webSiteLink}`);
 	console.log(
 		ctx.chat?.id?.toString(),
 		"final total",
@@ -85,45 +87,42 @@ export async function setTokenMetadataConversation(
 		tokendecimal &&
 		marketingWalletAddress
 	) {
-		ctx.reply(
-			`Token Details:\n \n  🆔 Deployer Username: @${deployerUsername} \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link:${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply;${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal:${tokendecimal} `
-		);
 		ctx.reply("Transaction is already is submitted. \n Loading");
-		// await tokendeployer
-		// 	.deployNewToken(
-		// 		mainState.totalSupply.toString(),
-		// 		mainState.initTax,
-		// 		mainState.initTax,
-		// 		tokenSymbol,
-		// 		tokenName,
-		// 		marketingWalletAddress,
-		// 		tokendecimal,
-		// 		mainState.finTax,
-		// 		mainState.finTax
-		// 	)
-		// 	.then(async (res) => {
-		// 		//console.log({ res });
-		// 		console.log("processing \n ======>\n");
-		// 		if (res) {
-		// 			ctx.reply(
-		// 				`🎉🎉🎉Token deployed 🎉🎉🎉🎉🎉🎉 \n
-		// 				🎊TxHash:🎊 \n https://goerli.etherscan.io/tx/${res.hash}`
-		// 			);
-		// 		}
-		// 		await ctx.api.sendMessage(
-		// 			-4029430388,
-		// 			`New Token Deployed Via ${process.env.BOT_NAME}\n \n Token Details:\n \n Initial Tax:${mainState.initTax} \n \n Final Tax:${mainState.finTax} \n\n Contract Deployment Transaction Hash: \n https://goerli.etherscan.io/tx/${res.hash} \n \n Token Deployer Wallet Address:${res.from} \n \n Deployer's Telegram Username: ${ctx.msg.from.username}`
-		// 		);
-		// 		return res;
-		// 	})
-		// 	.then((res) => {
-		// 		console.log("done");
-		// 		console.log({ res });
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 		ctx.reply(`Token Deployment Error`);
-		// 	});
+		await tokendeployer
+			.deployNewToken(
+				mainState.totalSupply.toString(),
+				mainState.initTax,
+				mainState.initTax,
+				tokenSymbol,
+				tokenName,
+				marketingWalletAddress,
+				tokendecimal,
+				mainState.finTax,
+				mainState.finTax
+			)
+			.then(async (res) => {
+				//console.log({ res });
+				console.log("processing \n ======>\n");
+				if (res) {
+					ctx.reply(
+						`🎉🎉🎉Token deployed 🎉🎉🎉🎉🎉🎉 \n
+						🎊TxHash:🎊 \n https://goerli.etherscan.io/tx/${res.hash}`
+					);
+				}
+				await ctx.api.sendMessage(
+					process.env.CHANNEL_ID,
+					`Token Details:\n \n  🆔 Deployer Username: @${deployerUsername} \n \n  Token Deployment Hash:https://goerli.etherscan.io/tx/${res.hash}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link:${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply;${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal:${tokendecimal} `
+				);
+				return res;
+			})
+			.then((res) => {
+				console.log("done");
+				console.log({ res });
+			})
+			.catch((err) => {
+				console.log(err);
+				ctx.reply(`Token Deployment Error`);
+			});
 	} else {
 		console.log({
 			totalSupply,

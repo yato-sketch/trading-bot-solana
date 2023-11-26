@@ -8,7 +8,15 @@ async function validate() {
 	const botToken = process.env.BOT_TOKEN;
 	const rpc = process.env.RPC;
 	const botName = process.env.BOT_NAME;
-	if (!botToken || !supabaseKey || !supabaseUrl || !rpc || !botName) {
+	const channelId = process.env.CHANNEL_ID;
+	if (
+		!botToken ||
+		!supabaseKey ||
+		!supabaseUrl ||
+		!rpc ||
+		!botName ||
+		!channelId
+	) {
 		//console.log({ botToken, supabaseKey, supabaseUrl, rpc, botName });
 		throw error("Configurations are missing");
 	} else {
