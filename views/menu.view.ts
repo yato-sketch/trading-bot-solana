@@ -37,7 +37,8 @@ export const totalSupplyKeyBoard = new InlineKeyboard()
 	.text("10 million", "total-supply|10-million")
 	.text("100 million", "total-supply|100-million")
 	.row()
-	.text("Custom  TotalSupply", "total-supply|custom");
+	.text("Custom  TotalSupply", "total-supply|custom")
+	.row();
 
 export const initTaxMenu = new InlineKeyboard()
 	.text("2 %", "init-tax|2-%")
@@ -45,7 +46,8 @@ export const initTaxMenu = new InlineKeyboard()
 	.text("10 % ", "init-tax|10-%")
 	.row()
 	.text(`Set Custom Initial Tax `, "init-tax|custom")
-	.row();
+	.row()
+	.text("return", "init-tax|return");
 
 export const finalTaxMenu = new InlineKeyboard()
 	.text("2 %", "final-tax|2-%")
@@ -53,13 +55,23 @@ export const finalTaxMenu = new InlineKeyboard()
 	.text("10 % ", "final-tax|10-%")
 	.row()
 	.text(`Set Custom Initial Tax `, "final-tax|custom")
-	.row();
+	.row()
+	.text("return", "final-tax|return");
 
 export const decimalMenu = new InlineKeyboard()
 	.text("9", "decimal|9")
 	.text("18", "decimal|18")
 	.text("8", "decimal|8")
 	.text("10", "decimal|10")
+	.row()
+	.text("return", "decimal|return");
+export const mainReturn = new InlineKeyboard().text("return", "main-return");
+export const confirmationMenu = new InlineKeyboard()
+	.text("Start Over", "start-over")
+	.row()
+	.text("Return", "end-return")
+	.row()
+	.text("Continue", "continue")
 	.row();
 export const createTokenButton = () =>
 	new InlineKeyboard().text("Create Token", `create-token`);

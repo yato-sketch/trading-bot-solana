@@ -1,4 +1,4 @@
-import { Composer, Context } from "grammy";
+import { Composer, Context, InlineKeyboard } from "grammy";
 import { createToken } from "../views/create_token.view";
 import { MyContext } from "../bot";
 import { TokenDeployer } from "../web3";
@@ -13,22 +13,37 @@ import {
 	objectModifier,
 } from "../utils";
 import { myState } from "../utils";
-import { decimalMenu, finalTaxMenu, initTaxMenu } from "../views";
+import {
+	decimalMenu,
+	finalTaxMenu,
+	initTaxMenu,
+	totalSupplyKeyBoard,
+} from "../views";
 async function goToIniTaxMenu(ctx: MyContext) {
+	await ctx.deleteMessage();
 	await ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
 	await ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
 }
 async function goToFinalTax(ctx: MyContext) {
+	await ctx.deleteMessage();
 	await ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
+
 	await ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 }
 async function gotoDecimal(ctx: MyContext) {
+	await ctx.deleteMessage();
 	await ctx.reply(`Final Tax is Set to: ${ctx.session.finTax} ✅`);
+
 	await ctx.reply("Set Token Decimal ", { reply_markup: decimalMenu });
 }
 async function goToSetTokenMetadata(ctx: MyContext) {
+	await ctx.deleteMessage();
 	await ctx.reply(`Token Decimal is Set to: ${ctx.session.tokendecimal} ✅`);
 	await ctx.conversation.enter("setTokenMetadataConversation");
+}
+async function returnTo(title: string, menu: InlineKeyboard, ctx: MyContext) {
+	await ctx.deleteMessage();
+	await ctx.reply(title, { reply_markup: menu });
 }
 const CallBackMap: Map<string, any> = new Map();
 const TotalSupplyMap: Map<string, any> = new Map();
@@ -46,6 +61,8 @@ TotalSupplyMap.set(
 		const query = totalSupplyAmount.split("|");
 		if (query[1] === "custom") {
 			ctx.conversation.enter("setCustomTotalSupply");
+		} else if (query[1] == "return") {
+			console.log("Welcome");
 		} else {
 			const getUserState = await myState.getStore(
 				ctx.chat?.id?.toString()
@@ -71,6 +88,9 @@ TotalSupplyMap.set(
 
 		if (query[1] === "custom") {
 			ctx.conversation.enter("setCustomInitTax");
+		} else if (query[1] == "return") {
+			//	console.log("Welcome");
+			returnTo("Set Total Supply", totalSupplyKeyBoard, ctx);
 		} else {
 			const getUserState = await myState.getStore(
 				ctx.chat?.id?.toString()
@@ -91,6 +111,9 @@ TotalSupplyMap.set(
 		const query = callbackquery.split("|");
 		if (query[1] === "custom") {
 			ctx.conversation.enter("setCustomFinalTaxConversation");
+		} else if (query[1] == "return") {
+			//console.log("Welcome");
+			returnTo("Set Initial Tax:", initTaxMenu, ctx);
 		} else {
 			const getUserState = await myState.getStore(
 				ctx.chat?.id?.toString()
@@ -109,6 +132,9 @@ TotalSupplyMap.set("decimal", (ctx: MyContext, callbackquery: string) => {
 	const query = callbackquery.split("|");
 	if (query[1] === "custom") {
 		//ctx.conversation.enter("setCustomInitTax");
+	} else if (query[1] == "return") {
+		//console.log("Welcome");
+		returnTo("Set Initial Tax:", initTaxMenu, ctx);
 	} else {
 		ctx.session.isSetTotalSupply = true;
 		ctx.session.tokendecimal = DecimalObject[query[1]];

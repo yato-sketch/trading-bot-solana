@@ -1,7 +1,7 @@
 import { ethers, isAddress } from "ethers";
 import { MyConversation } from ".";
 import { MyContext } from "../bot";
-import { finalTaxMenu, DeployTokenMenu } from "../views";
+import { finalTaxMenu, DeployTokenMenu, confirmationMenu } from "../views";
 import { CreateWallet, TokenDeployer } from "../web3";
 import { setSessions } from "../handlers";
 import { myState } from "../utils";
@@ -68,6 +68,7 @@ export async function setTokenMetadataConversation(
 	//tax
 	// max Transaction
 	//max wallet size
+	const mainState = await myState.getStore(ctx.chat?.id?.toString());
 	const {
 		totalSupply,
 		initTax,
@@ -77,7 +78,11 @@ export async function setTokenMetadataConversation(
 		tokendecimal,
 		marketingWalletAddress,
 	} = ctx.session;
-	const mainState = await myState.getStore(ctx.chat?.id?.toString());
+	// await ctx.reply(
+	// 	` Token Details :\n \n  🆔 Deployer Username: @${deployerUsername}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link: ${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply: ${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal: ${tokendecimal} `,
+	// 	{ reply_markup: confirmationMenu }
+	// );
+
 	if (
 		mainState.totalSupply.toString() &&
 		mainState.initTax &&

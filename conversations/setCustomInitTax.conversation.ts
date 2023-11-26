@@ -10,7 +10,7 @@ export async function setCustomInitTax(
 	conversation: MyConversation,
 	ctx: MyContext
 ) {
-	ctx.reply("Pls kindly input Initial Tax For your Token");
+	await ctx.reply("Pls kindly input Initial Tax For your Token");
 	let response = await conversation.waitFor(":text");
 	if (!response.msg.text) {
 		ctx.deleteMessage();
@@ -26,6 +26,8 @@ export async function setCustomInitTax(
 		ctx.chat?.id?.toString(),
 		objectModifier(getUserState, "initTax", ctx.session.initTax)
 	);
+	await ctx.deleteMessage();
 	await ctx.reply(`Initial Tax is Set to: ${ctx.session.initTax} ✅`);
+
 	await ctx.reply("Set Final Tax ", { reply_markup: finalTaxMenu });
 }
