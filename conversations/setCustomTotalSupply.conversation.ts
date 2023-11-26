@@ -28,7 +28,7 @@ export async function setCustomTotalSupply(
 	ctx.session.totalSupply = parseInt(ttSup.msg.text);
 	await myState.setDefaultState(ctx.chat?.id?.toString());
 	const getUserState = await myState.getStore(ctx.chat?.id?.toString());
-
+	//console.log(ttSup.from.username);
 	await myState.setStore(
 		ctx.chat?.id?.toString(),
 		objectModifier(getUserState, "totalSupply", ctx.session.totalSupply)
