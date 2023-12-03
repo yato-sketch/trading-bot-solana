@@ -7,6 +7,11 @@ import type { Deployer, DeployerInterface } from "../Deployer";
 
 const _abi = [
   {
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
     anonymous: false,
     inputs: [
       {
@@ -14,6 +19,24 @@ const _abi = [
         internalType: "address",
         name: "deployedAddress",
         type: "address",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "symbol",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "string",
+        name: "tokenName",
+        type: "string",
+      },
+      {
+        indexed: false,
+        internalType: "uint256",
+        name: "totalSupply",
+        type: "uint256",
       },
     ],
     name: "NewContractDeployed",
@@ -93,52 +116,6 @@ const _abi = [
   },
   {
     inputs: [],
-    name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "newFee",
-        type: "uint256",
-      },
-    ],
-    name: "setFees",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_devWallet",
-        type: "address",
-      },
-    ],
-    name: "setNewDevWallet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "address",
-        name: "_revWallet",
-        type: "address",
-      },
-    ],
-    name: "setNewRevWallet",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [],
     name: "deployedContractAddress",
     outputs: [
       {
@@ -178,6 +155,13 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "revenueWallet",
     outputs: [
       {
@@ -187,6 +171,45 @@ const _abi = [
       },
     ],
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "newFee",
+        type: "uint256",
+      },
+    ],
+    name: "setFees",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_devWallet",
+        type: "address",
+      },
+    ],
+    name: "setNewDevWallet",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_revWallet",
+        type: "address",
+      },
+    ],
+    name: "setNewRevWallet",
+    outputs: [],
+    stateMutability: "nonpayable",
     type: "function",
   },
 ] as const;

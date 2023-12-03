@@ -27,14 +27,14 @@ export interface DeployerInterface extends Interface {
   getFunction(
     nameOrSignature:
       | "deployNewContract"
-      | "renounceOwnership"
-      | "setFees"
-      | "setNewDevWallet"
-      | "setNewRevWallet"
       | "deployedContractAddress"
       | "devWallet"
       | "owner"
+      | "renounceOwnership"
       | "revenueWallet"
+      | "setFees"
+      | "setNewDevWallet"
+      | "setNewRevWallet"
   ): FunctionFragment;
 
   getEvent(
@@ -56,7 +56,17 @@ export interface DeployerInterface extends Interface {
     ]
   ): string;
   encodeFunctionData(
+    functionFragment: "deployedContractAddress",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "devWallet", values?: undefined): string;
+  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
+  encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(
+    functionFragment: "revenueWallet",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -71,23 +81,23 @@ export interface DeployerInterface extends Interface {
     functionFragment: "setNewRevWallet",
     values: [AddressLike]
   ): string;
-  encodeFunctionData(
-    functionFragment: "deployedContractAddress",
-    values?: undefined
-  ): string;
-  encodeFunctionData(functionFragment: "devWallet", values?: undefined): string;
-  encodeFunctionData(functionFragment: "owner", values?: undefined): string;
-  encodeFunctionData(
-    functionFragment: "revenueWallet",
-    values?: undefined
-  ): string;
 
   decodeFunctionResult(
     functionFragment: "deployNewContract",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
+    functionFragment: "deployedContractAddress",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "devWallet", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
+  decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "revenueWallet",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "setFees", data: BytesLike): Result;
@@ -99,23 +109,26 @@ export interface DeployerInterface extends Interface {
     functionFragment: "setNewRevWallet",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(
-    functionFragment: "deployedContractAddress",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(functionFragment: "devWallet", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "owner", data: BytesLike): Result;
-  decodeFunctionResult(
-    functionFragment: "revenueWallet",
-    data: BytesLike
-  ): Result;
 }
 
 export namespace NewContractDeployedEvent {
-  export type InputTuple = [deployedAddress: AddressLike];
-  export type OutputTuple = [deployedAddress: string];
+  export type InputTuple = [
+    deployedAddress: AddressLike,
+    symbol: string,
+    tokenName: string,
+    totalSupply: BigNumberish
+  ];
+  export type OutputTuple = [
+    deployedAddress: string,
+    symbol: string,
+    tokenName: string,
+    totalSupply: bigint
+  ];
   export interface OutputObject {
     deployedAddress: string;
+    symbol: string;
+    tokenName: string;
+    totalSupply: bigint;
   }
   export type Event = TypedContractEvent<InputTuple, OutputTuple, OutputObject>;
   export type Filter = TypedDeferredTopicFilter<Event>;
@@ -195,7 +208,15 @@ export interface Deployer extends BaseContract {
     "payable"
   >;
 
+  deployedContractAddress: TypedContractMethod<[], [string], "view">;
+
+  devWallet: TypedContractMethod<[], [string], "view">;
+
+  owner: TypedContractMethod<[], [string], "view">;
+
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+
+  revenueWallet: TypedContractMethod<[], [string], "view">;
 
   setFees: TypedContractMethod<[newFee: BigNumberish], [void], "nonpayable">;
 
@@ -210,14 +231,6 @@ export interface Deployer extends BaseContract {
     [void],
     "nonpayable"
   >;
-
-  deployedContractAddress: TypedContractMethod<[], [string], "view">;
-
-  devWallet: TypedContractMethod<[], [string], "view">;
-
-  owner: TypedContractMethod<[], [string], "view">;
-
-  revenueWallet: TypedContractMethod<[], [string], "view">;
 
   getFunction<T extends ContractMethod = ContractMethod>(
     key: string | FunctionFragment
@@ -241,18 +254,6 @@ export interface Deployer extends BaseContract {
     "payable"
   >;
   getFunction(
-    nameOrSignature: "renounceOwnership"
-  ): TypedContractMethod<[], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setFees"
-  ): TypedContractMethod<[newFee: BigNumberish], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setNewDevWallet"
-  ): TypedContractMethod<[_devWallet: AddressLike], [void], "nonpayable">;
-  getFunction(
-    nameOrSignature: "setNewRevWallet"
-  ): TypedContractMethod<[_revWallet: AddressLike], [void], "nonpayable">;
-  getFunction(
     nameOrSignature: "deployedContractAddress"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -262,8 +263,20 @@ export interface Deployer extends BaseContract {
     nameOrSignature: "owner"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
+    nameOrSignature: "renounceOwnership"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
     nameOrSignature: "revenueWallet"
   ): TypedContractMethod<[], [string], "view">;
+  getFunction(
+    nameOrSignature: "setFees"
+  ): TypedContractMethod<[newFee: BigNumberish], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setNewDevWallet"
+  ): TypedContractMethod<[_devWallet: AddressLike], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "setNewRevWallet"
+  ): TypedContractMethod<[_revWallet: AddressLike], [void], "nonpayable">;
 
   getEvent(
     key: "NewContractDeployed"
@@ -281,7 +294,7 @@ export interface Deployer extends BaseContract {
   >;
 
   filters: {
-    "NewContractDeployed(address)": TypedContractEvent<
+    "NewContractDeployed(address,string,string,uint256)": TypedContractEvent<
       NewContractDeployedEvent.InputTuple,
       NewContractDeployedEvent.OutputTuple,
       NewContractDeployedEvent.OutputObject

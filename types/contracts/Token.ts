@@ -34,6 +34,7 @@ export interface TokenInterface extends Interface {
       | "allowance"
       | "approve"
       | "balanceOf"
+      | "buyTax"
       | "decimals"
       | "manualSwap"
       | "name"
@@ -41,6 +42,8 @@ export interface TokenInterface extends Interface {
       | "owner"
       | "removeLimits"
       | "renounceOwnership"
+      | "sellTax"
+      | "setFinalTax"
       | "setNewMarketingWallet"
       | "symbol"
       | "totalSupply"
@@ -89,6 +92,7 @@ export interface TokenInterface extends Interface {
     functionFragment: "balanceOf",
     values: [AddressLike]
   ): string;
+  encodeFunctionData(functionFragment: "buyTax", values?: undefined): string;
   encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "manualSwap",
@@ -106,6 +110,11 @@ export interface TokenInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "renounceOwnership",
+    values?: undefined
+  ): string;
+  encodeFunctionData(functionFragment: "sellTax", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "setFinalTax",
     values?: undefined
   ): string;
   encodeFunctionData(
@@ -153,6 +162,7 @@ export interface TokenInterface extends Interface {
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "buyTax", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "manualSwap", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "name", data: BytesLike): Result;
@@ -167,6 +177,11 @@ export interface TokenInterface extends Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "renounceOwnership",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(functionFragment: "sellTax", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "setFinalTax",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -317,6 +332,8 @@ export interface Token extends BaseContract {
 
   balanceOf: TypedContractMethod<[account: AddressLike], [bigint], "view">;
 
+  buyTax: TypedContractMethod<[], [bigint], "view">;
+
   decimals: TypedContractMethod<[], [bigint], "view">;
 
   manualSwap: TypedContractMethod<[], [void], "nonpayable">;
@@ -330,6 +347,10 @@ export interface Token extends BaseContract {
   removeLimits: TypedContractMethod<[], [void], "nonpayable">;
 
   renounceOwnership: TypedContractMethod<[], [void], "nonpayable">;
+
+  sellTax: TypedContractMethod<[], [bigint], "view">;
+
+  setFinalTax: TypedContractMethod<[], [void], "nonpayable">;
 
   setNewMarketingWallet: TypedContractMethod<
     [newWallet: AddressLike],
@@ -392,6 +413,9 @@ export interface Token extends BaseContract {
     nameOrSignature: "balanceOf"
   ): TypedContractMethod<[account: AddressLike], [bigint], "view">;
   getFunction(
+    nameOrSignature: "buyTax"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
     nameOrSignature: "decimals"
   ): TypedContractMethod<[], [bigint], "view">;
   getFunction(
@@ -411,6 +435,12 @@ export interface Token extends BaseContract {
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "renounceOwnership"
+  ): TypedContractMethod<[], [void], "nonpayable">;
+  getFunction(
+    nameOrSignature: "sellTax"
+  ): TypedContractMethod<[], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "setFinalTax"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
     nameOrSignature: "setNewMarketingWallet"

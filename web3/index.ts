@@ -2,6 +2,6 @@ export * from "./wallet.web3";
 export * from "./utils.web3";
 export * from "./tokenDeployer.web3";
 export const safeMemeTokenDeployer =
-	"0xA1FE2A2A4B214327d31958E377ed18Cd8c5E2Eec";
+	"0xD62ABD570d92dFed8d245CB43D894542e623F11D";
 
 async function getTransaction(params: any) {}

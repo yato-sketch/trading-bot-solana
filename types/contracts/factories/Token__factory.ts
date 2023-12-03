@@ -53,6 +53,11 @@ const _abi = [
         name: "finalBuyTax",
         type: "uint256",
       },
+      {
+        internalType: "address",
+        name: "devWallet",
+        type: "address",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -273,6 +278,19 @@ const _abi = [
   },
   {
     inputs: [],
+    name: "buyTax",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "decimals",
     outputs: [
       {
@@ -334,6 +352,26 @@ const _abi = [
   {
     inputs: [],
     name: "renounceOwnership",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "sellTax",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "setFinalTax",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
