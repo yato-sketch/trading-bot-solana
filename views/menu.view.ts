@@ -80,4 +80,16 @@ export const CreateTokenMenu = new Menu<MyContext>("create-token-menu").text(
 	"Create Token"
 );
 
+const viewPageNavigatorList = [["first "], ["previous "], ["next "], ["last"]];
+export const viewPageNavigator = () => {
+	const keyboard = new InlineKeyboard();
+	for (let index = 0; index < viewPageNavigatorList.length; index++) {
+		const text = viewPageNavigatorList[index][0];
+		const key = viewPageNavigatorList[index][0];
+		keyboard.text(`${text} page`, `page-nav-${key}`);
+	}
+
+	return keyboard;
+};
+
 export { menuComposer };

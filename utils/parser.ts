@@ -21,3 +21,13 @@ export const TotalSupplyObject = {
 	"10-million": 10000000,
 	"100-million": 100000000,
 };
+
+export function trimAddress(walletAddress: string, length = 8) {
+	if (walletAddress.length <= length) {
+		return walletAddress; // No need to trim if it's shorter than the specified length
+	}
+	const start = walletAddress.slice(0, length);
+	const end = walletAddress.slice(-length);
+	const trimmedAddress = `${start}...${end}`;
+	return trimmedAddress;
+}

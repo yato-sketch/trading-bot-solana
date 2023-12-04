@@ -5,3 +5,13 @@ export type WalletGenerated = {
 	mnemonic: string;
 	publicKey: AddressLike;
 };
+
+export type TokenDeployedGraph = {
+	transactionHash: string;
+	totalSupply: string;
+	tokenName: string;
+	deployedAddress: string;
+	symbol: string;
+	owner: string;
+	id: string;
+};

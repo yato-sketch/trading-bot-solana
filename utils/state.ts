@@ -1,3 +1,5 @@
+import { TokenDeployedGraph } from "../types";
+
 export type customStateContext = {
 	totalSupply: number;
 	initTax: number;
@@ -11,10 +13,12 @@ class State {
 	tokenSymbol: string;
 	tokendecimal: number;
 	marketingWalletAddress: string;
+	deployedTokens: Map<string, TokenDeployedGraph[]>;
 
 	state: object;
 	constructor() {
 		this.state = {};
+		this.deployedTokens = new Map();
 	}
 
 	async setStore(k: string, value: customStateContext) {
@@ -26,6 +30,12 @@ class State {
 	}
 	async setDefaultState(k: string) {
 		return (this.state[k] = { totalSupply: 0 });
+	}
+	setDeployedTokens(id: string, data: TokenDeployedGraph[]) {
+		return this.deployedTokens.set(id, data);
+	}
+	getDeploTOkens(id: string) {
+		return this.deployedTokens.get(id);
 	}
 }
 
