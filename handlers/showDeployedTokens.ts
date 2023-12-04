@@ -25,5 +25,5 @@ export async function showDeployedTokenHandler(ctx: MyContext) {
 		ctx.reply("Error Occured While Fetching Tokens");
 	}
 
-	console.log({ data });
+	//	console.log({ data });
 }

@@ -11,7 +11,7 @@ let commands: any[] = [
 	{ name: "help", command: helpCommand },
 	{ name: "start", command: startCommand },
 	{ name: "tokens", command: MyTokenCommand },
-	{ name: "manage", command: ManageCommand },
+
 	{ name: "wallet", command: WalletCommand },
 	{ name: "create", command: createCommand },
 ];

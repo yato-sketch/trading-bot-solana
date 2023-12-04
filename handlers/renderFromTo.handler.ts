@@ -22,7 +22,10 @@ export async function renderFromTo(
 					`Contract Address: ${trimAddress(element.deployedAddress)}`
 				)
 				.row()
-				.text("Mange Token", `mange-token-${element.deployedAddress}`)
+				.text(
+					"Mange Token",
+					`manage-token|${element.deployedAddress}!${element.tokenName}`
+				)
 				.row();
 		}
 		await ctx.reply("Your List of Deployed Tokens", {
@@ -41,18 +44,21 @@ export async function renderFromTo(
 					`Contract Address: ${trimAddress(element.deployedAddress)}`
 				)
 				.row()
-				.text("Mange Token", `mange-token-${element.deployedAddress}`)
+				.text(
+					"Mange Token",
+					`manage-token|${element.deployedAddress}!${element.tokenName}`
+				)
 				.row();
 		}
-		if (data.length === to + 1) {
-			depTokensMenu.text("Prev Page", `prev-page-${data.length - 3}`);
-		} else if (from === 0) {
-			depTokensMenu.text("Next Page", `next-page-${to + 1}`);
-		} else {
-			depTokensMenu
-				.text("Prev Page", `prev-page-${from - 3}`)
-				.text("Next Page", `next-page-${to + 1}`);
-		}
+		// if (data.length === to + 1) {
+		// 	depTokensMenu.text("Prev Page", `prev-page-${data.length - 3}`);
+		// } else if (from === 0) {
+		// 	depTokensMenu.text("Next Page", `next-page-${to + 1}`);
+		// } else {
+		// 	depTokensMenu
+		// 		.text("Prev Page", `prev-page-${from - 3}`)
+		// 		.text("Next Page", `next-page-${to + 1}`);
+		// }
 
 		await ctx.reply("Your List of Deployed Tokens", {
 			reply_markup: depTokensMenu,

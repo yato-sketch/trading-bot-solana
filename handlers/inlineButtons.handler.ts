@@ -17,8 +17,10 @@ import {
 	decimalMenu,
 	finalTaxMenu,
 	initTaxMenu,
+	mangeTokenMenu,
 	totalSupplyKeyBoard,
 } from "../views";
+import { MangeTokenHandler } from "./mangeToken.handler";
 async function goToIniTaxMenu(ctx: MyContext) {
 	await ctx.deleteMessage();
 	await ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
@@ -148,14 +150,33 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const totalSupplyQuery = data.split("|")[0];
 
 	await setSessions(ctx as any);
-	console.log(ctx.chat.id);
+	//	console.log(ctx.chat.id);
 	// if (data === "deploy-token") {
 	// }
+	console.log(data);
 	if (data === "create-token") {
 		CallBackMap.get(data)(ctx);
 	}
 	if (totalSupplyQuery !== "create-token") {
-		TotalSupplyMap.get(totalSupplyQuery)(ctx, data);
+		if (data.split("-")[0] === "manage") {
+			ctx.deleteMessage();
+			const address = data.split("|")[1].split("!")[0];
+			const symbol = data.split("!")[1];
+			console.log("herer", { address, symbol });
+			ctx.reply(`Manage ${symbol} Token`, {
+				reply_markup: mangeTokenMenu(address),
+			});
+		} else if (data.split("#")[0] === "m") {
+			const managerData = data.split("#")[1];
+			console.log({ managerData });
+			MangeTokenHandler.get(managerData.split("|")[0])(
+				ctx as any,
+				managerData.split("|")[1]
+			);
+			console.log("energy");
+		} else {
+			TotalSupplyMap.get(totalSupplyQuery)(ctx, data);
+		}
 	}
 
 	await ctx.answerCallbackQuery();

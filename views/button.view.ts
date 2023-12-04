@@ -29,3 +29,14 @@ export const accountMenu = new InlineKeyboard()
 	.text("Withdraw Eth")
 	.row()
 	.text("Withdraw Token");
+export const mangeTokenMenu = (addy: string) =>
+	new InlineKeyboard()
+		.text("Set Final Tax", "m#set-final-tax" + `|${addy}`)
+		.row()
+		.text("Renounce Ownership", "m#renounce-token" + `|${addy}`)
+		.row()
+		.text("Manual Swap", "m#manual-swap" + `|${addy}`)
+		.row()
+		.text("Remove Limits", "m#remove-limits" + `|${addy}`)
+		.row()
+		.text("Open Trading", "m#open-trading" + `|${addy}`);

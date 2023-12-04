@@ -119,7 +119,6 @@ bot.api.setMyCommands([
 	{ command: "help", description: "Help and Support " },
 	{ command: "start", description: "Get Started with the Token Deployer" },
 	{ command: "tokens", description: "My deployed tokens" },
-	{ command: "manage", description: "Manage deployed token" },
 	{ command: "wallet", description: "My wallet details" },
 	{ command: "create", description: "Create ERC20 token" },
 ]);
