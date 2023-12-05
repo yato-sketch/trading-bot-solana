@@ -15,14 +15,16 @@ export async function showDeployedTokenHandler(ctx: MyContext) {
 	const pubKey = (await getWalletAddress(ctx.session.privateKey!)).toString();
 	const data: TokenDeployedGraph[] = await getUserDeployedTokens(pubKey);
 	const depTokensMenu = new InlineKeyboard();
-	if (data) {
+	if (data && data.length > 0) {
 		// if (data.length > 3) {
 		// 	await renderFromTo(ctx, 0, 2, data)
 		// } else {
 		await renderFromTo(ctx, 0, data.length, data);
 		//}
 	} else {
-		ctx.reply("Error Occured While Fetching Tokens");
+		ctx.reply(
+			"Error Occured While Fetching Tokens or Not token Deployed yet"
+		);
 	}
 
 	//	console.log({ data });
