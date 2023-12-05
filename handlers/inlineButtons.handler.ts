@@ -157,6 +157,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	if (data === "create-token") {
 		CallBackMap.get(data)(ctx);
 	}
+
 	if (totalSupplyQuery !== "create-token") {
 		if (data.split("-")[0] === "manage") {
 			ctx.deleteMessage();

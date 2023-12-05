@@ -25,10 +25,12 @@ export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 	})
 	.row();
 
-export const accountMenu = new InlineKeyboard()
-	.text("Withdraw Eth")
-	.row()
-	.text("Withdraw Token");
+export const accountMenu = new Menu<MyContext>("withdraw menu").text(
+	"Withdraw Eth",
+	(ctx) => {
+		ctx.conversation.enter("withdrawEthConversation");
+	}
+);
 export const mangeTokenMenu = (addy: string) =>
 	new InlineKeyboard()
 		.text("Set Final Tax", "m#set-final-tax" + `|${addy}`)

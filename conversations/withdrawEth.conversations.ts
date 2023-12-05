@@ -9,14 +9,28 @@ import { isAddress } from "ethers";
 import { CreateWallet } from "../web3";
 import apiCalls from "../utils/apiCall";
 import { MyContext } from "../bot";
+import { setSessions } from "../handlers";
 
 type MyContext2 = MyContext & ConversationFlavor;
 export type MyConversation = Conversation<MyContext2>;
 const withDrawWallet = new CreateWallet();
+
+async function validate(addy: string, conversation: MyConversation, ctx: any) {
+	let reAddressCtx;
+	if (!isAddress(reAddressCtx.msg.text)) {
+		ctx.reply(
+			"Not an Ethereum Address \n Kindly input Receiving Wallet Address:"
+		);
+		reAddressCtx = await conversation.waitFor(":text");
+	}
+
+	return reAddressCtx;
+}
 export default async function withdrawEthConversation(
 	conversation: MyConversation,
 	ctx: MyContext
 ) {
+	await setSessions(ctx);
 	//get wallet address
 	ctx.reply("Kindly input Recieving Wallet Address");
 	let reAddressCtx = await conversation.waitFor(":text");

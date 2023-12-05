@@ -28,6 +28,8 @@ import {
 	DeployTokenMenu,
 	menuComposer,
 } from "./views";
+import { accountMenu } from "./views";
+import withdrawEthConversation from "./conversations/withdrawEth.conversations";
 import { freeStorage } from "@grammyjs/storage-free";
 import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
@@ -84,22 +86,13 @@ const i18n = new I18n<MyContext>({
 	directory: "locales", // Load all translation files from locales/.
 });
 // bot.use(i18n);
-// You can now register listeners on your bot object `bot`.
-// grammY will call the listeners when users send messages to your bot.
-
-// bot.use(conversations() as any);
 
 bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
+bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
+bot.use(accountMenu);
 bot.use(createConversation(setCustomTotalSupply, "setCustomTotalSupply"));
 bot.use(menuComposer);
-// bot.use(DeployTokenMenu);
-// bot.use(decimalMenu);
-// bot.use(finalTaxMenu);
-// bot.use(initTaxMenu);
-// bot.use(GetTotalSupplyMenu);
-// bot.use(CreateTokenMenu);
-
 bot.use(createConversation(setCustomInitTax, "setCustomInitTax"));
 bot.use(
 	createConversation(
