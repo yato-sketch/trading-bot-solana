@@ -5,9 +5,18 @@ import { CreateWallet, SafeToken } from "../web3";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 
-async function TransactionLoading(ctx: MyContext) {
+export async function TransactionLoading(ctx: MyContext) {
 	return await ctx.reply(
 		" 🔄 Transaction is has been submitted 🔄 \n  🔄 Loading 🔄"
+	);
+}
+export async function ParseError(ctx: MyContext, err: any) {
+	return await ctx.reply(
+		`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n \n ⚠️ ${
+			JSON.parse(JSON.stringify(err)).reason
+				? JSON.parse(JSON.stringify(err)).reason
+				: "Error not Found"
+		} ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`
 	);
 }
 const MangeTokenHandler: Map<
@@ -34,9 +43,7 @@ MangeTokenHandler.set(
 				);
 			})
 			.catch(async (err) => {
-				await ctx.reply(
-					`❌ ❌Error Occurred while Transaction was Processing ❌ ❌ \n check gas and pls try again`
-				);
+				await ParseError(ctx, err);
 			});
 	}
 );
@@ -59,9 +66,8 @@ MangeTokenHandler.set(
 				);
 			})
 			.catch(async (err) => {
-				await ctx.reply(
-					` ❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n check gas and pls try again`
-				);
+				console.log({ err });
+				await ParseError(ctx, err);
 			});
 	}
 );
@@ -84,9 +90,7 @@ MangeTokenHandler.set(
 				);
 			})
 			.catch(async (err) => {
-				await ctx.reply(
-					` ❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n check gas and pls try again`
-				);
+				await ParseError(ctx, err);
 			});
 		//	ctx.reply("Unclogging Contract");
 	}
@@ -110,9 +114,7 @@ MangeTokenHandler.set(
 				);
 			})
 			.catch(async (err) => {
-				await ctx.reply(
-					`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n check gas and pls try again`
-				);
+				await ParseError(ctx, err);
 			});
 	}
 );
@@ -130,14 +132,13 @@ MangeTokenHandler.set(
 		await tokenContract
 			.openTrading()
 			.then(async (res) => {
+				await ctx.deleteMessage();
 				await ctx.reply(
 					`Token Trading Open  \n 🎊TxHash:🎊 \n ${process.env.SCAN_URL}${res.hash}`
 				);
 			})
 			.catch(async (err) => {
-				await ctx.reply(
-					`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n check gas and pls try again`
-				);
+				await ParseError(ctx, err);
 			});
 	}
 );
