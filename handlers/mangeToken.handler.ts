@@ -2,6 +2,7 @@ import { ethers, formatUnits, isAddress, parseEther, parseUnits } from "ethers";
 import { callBackQueryComposer, setSessions } from ".";
 import { MyContext } from "../bot";
 import { CreateWallet, SafeToken } from "../web3";
+import { NextFunction } from "grammy";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 
@@ -19,6 +20,7 @@ export async function ParseError(ctx: MyContext, err: any) {
 		} ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`
 	);
 }
+
 const MangeTokenHandler: Map<
 	string,
 	(ctx: MyContext, contractAddress: string) => void
@@ -140,25 +142,31 @@ MangeTokenHandler.set(
 			);
 			const data = await tokenContract.tokenSecondaryDetails();
 			const decimal = data[6];
-			await TransactionLoading(ctx);
-			const unit = parseEther(ctx.msg.text);
-			//console.log({ unit });
-			await tokenContract
-				.fundContractwithToken(
-					parseUnits(ctx.msg.text, parseInt(decimal)).toString(),
-					contractAddress
-				)
-				.then(async (res) => {
-					await ctx.deleteMessage();
-					await ctx.reply(
-						`Token Trading Open  \n 🎊TxHash:🎊 \n ${process.env.SCAN_URL}${res.hash}`
-					);
-				})
-				.catch(async (err) => {
-					await ParseError(ctx, err);
-				});
+			if (Number.isInteger(ctx.msg.text)) {
+				await TransactionLoading(ctx);
+				const unit = parseEther(ctx.msg.text);
+				await tokenContract
+					.fundContractwithToken(
+						parseUnits(ctx.msg.text, parseInt(decimal)).toString(),
+						contractAddress
+					)
+					.then(async (res) => {
+						await ctx.deleteMessage();
+						await ctx.reply(
+							`Token Trading Open  \n 🎊TxHash:🎊 \n ${process.env.SCAN_URL}${res.hash}`
+						);
+						await next();
+					})
+					.catch(async (err) => {
+						await ParseError(ctx, err);
+					});
 
-			return await next();
+				return await next();
+			} else {
+				await ctx.reply("Input a Number");
+			}
+
+			//console.log({ unit });
 		});
 	}
 );
