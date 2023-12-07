@@ -33,12 +33,12 @@ export const accountMenu = new Menu<MyContext>("withdraw menu").text(
 );
 export const mangeTokenMenu = (addy: string) =>
 	new InlineKeyboard()
-		.text("Set Final Tax", "m#set-final-tax" + `|${addy}`)
+		.text("Set Final Tax 💸", "m#set-final-tax" + `|${addy}`)
 		.row()
-		.text("Renounce Ownership", "m#renounce-token" + `|${addy}`)
+		.text(" ⚠️ Renounce Ownership ⚠️", "m#renounce-token" + `|${addy}`)
 		.row()
-		.text("Manual Swap", "m#manual-swap" + `|${addy}`)
+		.text("  Manual Swap🔄", "m#manual-swap" + `|${addy}`)
 		.row()
-		.text("Remove Limits", "m#remove-limits" + `|${addy}`)
+		.text("Remove Limits 🗑️", "m#remove-limits" + `|${addy}`)
 		.row()
-		.text("Open Trading", "m#open-trading" + `|${addy}`);
+		.text("Open Trading 📈", "m#open-trading" + `|${addy}`);

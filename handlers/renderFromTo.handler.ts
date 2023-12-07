@@ -36,16 +36,18 @@ export async function renderFromTo(
 		for (let index = from; index < to; index++) {
 			const element = data[index];
 			depTokensMenu
-				.text(`Token Name:${element.tokenName}`)
+				.text(` 🔠 Token Name:${element.tokenName}`)
 				.row()
-				.text(`Total Supply:${element.totalSupply}`)
+				.text(`💰 Total Supply:${element.totalSupply}`)
 				.row()
 				.text(
-					`Contract Address: ${trimAddress(element.deployedAddress)}`
+					`🆔 Contract Address: ${trimAddress(
+						element.deployedAddress
+					)}`
 				)
 				.row()
 				.text(
-					"Mange Token",
+					"🔨 Mange Token",
 					`manage-token|${element.deployedAddress}!${element.tokenName}`
 				)
 				.row();
