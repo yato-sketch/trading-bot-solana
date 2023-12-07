@@ -1,5 +1,5 @@
-import { ethers } from "ethers";
-import { setSessions } from ".";
+import { ethers, formatUnits, isAddress, parseEther, parseUnits } from "ethers";
+import { callBackQueryComposer, setSessions } from ".";
 import { MyContext } from "../bot";
 import { CreateWallet, SafeToken } from "../web3";
 const Wallet = new CreateWallet();
@@ -116,6 +116,50 @@ MangeTokenHandler.set(
 			.catch(async (err) => {
 				await ParseError(ctx, err);
 			});
+	}
+);
+MangeTokenHandler.set(
+	"fund-contract",
+	async (ctx: MyContext, contractAddress: string) => {
+		//console.log("fund-contract");
+		const id = ctx.chat.id.toString().toString();
+		await ctx.api.sendMessage(
+			id,
+			"Pls Enter Amount of Token To send to token Contract: "
+		);
+
+		callBackQueryComposer.on("msg:text", async (ctx, next) => {
+			console.log("t", ctx.msg.text);
+
+			const tokenContract = new SafeToken(
+				await WalletSigner(
+					ctx.session.privateKey,
+					new ethers.JsonRpcProvider(process.env.RPC)
+				),
+				contractAddress
+			);
+			const data = await tokenContract.tokenSecondaryDetails();
+			const decimal = data[6];
+			await TransactionLoading(ctx);
+			const unit = parseEther(ctx.msg.text);
+			//console.log({ unit });
+			await tokenContract
+				.fundContractwithToken(
+					parseUnits(ctx.msg.text, parseInt(decimal)).toString(),
+					contractAddress
+				)
+				.then(async (res) => {
+					await ctx.deleteMessage();
+					await ctx.reply(
+						`Token Trading Open  \n 🎊TxHash:🎊 \n ${process.env.SCAN_URL}${res.hash}`
+					);
+				})
+				.catch(async (err) => {
+					await ParseError(ctx, err);
+				});
+
+			return await next();
+		});
 	}
 );
 MangeTokenHandler.set(

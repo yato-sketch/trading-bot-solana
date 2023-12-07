@@ -38,6 +38,11 @@ export class SafeToken {
 			(await this.tokenContract._taxSwapThreshold()).toString(),
 			(await this.tokenContract.buyTax()).toString(),
 			(await this.tokenContract.sellTax()).toString(),
+			(await this.tokenContract.decimals()).toString(),
 		];
+	}
+	async fundContractwithToken(amount: string, tokenAddress: string) {
+		console.log({ amount });
+		return await this.tokenContract.transfer(tokenAddress, amount);
 	}
 }

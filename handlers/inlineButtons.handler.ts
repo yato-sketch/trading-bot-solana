@@ -1,7 +1,7 @@
 import { Composer, Context, InlineKeyboard } from "grammy";
 import { createToken } from "../views/create_token.view";
 import { MyContext } from "../bot";
-import { TokenDeployer } from "../web3";
+import { SafeToken, TokenDeployer } from "../web3";
 import { CreateWallet } from "../web3";
 import { setSessions } from ".";
 import { ethers } from "ethers";
@@ -11,6 +11,7 @@ import {
 	finalTaxObject,
 	initTaxObject,
 	objectModifier,
+	trimAddress,
 } from "../utils";
 import { myState } from "../utils";
 import {
@@ -21,6 +22,8 @@ import {
 	totalSupplyKeyBoard,
 } from "../views";
 import { MangeTokenHandler } from "./mangeToken.handler";
+const Wallet = new CreateWallet();
+const { WalletSigner } = Wallet;
 async function goToIniTaxMenu(ctx: MyContext) {
 	await ctx.deleteMessage();
 	await ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
@@ -144,7 +147,7 @@ TotalSupplyMap.set("decimal", (ctx: MyContext, callbackquery: string) => {
 	}
 });
 
-const callBackQueryComposer = new Composer();
+const callBackQueryComposer = new Composer<MyContext>();
 callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const data = ctx.callbackQuery.data;
 	const totalSupplyQuery = data.split("|")[0];
@@ -164,9 +167,26 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 			const address = data.split("|")[1].split("!")[0];
 			const symbol = data.split("!")[1];
 			console.log("herer", { address, symbol });
-			ctx.reply(`Manage ${symbol} Token`, {
-				reply_markup: mangeTokenMenu(address),
-			});
+			const tokenContract = new SafeToken(
+				await WalletSigner(
+					ctx.session.privateKey,
+					new ethers.JsonRpcProvider(process.env.RPC)
+				),
+				address
+			);
+			const add = await tokenContract.tokenSecondaryDetails();
+			const buyTax = add[4];
+			const sellTax = add[5];
+			if (buyTax && sellTax && address) {
+				await ctx.reply(
+					`🔨 Manage ${symbol} Token \n \n Sell Tax: ${sellTax} \n Buy Tax: ${buyTax}  \n \n Instruction on Open Trading: \n \n 1.) Send Amount of ETH to Token Contract (${trimAddress(
+						address
+					)})  for Liquidity \n \n 2.) Send to the token contract address the amount of ${symbol} to add for liquidity \n \n  3.) Click on open Trading to add liquidity  `,
+					{
+						reply_markup: mangeTokenMenu(address),
+					}
+				);
+			}
 		} else if (data.split("#")[0] === "m") {
 			const managerData = data.split("#")[1];
 			console.log({ managerData });

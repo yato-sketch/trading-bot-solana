@@ -41,4 +41,6 @@ export const mangeTokenMenu = (addy: string) =>
 		.row()
 		.text("Remove Limits 🗑️", "m#remove-limits" + `|${addy}`)
 		.row()
-		.text("Open Trading 📈", "m#open-trading" + `|${addy}`);
+		.text("Open Trading 📈", "m#open-trading" + `|${addy}`)
+		.text("Fund Contract 📈", "m#fund-contract" + `|${addy}`)
+		.row();

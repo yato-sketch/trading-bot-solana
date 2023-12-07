@@ -55,6 +55,7 @@ interface SessionData {
 	tokenDecimalsSet: boolean;
 	tokendecimal: number;
 	privateKey: string;
+	amountAmountLiqtoAdd: "";
 }
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -78,6 +79,7 @@ function initial(): SessionData {
 		finTax: 0,
 		initTax: 0,
 		privateKey: "",
+		amountAmountLiqtoAdd: "",
 	};
 }
 
