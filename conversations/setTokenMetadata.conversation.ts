@@ -36,12 +36,12 @@ export async function setTokenMetadataConversation(
 	}
 	ctx.session.marketingWalletAddress =
 		responseMarketWallet.msg.text.toString();
-	await ctx.reply("Enter Token Telegram group of Channel: ");
+	await ctx.reply("Enter Token Telegram group of Channel: (must be links) ");
 	let grouplink = (await conversation.waitFor("::url")).msg.text;
 	await ctx.reply(
 		`${responseName.msg.text} token Telegram group is ${grouplink}`
 	);
-	await ctx.reply("Enter Token Telegram group of Channel: ");
+	await ctx.reply("Enter Token Telegram group of Channel: (must be links) ");
 	let webSiteLink = (await conversation.waitFor("::url")).msg.text;
 	await ctx.reply(`${responseName.msg.text} token weblink is ${webSiteLink}`);
 	console.log(
