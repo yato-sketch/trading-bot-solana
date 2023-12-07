@@ -16,10 +16,12 @@ export async function showDeployedTokenHandler(ctx: MyContext) {
 	const data: TokenDeployedGraph[] = await getUserDeployedTokens(pubKey);
 	const depTokensMenu = new InlineKeyboard();
 	if (data && data.length > 0) {
+		console.log({ data });
+		//const newdata=[data]
 		// if (data.length > 3) {
 		// 	await renderFromTo(ctx, 0, 2, data)
 		// } else {
-		await renderFromTo(ctx, 0, data.length, data);
+		await renderFromTo(ctx, data.length, data.length, data);
 		//}
 	} else {
 		ctx.reply(
