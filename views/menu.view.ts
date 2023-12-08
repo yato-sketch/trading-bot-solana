@@ -54,7 +54,7 @@ export const finalTaxMenu = new InlineKeyboard()
 	.text("6 % ", "final-tax|6-%")
 	.text("10 % ", "final-tax|10-%")
 	.row()
-	.text(`Set Custom Initial Tax `, "final-tax|custom")
+	.text(`Set Custom Final Tax `, "final-tax|custom")
 	.row()
 	.text("return", "final-tax|return");
 

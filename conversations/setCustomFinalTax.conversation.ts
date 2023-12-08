@@ -7,11 +7,11 @@ export async function setCustomFinalTaxConversation(
 	conversation: MyConversation,
 	ctx: MyContext
 ) {
-	ctx.reply("Pls kindly input Final Tax For your Token");
+	await ctx.reply("Pls kindly input Final Tax For your Token");
 	let response = await conversation.waitFor(":text");
 	if (!response.msg.text) {
-		ctx.deleteMessage();
-		ctx.reply("Invalid Tax 🟥 \n Kindly input something above 1 :");
+		await ctx.deleteMessage();
+		await ctx.reply("Invalid Tax 🟥 \n Kindly input something above 1 :");
 		response = await conversation.waitFor(":text");
 		ctx.deleteMessage();
 	}

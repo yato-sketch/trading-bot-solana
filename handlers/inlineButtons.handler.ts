@@ -65,7 +65,7 @@ TotalSupplyMap.set(
 	async (ctx: MyContext, totalSupplyAmount: string) => {
 		const query = totalSupplyAmount.split("|");
 		if (query[1] === "custom") {
-			ctx.conversation.enter("setCustomTotalSupply");
+			await ctx.conversation.enter("setCustomTotalSupply");
 		} else if (query[1] == "return") {
 			console.log("Welcome");
 		} else {
@@ -92,7 +92,7 @@ TotalSupplyMap.set(
 		const query = callbackquery.split("|");
 
 		if (query[1] === "custom") {
-			ctx.conversation.enter("setCustomInitTax");
+			await ctx.conversation.enter("setCustomInitTax");
 		} else if (query[1] == "return") {
 			//	console.log("Welcome");
 			returnTo("Set Total Supply", totalSupplyKeyBoard, ctx);
@@ -115,7 +115,7 @@ TotalSupplyMap.set(
 	async (ctx: MyContext, callbackquery: string) => {
 		const query = callbackquery.split("|");
 		if (query[1] === "custom") {
-			ctx.conversation.enter("setCustomFinalTaxConversation");
+			await ctx.conversation.enter("setCustomFinalTaxConversation");
 		} else if (query[1] == "return") {
 			//console.log("Welcome");
 			returnTo("Set Initial Tax:", initTaxMenu, ctx);
@@ -163,7 +163,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 
 	if (totalSupplyQuery !== "create-token") {
 		if (data.split("-")[0] === "manage") {
-			ctx.deleteMessage();
+			await ctx.deleteMessage();
 			const address = data.split("|")[1].split("!")[0];
 			const symbol = data.split("!")[1];
 			console.log("herer", { address, symbol });
@@ -196,7 +196,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 			);
 			console.log("energy");
 		} else {
-			TotalSupplyMap.get(totalSupplyQuery)(ctx, data);
+			await TotalSupplyMap.get(totalSupplyQuery)(ctx, data);
 		}
 	}
 
