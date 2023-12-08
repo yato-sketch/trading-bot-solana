@@ -5,6 +5,7 @@ import { finalTaxMenu, DeployTokenMenu, confirmationMenu } from "../views";
 import { CreateWallet, TokenDeployer } from "../web3";
 import { setSessions } from "../handlers";
 import { myState } from "../utils";
+import { ParseError } from "../handlers/mangeToken.handler";
 
 export async function setTokenMetadataConversation(
 	conversation: MyConversation,
@@ -126,6 +127,7 @@ export async function setTokenMetadataConversation(
 			})
 			.catch((err) => {
 				console.log(err);
+				ParseError(ctx, err);
 				ctx.reply(`Token Deployment Error`);
 			});
 	} else {
@@ -138,6 +140,8 @@ export async function setTokenMetadataConversation(
 			tokendecimal,
 			marketingWalletAddress,
 		});
-		ctx.reply(`BOT ERROR: Could Not Set Token Config  pls try Again`);
+		ctx.reply(
+			`BOT ERROR: ❌ ❌  Could Not Set Token Config\n ❌ ❌  Due to incomplete Token Data\n  ⚠️Kindly Try Again`
+		);
 	}
 }

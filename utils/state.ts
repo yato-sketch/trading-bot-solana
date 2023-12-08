@@ -4,6 +4,14 @@ export type customStateContext = {
 	totalSupply: number;
 	initTax: number;
 	finTax: number;
+	tokenName: any;
+	tokenSymbol: string;
+	tokendecimal: string;
+	marketingWalletAddress: string;
+	grouplink: string;
+	webSiteLink: string;
+	deployerUsername: string;
+	deployerId: string;
 };
 class State {
 	totalSupply: number;
