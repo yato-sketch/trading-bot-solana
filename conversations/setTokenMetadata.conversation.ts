@@ -41,7 +41,7 @@ export async function setTokenMetadataConversation(
 	await ctx.reply(
 		`${responseName.msg.text} token Telegram group is ${grouplink}`
 	);
-	await ctx.reply("Enter Token Telegram group of Channel: (must be links) ");
+	await ctx.reply("Enter Token Webiste Link: (must be links) ");
 	let webSiteLink = (await conversation.waitFor("::url")).msg.text;
 	await ctx.reply(`${responseName.msg.text} token weblink is ${webSiteLink}`);
 	console.log(
