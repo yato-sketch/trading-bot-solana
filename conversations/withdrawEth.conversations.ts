@@ -6,10 +6,11 @@ import {
 	createConversation,
 } from "@grammyjs/conversations";
 import { isAddress } from "ethers";
-import { CreateWallet } from "../web3";
+import { CreateWallet, getWalletAddress } from "../web3";
 import apiCalls from "../utils/apiCall";
 import { MyContext } from "../bot";
 import { setSessions } from "../handlers";
+import { ParseError } from "../handlers/mangeToken.handler";
 
 type MyContext2 = MyContext & ConversationFlavor;
 export type MyConversation = Conversation<MyContext2>;
@@ -81,20 +82,26 @@ export default async function withdrawEthConversation(
 				ctx.reply("Use the buttons!", { reply_markup: keyboardAmount }),
 		}
 	);
-	const amountCtx = responseAmount.match;
+	const balance = parseFloat(
+		await withDrawWallet.EthBalance(
+			(await getWalletAddress(ctx.session.privateKey!)).toString()
+		)
+	);
+	const amountCtx = parseFloat(responseAmount.match.toString()) / 100;
 
 	await withDrawWallet
 		.sendEth(
-			amountCtx.toString(),
+			(balance * amountCtx).toString(),
 			reAddressCtx.msg.text,
 			ctx.session.privateKey!
 		)
 		.then((res) => {
-			ctx.reply(`${amountCtx.toString()} has been sent`);
+			ctx.reply(`${(balance * amountCtx).toString()} has been sent`);
 			console.log({ res });
 		})
-		.catch((err) => {
-			ctx.reply("Error Occured while Sending ");
+		.catch(async (err) => {
+			await ParseError(ctx, err);
+			ctx.reply("Error Occured while Sending \n Probably Gas Try again");
 			console.log({ err });
 		});
 }

@@ -27,8 +27,8 @@ export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 
 export const accountMenu = new Menu<MyContext>("withdraw menu").text(
 	"Withdraw Eth",
-	(ctx) => {
-		ctx.conversation.enter("withdrawEthConversation");
+	async (ctx) => {
+		await ctx.conversation.enter("withdrawEthConversation");
 	}
 );
 export const mangeTokenMenu = (addy: string) =>
