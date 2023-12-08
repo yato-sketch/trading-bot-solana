@@ -12,12 +12,25 @@ export async function TransactionLoading(ctx: MyContext) {
 	);
 }
 export async function ParseError(ctx: MyContext, err: any) {
+	const info = JSON.parse(JSON.stringify(err)).info;
+	if (info) {
+		console.log(
+			JSON.parse(JSON.stringify(err)).shortMessage,
+			JSON.parse(JSON.stringify(err)).code
+		);
+	}
+	console.log(info);
 	return await ctx.reply(
 		`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n \n ⚠️ ${
+			JSON.parse(JSON.stringify(err)).reason &&
 			JSON.parse(JSON.stringify(err)).reason
-				? JSON.parse(JSON.stringify(err)).reason
-				: "Error not Found"
-		} ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`
+		}⚠️ \n ${
+			JSON.parse(JSON.stringify(err)).code &&
+			JSON.parse(JSON.stringify(err)).code
+		}\n \n  ⚠️ ${
+			JSON.parse(JSON.stringify(err)).shortMessage &&
+			JSON.parse(JSON.stringify(err)).shortMessage
+		} ⚠️\n ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`
 	);
 }
 

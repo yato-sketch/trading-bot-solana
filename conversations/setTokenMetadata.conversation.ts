@@ -3,9 +3,9 @@ import { MyConversation } from ".";
 import { MyContext } from "../bot";
 import { finalTaxMenu, DeployTokenMenu, confirmationMenu } from "../views";
 import { CreateWallet, TokenDeployer } from "../web3";
-import { setSessions } from "../handlers";
+import { callBackQueryComposer, setSessions } from "../handlers";
 import { myState } from "../utils";
-import { ParseError } from "../handlers/mangeToken.handler";
+import { ParseError, TransactionLoading } from "../handlers/mangeToken.handler";
 
 export async function setTokenMetadataConversation(
 	conversation: MyConversation,
@@ -79,11 +79,6 @@ export async function setTokenMetadataConversation(
 		tokendecimal,
 		marketingWalletAddress,
 	} = ctx.session;
-	// await ctx.reply(
-	// 	` Token Details :\n \n  🆔 Deployer Username: @${deployerUsername}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link: ${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply: ${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal: ${tokendecimal} `,
-	// 	{ reply_markup: confirmationMenu }
-	// );
-
 	if (
 		mainState.totalSupply.toString() &&
 		mainState.initTax &&
@@ -93,7 +88,22 @@ export async function setTokenMetadataConversation(
 		tokendecimal &&
 		marketingWalletAddress
 	) {
-		ctx.reply("Transaction is already is submitted. \n Loading");
+		// await ctx.reply(
+		// 	` Token Details :\n \n  🆔 Deployer Username: @${deployerUsername}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link: ${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply: ${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal: ${tokendecimal} `
+		// );
+		// callBackQueryComposer.on("msg:text", async (ctx: MyContext, next) => {
+		// 	console.log(ctx.msg.text);
+		// 	//await next();
+		// 	if (ctx.msg.text === "1") {
+		// 		await ctx.reply("here");
+		// 		await next();
+		// 	} else {
+		// 		await ctx.reply("no be here");
+		// 		await next();
+		// 	}
+		// });
+
+		await TransactionLoading(ctx);
 		await tokendeployer
 			.deployNewToken(
 				mainState.totalSupply.toString(),
@@ -128,7 +138,7 @@ export async function setTokenMetadataConversation(
 			.catch((err) => {
 				console.log(err);
 				ParseError(ctx, err);
-				ctx.reply(`Token Deployment Error`);
+				//ctx.reply(`Token Deployment Error`);
 			});
 	} else {
 		console.log({
