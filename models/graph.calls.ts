@@ -1,7 +1,7 @@
 import { request, gql, GraphQLClient } from "graphql-request";
 
 const graphQLClient = new GraphQLClient(
-	"https://api.studio.thegraph.com/query/51321/t2-dep-bot-graph/2.0"
+	"https://api.studio.thegraph.com/query/51321/safememe-deployer-graph/1.2.0"
 );
 const queryAll = gql`
 	query MyQuery {
