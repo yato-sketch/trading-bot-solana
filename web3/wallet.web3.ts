@@ -1,4 +1,4 @@
-import { ethers, Wallet } from "ethers";
+import { ethers, Provider, Wallet } from "ethers";
 import { WalletGenerated } from "../types/web3";
 
 export class CreateWallet {
@@ -107,5 +107,11 @@ export class CreateWallet {
 		);
 		const tx = await contract.approve(operator, max);
 		return await tx.wait();
+	}
+	async getTransactionReciept(txHash: string, provider: Provider) {
+		const txReceipt = await provider.getTransactionReceipt(txHash);
+		if (txReceipt && txReceipt.blockNumber) {
+			return await txReceipt.getTransaction();
+		}
 	}
 }

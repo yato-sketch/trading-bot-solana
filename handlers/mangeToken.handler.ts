@@ -3,8 +3,10 @@ import { callBackQueryComposer, setSessions } from ".";
 import { MyContext } from "../bot";
 import { CreateWallet, SafeToken } from "../web3";
 import { NextFunction } from "grammy";
+import { parseTxData, verifyContractCode } from "../web3/contracts-handler";
+import { getUserDeployedTokensByTokenAddress } from "../models";
 const Wallet = new CreateWallet();
-const { WalletSigner } = Wallet;
+const { WalletSigner, getTransactionReciept } = Wallet;
 
 export async function TransactionLoading(ctx: MyContext) {
 	return await ctx.reply(
@@ -205,6 +207,36 @@ MangeTokenHandler.set(
 			.catch(async (err) => {
 				await ParseError(ctx, err);
 			});
+	}
+);
+MangeTokenHandler.set(
+	"verify-contract",
+	async (ctx: MyContext, contractAddress: string) => {
+		const depToken = await getUserDeployedTokensByTokenAddress(
+			contractAddress
+		);
+		console.log(depToken[0].transactionHash);
+		const reciept = await getTransactionReciept(
+			depToken[0].transactionHash,
+			new ethers.JsonRpcProvider(process.env.RPC)
+		);
+		//console.log(reciept.data, reciept.from);
+		const data = await parseTxData(reciept.data);
+		//console.log(data);
+		const ContractVerificationStatus = await verifyContractCode(
+			contractAddress,
+			parseInt(data[0].toString()),
+			parseInt(data[1].toString()),
+			parseInt(data[2].toString()),
+			data[3],
+			data[4],
+			data[5],
+			parseInt(data[6].toString()),
+			parseInt(data[7].toString()),
+			parseInt(data[8].toString()),
+			reciept.from.toString()
+		);
+		await ctx.reply(`${ContractVerificationStatus}`);
 	}
 );
 

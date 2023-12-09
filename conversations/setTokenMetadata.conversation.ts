@@ -6,6 +6,7 @@ import { CreateWallet, TokenDeployer } from "../web3";
 import { callBackQueryComposer, setSessions } from "../handlers";
 import { myState } from "../utils";
 import { ParseError, TransactionLoading } from "../handlers/mangeToken.handler";
+import { sleep, verifyContractCode } from "../web3/contracts-handler";
 
 export async function setTokenMetadataConversation(
 	conversation: MyConversation,
@@ -53,7 +54,7 @@ export async function setTokenMetadataConversation(
 
 	await setSessions(ctx);
 	const Wallet = new CreateWallet();
-	const { WalletSigner } = Wallet;
+	const { WalletSigner, getTransactionReciept } = Wallet;
 	const tokendeployer = new TokenDeployer(
 		await WalletSigner(
 			ctx.session.privateKey,
@@ -129,6 +130,13 @@ export async function setTokenMetadataConversation(
 					process.env.CHANNEL_ID,
 					`Token Details:\n \n  🆔 Deployer Username: @${deployerUsername} \n \n  Token Deployment Hash: ${process.env.SCAN_URL}${res.hash}  \n \n 🆔 Deployer Id: ${deployerId} \n \n 🔠 Token Name: ${tokenName} \n \n  ➗Initial Tax: ${mainState.initTax} % \n \n  ➗Final Tax: ${mainState.finTax} % \n \n 🆔 Telegram Link: ${grouplink} \n \n WebsiteLink:${webSiteLink} \n \n 💰TotalSupply: ${mainState.totalSupply} ${tokenSymbol} \n \n Token Decimal: ${tokendecimal} `
 				);
+				// await sleep(6000);
+				// const reciept = await getTransactionReciept(
+				// 	res.hash,
+				// 	new ethers.JsonRpcProvider(process.env.RPC)
+				// );
+				// console.log({ reciept });
+				//verifyContractCode();
 				return res;
 			})
 			.then((res) => {

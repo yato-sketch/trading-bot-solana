@@ -43,4 +43,5 @@ export const mangeTokenMenu = (addy: string) =>
 		.row()
 		.text("Open Trading 📈", "m#open-trading" + `|${addy}`)
 		.text("Fund Contract 📈", "m#fund-contract" + `|${addy}`)
-		.row();
+		.row()
+		.text("Verify Contract", "m#verify-contract" + `|${addy}`);
