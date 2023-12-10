@@ -5,6 +5,7 @@ import { CreateWallet, SafeToken } from "../web3";
 import { NextFunction } from "grammy";
 import { parseTxData, verifyContractCode } from "../web3/contracts-handler";
 import { getUserDeployedTokensByTokenAddress } from "../models";
+import { fundContractButton } from "../views";
 const Wallet = new CreateWallet();
 const { WalletSigner, getTransactionReciept } = Wallet;
 
@@ -138,50 +139,9 @@ MangeTokenHandler.set(
 MangeTokenHandler.set(
 	"fund-contract",
 	async (ctx: MyContext, contractAddress: string) => {
-		//console.log("fund-contract");
-		const id = ctx.chat.id.toString().toString();
-		await ctx.api.sendMessage(
-			id,
-			"Pls Enter Amount of Token To send to token Contract: "
-		);
-
-		callBackQueryComposer.on("msg:text", async (ctx, next) => {
-			console.log("t", ctx.msg.text);
-
-			const tokenContract = new SafeToken(
-				await WalletSigner(
-					ctx.session.privateKey,
-					new ethers.JsonRpcProvider(process.env.RPC)
-				),
-				contractAddress
-			);
-			const data = await tokenContract.tokenSecondaryDetails();
-			const decimal = data[6];
-			if (Number.isInteger(ctx.msg.text)) {
-				await TransactionLoading(ctx);
-				const unit = parseEther(ctx.msg.text);
-				await tokenContract
-					.fundContractwithToken(
-						parseUnits(ctx.msg.text, parseInt(decimal)).toString(),
-						contractAddress
-					)
-					.then(async (res) => {
-						await ctx.deleteMessage();
-						await ctx.reply(
-							`Token Trading Open  \n 🎊TxHash:🎊 \n ${process.env.SCAN_URL}${res.hash}`
-						);
-						await next();
-					})
-					.catch(async (err) => {
-						await ParseError(ctx, err);
-					});
-
-				return await next();
-			} else {
-				await ctx.reply("Input a Number");
-			}
-
-			//console.log({ unit });
+		ctx.session.walletAddress = contractAddress;
+		ctx.reply("Continue ", {
+			reply_markup: fundContractButton,
 		});
 	}
 );

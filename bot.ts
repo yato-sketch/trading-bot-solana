@@ -13,6 +13,7 @@ import {
 	setCustomInitTax,
 	setTokenMetadataConversation,
 	setCustomFinalTaxConversation,
+	fundContractConversation,
 } from "./conversations";
 import {
 	ConversationFlavor,
@@ -27,6 +28,7 @@ import {
 	decimalMenu,
 	DeployTokenMenu,
 	menuComposer,
+	fundContractButton,
 } from "./views";
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
@@ -93,6 +95,10 @@ bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
 bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
 bot.use(accountMenu);
+bot.use(
+	createConversation(fundContractConversation, "fundContractConversation")
+);
+bot.use(fundContractButton);
 bot.use(createConversation(setCustomTotalSupply, "setCustomTotalSupply"));
 bot.use(menuComposer);
 bot.use(createConversation(setCustomInitTax, "setCustomInitTax"));

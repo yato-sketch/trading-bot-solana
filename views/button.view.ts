@@ -1,6 +1,12 @@
 import { Menu } from "@grammyjs/menu";
 import { InlineKeyboard } from "grammy";
 import { MyContext } from "../bot";
+import { CreateWallet, SafeToken } from "../web3";
+import { ethers, parseEther, parseUnits } from "ethers";
+import { callBackQueryComposer } from "../handlers";
+import { TransactionLoading, ParseError } from "../handlers/mangeToken.handler";
+const Wallet = new CreateWallet();
+const { WalletSigner, getTransactionReciept } = Wallet;
 
 export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 	.text("Deploy Token", (ctx) => {
@@ -29,6 +35,12 @@ export const accountMenu = new Menu<MyContext>("withdraw menu").text(
 	"Withdraw Eth",
 	async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");
+	}
+);
+export const fundContractButton = new Menu<MyContext>("fundcontract").text(
+	"Fund Contract",
+	async (ctx) => {
+		await ctx.conversation.enter("fundContractConversation");
 	}
 );
 export const mangeTokenMenu = (addy: string) =>
