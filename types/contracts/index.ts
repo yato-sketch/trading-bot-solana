@@ -3,10 +3,12 @@
 /* eslint-disable */
 export type { BotRouter } from "./BotRouter";
 export type { Deployer } from "./Deployer";
+export type { IERC20 } from "./IERC20";
 export type { SpookyDexRouter } from "./SpookyDexRouter";
 export type { Token } from "./Token";
 export * as factories from "./factories";
 export { BotRouter__factory } from "./factories/BotRouter__factory";
 export { Deployer__factory } from "./factories/Deployer__factory";
+export { IERC20__factory } from "./factories/IERC20__factory";
 export { SpookyDexRouter__factory } from "./factories/SpookyDexRouter__factory";
 export { Token__factory } from "./factories/Token__factory";
