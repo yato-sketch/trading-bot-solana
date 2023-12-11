@@ -1,5 +1,4 @@
 require("dotenv").config();
-import { createClient } from "@supabase/supabase-js";
 import { error } from "console";
 
 const dev = "0x3114fcDB4aC31D965b158c849c249E678d385D65";
@@ -12,8 +11,8 @@ const test_rpc = "https://ethereum-goerli.publicnode.com";
 const main_rpc =
 	"https://mainnet.infura.io/v3/7c160b7a7c22491fbf0cd3e2c70ccd9d";
 async function validate() {
-	const supabaseUrl = process.env.SUPABASE_URL;
-	const supabaseKey = process.env.SUPABASE_KEY;
+	const monogo = process.env.DATABASE_URL;
+
 	const botToken = process.env.BOT_TOKEN;
 	const rpc = process.env.RPC;
 	const botName = process.env.BOT_NAME;
@@ -24,8 +23,7 @@ async function validate() {
 	const deployerContract = process.env.DEPLOYER_CONTRACT_ADDRESS;
 	if (
 		!botToken ||
-		!supabaseKey ||
-		!supabaseUrl ||
+		!monogo ||
 		!rpc ||
 		!botName ||
 		!channelId ||
@@ -34,11 +32,10 @@ async function validate() {
 		!graphClient ||
 		!deployerContract
 	) {
-		//console.log({ botToken, supabaseKey, supabaseUrl, rpc, botName });
 		throw error("Configurations are missing");
 	} else {
 		console.info("Configurations Files are Saved");
-		console.log(`This is the SUPABASE_URL: ${supabaseUrl}`);
+		console.log(`This is the SUPABASE_URL: ${monogo}`);
 	}
 }
 

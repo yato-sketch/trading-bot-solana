@@ -31,12 +31,17 @@ export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 	})
 	.row();
 
-export const accountMenu = new Menu<MyContext>("withdraw menu").text(
-	"Withdraw Eth",
-	async (ctx) => {
+export const accountMenu = new Menu<MyContext>("withdraw menu")
+	.text("Withdraw Eth", async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");
-	}
-);
+	})
+	.row()
+	.text("Import Wallet", (ctx) => {
+		ctx.reply(`Replace Wallets Todo`);
+	})
+	.row()
+	.text("show Rewards", (ctx) => ctx.reply("show rewards"))
+	.text("bot Usage analytics");
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",
 	async (ctx) => {

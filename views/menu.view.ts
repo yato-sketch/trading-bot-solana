@@ -10,6 +10,12 @@ import {
 import { Composer } from "grammy";
 import { myState } from "../utils";
 import { DeployTokenMenu } from "./button.view";
+import { configContoller } from "../controllers/config.controller";
+import { updateUser } from "../models";
+import { setSessions } from "../handlers";
+import { tradepanelContoller } from "../controllers/tradePanel.controller";
+import { balancesController } from "../controllers/balances.controller";
+import { buyTokenController } from "../controllers/buyToken.controller";
 
 const menuComposer = new Composer();
 
@@ -92,4 +98,267 @@ export const viewPageNavigator = () => {
 	return keyboard;
 };
 
+export const settingMenu = new Menu<MyContext>("setting-menu")
+	.text("== General Setting==")
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.notification
+				? " 🔔 Notification"
+				: "🔕 Notification";
+		},
+		async (ctx) => {
+			ctx.session.notification = !ctx.session.notification;
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text("=== AUTO BUY ==")
+	.row()
+	.text(
+		async (ctx) =>
+			ctx.session.autoBuy
+				? `${greenLight} Enabled`
+				: `${redLight} Enabled`,
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				autoBuy: !ctx.session.autoBuy,
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text("== Auto Buy Amount ==")
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.buyAmount === "1"
+				? `${greenLight} 1 FTM`
+				: `${redLight} 1 FTM`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				buyAmount: "1",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.buyAmount === "2"
+				? `${greenLight} 2 FTM`
+				: `${redLight} 2 FTM`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				buyAmount: "2",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+
+	.row()
+	.text(
+		(ctx) =>
+			ctx.session.buyAmount === "1" || ctx.session.buyAmount === "2"
+				? " === Custom ==="
+				: `=== ${ctx.session.buyAmount} Custom ===`,
+		async (ctx) =>
+			await ctx.conversation.enter("customBuyAmountConversation")
+	)
+	.row()
+	.text("===SLipage ===")
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.slippage === "0.5"
+				? `${greenLight} 0.5 % `
+				: `${redLight} 0.5 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				slippage: "0.5",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.slippage === "1"
+				? `${greenLight} 1 % `
+				: `${redLight} 1 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				slippage: "1",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.slippage === "50"
+				? `${greenLight} 50 % `
+				: `${redLight} 50 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				slippage: "50",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.slippage === "20"
+				? `${greenLight} 20 % `
+				: `${redLight} 20 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				slippage: "20",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.slippage === "10"
+				? `${greenLight} 10 % `
+				: `${redLight} 10 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				slippage: "10",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text("=== Sell Amount ===")
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.sellAmount === "10"
+				? `${greenLight} 10 % `
+				: `${redLight} 10 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				sellAmount: "10",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.sellAmount === "25"
+				? `${greenLight} 25 % `
+				: `${redLight} 25 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				sellAmount: "25",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text(
+		async (ctx) => {
+			return ctx.session.sellAmount === "50"
+				? `${greenLight} 50 % `
+				: `${redLight} 50 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				sellAmount: "50",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) => {
+			return ctx.session.sellAmount === "100"
+				? `${greenLight} 100 % `
+				: `${redLight} 100 %`;
+		},
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				sellAmount: "100",
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text("Return to trading Menu", async (ctx) => {
+		await ctx.deleteMessage();
+		await ctx.reply(`/trade go to trading  panel`);
+		//await tradepanelContoller(ctx);
+	});
+
+export const TradingMenu = new Menu<MyContext>("main-trading-menu")
+	.text("Buy", async (ctx) => await buyTokenController(ctx))
+	.text("Sell")
+	.row()
+	.text("Setting", async (ctx) => {
+		await ctx.deleteMessage();
+		await configContoller(ctx);
+	})
+	.text("Wallet")
+	.row()
+	.text("My orders")
+	.row()
+	.text(
+		"import token",
+		async (ctx) => await ctx.conversation.enter("importTokenConversation")
+	);
+
+export const buyMenu = (contractAdress: string) =>
+	new InlineKeyboard()
+		.text("Cancel", `cancel`)
+		.row()
+		.url(
+			"Gecko Terminal",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.url(
+			"Etherscan",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.url(
+			"Dexscreen",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.row()
+		.text(`Buy 100 FTM`, `buy-100-${contractAdress}`)
+		.text(`Buy 20 FTM`, `buy-20-${contractAdress}`)
+		.text(`Buy X FTM`, `buy-custom-${contractAdress}`)
+		.row()
+		.text(`Refresh`);
 export { menuComposer };

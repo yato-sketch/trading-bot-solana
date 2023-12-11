@@ -151,53 +151,13 @@ const callBackQueryComposer = new Composer<MyContext>();
 callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const data = ctx.callbackQuery.data;
 	const totalSupplyQuery = data.split("|")[0];
-
 	await setSessions(ctx as any);
-	//	console.log(ctx.chat.id);
-	// if (data === "deploy-token") {
-	// }
-	console.log(data);
-	if (data === "create-token") {
-		CallBackMap.get(data)(ctx);
-	}
 
-	if (totalSupplyQuery !== "create-token") {
-		if (data.split("-")[0] === "manage") {
-			await ctx.deleteMessage();
-			const address = data.split("|")[1].split("!")[0];
-			const symbol = data.split("!")[1];
-			console.log("herer", { address, symbol });
-			const tokenContract = new SafeToken(
-				await WalletSigner(
-					ctx.session.privateKey,
-					new ethers.JsonRpcProvider(process.env.RPC)
-				),
-				address
-			);
-			const add = await tokenContract.tokenSecondaryDetails();
-			const buyTax = add[4];
-			const sellTax = add[5];
-			if (buyTax && sellTax && address) {
-				await ctx.reply(
-					`🔨 Manage ${symbol} Token \n \n Sell Tax: ${sellTax} \n Buy Tax: ${buyTax}  \n \n Instruction on Open Trading: \n \n 1.) Send Amount of ETH to Token Contract (${trimAddress(
-						address
-					)})  for Liquidity \n \n 2.) Send to the token contract address the amount of ${symbol} to add for liquidity \n \n  3.) Click on open Trading to add liquidity  `,
-					{
-						reply_markup: mangeTokenMenu(address),
-					}
-				);
-			}
-		} else if (data.split("#")[0] === "m") {
-			const managerData = data.split("#")[1];
-			console.log({ managerData });
-			MangeTokenHandler.get(managerData.split("|")[0])(
-				ctx as any,
-				managerData.split("|")[1]
-			);
-			console.log("energy");
-		} else {
-			await TotalSupplyMap.get(totalSupplyQuery)(ctx, data);
-		}
+	if (data === "cancel") {
+		console.log("cancel");
+	}
+	if (data.includes("buy-")) {
+		console.log("buy");
 	}
 
 	await ctx.answerCallbackQuery();

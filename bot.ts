@@ -14,6 +14,7 @@ import {
 	setTokenMetadataConversation,
 	setCustomFinalTaxConversation,
 	fundContractConversation,
+	importTokenConversation,
 } from "./conversations";
 import {
 	ConversationFlavor,
@@ -29,6 +30,8 @@ import {
 	DeployTokenMenu,
 	menuComposer,
 	fundContractButton,
+	TradingMenu,
+	settingMenu,
 } from "./views";
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
@@ -37,6 +40,8 @@ import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
 import validate from "./validations/config.validation";
 import { I18n } from "@grammyjs/i18n";
+import { customBuyAmountConversation } from "./conversations/customBuyAmount.conversation";
+import { buyTokenConversation } from "./conversations/BuyToken.conversation";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -58,6 +63,14 @@ interface SessionData {
 	tokendecimal: number;
 	privateKey: string;
 	amountAmountLiqtoAdd: "";
+	userName: string;
+	autoBuy: boolean;
+	autoSell: boolean;
+	slippage: string;
+	buyAmount: string;
+	sellAmount: string;
+	tokens: string[];
+	notification: boolean;
 }
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -82,6 +95,14 @@ function initial(): SessionData {
 		initTax: 0,
 		privateKey: "",
 		amountAmountLiqtoAdd: "",
+		userName: "",
+		autoBuy: false,
+		autoSell: false,
+		slippage: "",
+		buyAmount: "",
+		sellAmount: "",
+		tokens: [],
+		notification: false,
 	};
 }
 
@@ -94,34 +115,30 @@ const i18n = new I18n<MyContext>({
 bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
 bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
-bot.use(accountMenu);
+bot.use(createConversation(buyTokenConversation, "buyTokenConversation"));
 bot.use(
-	createConversation(fundContractConversation, "fundContractConversation")
+	createConversation(
+		customBuyAmountConversation,
+		"customBuyAmountConversation"
+	)
 );
+bot.use(createConversation(importTokenConversation, "importTokenConversation"));
+bot.use(accountMenu);
 bot.use(fundContractButton);
+bot.use(settingMenu);
+bot.use(TradingMenu);
+bot.use(settingMenu);
+
 bot.use(createConversation(setCustomTotalSupply, "setCustomTotalSupply"));
 bot.use(menuComposer);
-bot.use(createConversation(setCustomInitTax, "setCustomInitTax"));
-bot.use(
-	createConversation(
-		setTokenMetadataConversation,
-		"setTokenMetadataConversation"
-	)
-);
-
-bot.use(
-	createConversation(
-		setCustomFinalTaxConversation,
-		"setCustomFinalTaxConversation"
-	)
-);
 
 bot.api.setMyCommands([
 	{ command: "help", description: "Help and Support " },
-	{ command: "start", description: "Get Started with the Token Deployer" },
-	{ command: "tokens", description: "My deployed tokens" },
-	{ command: "wallet", description: "My wallet details" },
-	{ command: "create", description: "Create ERC20 token" },
+	{ command: "start", description: "Get Started with the trading bot" },
+	{ command: "config", description: "configure trading settings" },
+	{ command: "wallet", description: "Wallet details" },
+	{ command: "orders", description: "checkout pnl and opened Trades" },
+	{ command: "trade", description: "Start Trading" },
 ]);
 
 // Handle the /start command.

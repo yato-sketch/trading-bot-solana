@@ -6,6 +6,7 @@ export * from "./setTokenMetadata.conversation";
 export * from "./setCustomFinalTax.conversation";
 export * from "./withdrawEth.conversations";
 export * from "./fundContract.conversation";
+export * from "./importToken.conversation";
 type MyContext2 = MyContext & ConversationFlavor;
 export type MyConversation = Conversation<MyContext2>;
 export async function initConversation() {}

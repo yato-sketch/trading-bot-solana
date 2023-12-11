@@ -7,7 +7,7 @@ import {
 } from "@grammyjs/conversations";
 import { isAddress } from "ethers";
 import { CreateWallet, getWalletAddress } from "../web3";
-import apiCalls from "../utils/apiCall";
+
 import { MyContext } from "../bot";
 import { setSessions } from "../handlers";
 import { ParseError } from "../handlers/mangeToken.handler";

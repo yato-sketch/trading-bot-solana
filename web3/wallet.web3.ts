@@ -62,27 +62,78 @@ export class CreateWallet {
 		return response;
 	}
 	async EthBalance(account: string) {
-		const balance = await this.provider.getBalance(account);
+		const balance = await new ethers.JsonRpcProvider(
+			process.env.RPC
+		).getBalance(account);
 
 		// Convert the balance to Ether
 		const etherBalance = ethers.formatEther(balance);
 
 		return etherBalance;
 	}
-	async tokenBalanceOf(account: string, tokenAddress: string) {
+	async tokenBalanceOf(account: string, tokenAddress: string, rpc: string) {
+		const abi = [
+			// Standard ERC-20 functions
+			"function balanceOf(address account) view returns (uint256)",
+			"function transfer(address recipient, uint256 amount) returns (bool)",
+			"function decimals() view returns (uint8)",
+			"function _decimals() view returns (uint8)",
+			"function symbol() view returns (string)",
+			"function _symbol() view returns (string)",
+			"function approve(address spender, uint256 amount) returns (bool)",
+		];
 		const tokenContract = new ethers.Contract(
 			tokenAddress,
-			this.tokenABI,
-			this.provider
+			abi,
+			new ethers.JsonRpcProvider(rpc)
 		);
 		const balance = await tokenContract.balanceOf(account);
 		return balance;
 	}
-	async getDecimals(tokenAddress: string) {
+	async getSymbol(contractAddress: string, rpc: string) {
+		const abi = [
+			// Standard ERC-20 functions
+			"function balanceOf(address account) view returns (uint256)",
+			"function transfer(address recipient, uint256 amount) returns (bool)",
+			"function decimals() view returns (uint8)",
+			"function _decimals() view returns (uint8)",
+			"function symbol() view returns (string)",
+			"function _symbol() view returns (string)",
+			"function approve(address spender, uint256 amount) returns (bool)",
+		];
+		const tokenContract = new ethers.Contract(
+			contractAddress,
+			abi,
+			new ethers.JsonRpcProvider(rpc)
+		);
+
+		try {
+			const symbol = await tokenContract.symbol();
+			return symbol;
+		} catch (err) {
+			try {
+				const symbol = await tokenContract._symbol();
+				return symbol;
+			} catch (error) {
+				console.log(error);
+			}
+		}
+	}
+	async getDecimals(tokenAddress: string, rpc: string) {
+		const abi = [
+			// Standard ERC-20 functions
+			"function balanceOf(address account) view returns (uint256)",
+			"function transfer(address recipient, uint256 amount) returns (bool)",
+			"function decimals() view returns (uint8)",
+			"function _decimals() view returns (uint8)",
+			"function symbol() view returns (string)",
+			"function _symbol() view returns (string)",
+			"function approve(address spender, uint256 amount) returns (bool)",
+		];
 		const tokenContract = new ethers.Contract(
 			tokenAddress,
-			this.tokenABI,
-			this.provider
+			abi,
+			new ethers.JsonRpcProvider(rpc)
 		);
 
 		try {
