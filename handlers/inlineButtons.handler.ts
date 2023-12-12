@@ -4,7 +4,7 @@ import { MyContext } from "../bot";
 import { SafeToken, TokenDeployer } from "../web3";
 import { CreateWallet } from "../web3";
 import { setSessions } from ".";
-import { ethers } from "ethers";
+import { ethers, parseEther } from "ethers";
 import {
 	DecimalObject,
 	TotalSupplyObject,
@@ -22,6 +22,8 @@ import {
 	totalSupplyKeyBoard,
 } from "../views";
 import { MangeTokenHandler } from "./mangeToken.handler";
+import { buyTokenHandler } from "./buyToken.handler";
+import { sellTokenHandler } from "./sellToken.handler";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 async function goToIniTaxMenu(ctx: MyContext) {
@@ -150,14 +152,49 @@ TotalSupplyMap.set("decimal", (ctx: MyContext, callbackquery: string) => {
 const callBackQueryComposer = new Composer<MyContext>();
 callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const data = ctx.callbackQuery.data;
-	const totalSupplyQuery = data.split("|")[0];
+
 	await setSessions(ctx as any);
 
 	if (data === "cancel") {
 		console.log("cancel");
+		await ctx.deleteMessage();
 	}
 	if (data.includes("buy-")) {
-		console.log("buy");
+		const query = data.split("-");
+		if (query[1].toString() !== "custom") {
+			console.log("jhdfjk");
+			const slippage = 10;
+			const amountInMax = BigInt(parseEther(query[1]));
+			const tokenOut = query[2];
+			const privateKey = ctx.session.privateKey;
+			const amountToBuy = query[1];
+			await buyTokenHandler(
+				slippage,
+				amountInMax,
+				tokenOut,
+				privateKey,
+				amountToBuy,
+				ctx
+			);
+		} else {
+			//console.log("custom");
+			ctx.session.customBuyToken = query[2];
+			await ctx.conversation.enter("setTradeAmountConversation");
+		}
+	}
+	if (data.includes("sell-")) {
+		const query = data.split("-");
+		if (query[1].toString() !== "custom") {
+			const slippage = 40;
+			const tokenBalance = ctx.session.tokenBalance;
+			const sellingPercent = BigInt(parseInt(query[1]) / 100);
+			const amountOut = sellingPercent * tokenBalance;
+			const privateKey = ctx.session.privateKey;
+			const token = query[2];
+			sellTokenHandler(slippage, amountOut, token, privateKey, ctx);
+		} else {
+			console.log("selling Custom");
+		}
 	}
 
 	await ctx.answerCallbackQuery();

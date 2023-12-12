@@ -22,7 +22,7 @@ export const setSessions = async (ctx: MyContext) => {
 };
 
 export const WETH = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83";
-export const BotRouter = "";
+export const BotRouter = "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629";
 export const spookyDexRouter = "0xF491e7B69E4244ad4002BC14e878a34207E38c29";
 export const deployTokenHandler = async (ctx: MyContext) => {};
 export { listenerComposer };

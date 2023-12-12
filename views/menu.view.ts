@@ -361,4 +361,26 @@ export const buyMenu = (contractAdress: string) =>
 		.text(`Buy X FTM`, `buy-custom-${contractAdress}`)
 		.row()
 		.text(`Refresh`);
+export const sellMenu = (contractAdress: string) =>
+	new InlineKeyboard()
+		.text("Cancel", `cancel`)
+		.row()
+		.url(
+			"Gecko Terminal",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.url(
+			"Etherscan",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.url(
+			"Dexscreen",
+			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+		)
+		.row()
+		.text(`Sell 100 %`, `sell-100-${contractAdress}`)
+		.text(`Sell 50 %`, `sell-50-${contractAdress}`)
+		.text(`Sell X %`, `sell-custom-${contractAdress}`)
+		.row()
+		.text(`Refresh`);
 export { menuComposer };

@@ -42,6 +42,8 @@ import validate from "./validations/config.validation";
 import { I18n } from "@grammyjs/i18n";
 import { customBuyAmountConversation } from "./conversations/customBuyAmount.conversation";
 import { buyTokenConversation } from "./conversations/BuyToken.conversation";
+import { setTradeAmountConversation } from "./conversations/setTradeAmountConversation.conversation";
+import { sellTokenConversation } from "./conversations/SellToken.conversation";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -71,6 +73,8 @@ interface SessionData {
 	sellAmount: string;
 	tokens: string[];
 	notification: boolean;
+	customBuyToken: string;
+	tokenBalance: any;
 }
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -103,6 +107,8 @@ function initial(): SessionData {
 		sellAmount: "",
 		tokens: [],
 		notification: false,
+		customBuyToken: "",
+		tokenBalance: "",
 	};
 }
 
@@ -116,11 +122,15 @@ bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
 bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
 bot.use(createConversation(buyTokenConversation, "buyTokenConversation"));
+bot.use(createConversation(sellTokenConversation, "sellTokenConversation"));
 bot.use(
 	createConversation(
 		customBuyAmountConversation,
 		"customBuyAmountConversation"
 	)
+);
+bot.use(
+	createConversation(setTradeAmountConversation, "setTradeAmountConversation")
 );
 bot.use(createConversation(importTokenConversation, "importTokenConversation"));
 bot.use(accountMenu);

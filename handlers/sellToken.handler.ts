@@ -1,7 +1,8 @@
-import { BigNumberish, Typed, AddressLike, parseEther } from "ethers";
+import { BigNumberish, Typed, AddressLike, parseEther, ethers } from "ethers";
 import {
 	instantiateBotRouter,
 	instantiateDexRouter,
+	instantiateERC20Token,
 } from "../web3/instantiate";
 import { BotRouter, WETH, spookyDexRouter } from ".";
 import { MyContext } from "../bot";
@@ -32,19 +33,18 @@ async function getAmountOut(
 		return finalExpectedAmount;
 	}
 }
-export async function buyTokenHandler(
+export async function sellTokenHandler(
 	slippagePercent: number,
 	amountInMax: BigNumberish | Typed,
 	tokenOut: AddressLike,
 	privateKey: string,
-	amountToBuy: string,
 	ctx: MyContext
 ) {
 	const Weth = WETH;
 	const amountMinOut = await getAmountOut(
 		amountInMax,
-		Weth,
 		tokenOut,
+		Weth,
 		slippagePercent / 100,
 		privateKey
 	);
@@ -54,11 +54,15 @@ export async function buyTokenHandler(
 		process.env.RPC,
 		privateKey
 	);
+	const Erc20token = await instantiateERC20Token(
+		tokenOut.toString(),
+		process.env.RPC,
+		privateKey
+	);
 	await TransactionLoading(ctx);
+	await Erc20token.approve(BotRouter, ethers.MaxUint256);
 	return await botRouter
-		.buyToken(tokenOut, amountMinOut, {
-			value: parseEther(amountToBuy),
-		})
+		.sellToken(tokenOut, amountInMax, amountMinOut)
 		.then(async (res) => {
 			console.log("success", { res });
 			await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
