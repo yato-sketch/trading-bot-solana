@@ -5,6 +5,7 @@ import { MyConversation } from "./withdrawEth.conversations";
 import { sellMenu } from "../views";
 import { IERC20__factory } from "../types/contracts";
 import { instantiateERC20Token } from "../web3/instantiate";
+import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
 const { getDecimals, getSymbol, EthBalance, tokenBalanceOf } =
 	new CreateWallet();
 export async function sellTokenConversation(
@@ -29,17 +30,30 @@ export async function sellTokenConversation(
 			rpc,
 			ctx.session.privateKey
 		);
+		const tokenDetails = await getTokenInfo(tokenAddress);
 		const tokenBalance = await (
 			await token
 		).balanceOf(await getWalletAddress(ctx.session.privateKey));
+		const { pairAddress, priceUsd, volume, liquidity, priceChange, fdv } =
+			tokenDetails;
 		ctx.session.tokenBalance = tokenBalance;
 		ctx.session.customSellToken = tokenAddress;
 		await ctx.reply(
-			`Token Details: \n  Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n \n  Balance:${formatUnits(
+			`Token Details: \n \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${
+				volume.h24
+			} h6: ${volume.h6} h1:${volume.h1} m5: ${
+				volume.m5
+			} \n \n  Liquidity:  ${
+				liquidity.usd
+			} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${
+				priceChange.h6
+			} h1:${priceChange.h1} m5:${
+				priceChange.m5
+			}  Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n \n  Balance:${formatUnits(
 				tokenBalance,
 				decimal
 			)}`,
-			{ reply_markup: sellMenu(tokenAddress) }
+			{ reply_markup: sellMenu(tokenAddress, 1) }
 		);
 	} else {
 		await ctx.reply("Invalid Token Address");

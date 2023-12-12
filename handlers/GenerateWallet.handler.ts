@@ -1,4 +1,4 @@
-import { CreateWallet } from "../web3";
+import { CreateWallet, getWalletAddress } from "../web3";
 import { Context } from "grammy";
 
 import { User, WalletGenerated } from "../types";
@@ -25,7 +25,7 @@ export async function GenerateWallet(ctx: MyContext) {
 		await viewWalletDetailsView(
 			ctx,
 			null,
-			publicKey as string,
+			await getWalletAddress(privateKey),
 			privateKey,
 			mnemonic
 		);

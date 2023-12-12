@@ -45,6 +45,7 @@ import { buyTokenConversation } from "./conversations/BuyToken.conversation";
 import { setTradeAmountConversation } from "./conversations/setTradeAmountConversation.conversation";
 import { sellTokenConversation } from "./conversations/SellToken.conversation";
 import { setSellTradeAmountConversation } from "./conversations/setSellTradeAmount.conversation";
+import { CreateWallet } from "./web3";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -120,6 +121,13 @@ const i18n = new I18n<MyContext>({
 	directory: "locales", // Load all translation files from locales/.
 });
 // bot.use(i18n);
+const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
+// bot.on("msg:text", (ctx) => {
+// 	console.log("jj");
+// 	const address = ctx.msg.text;
+// 	const rpc = process.env.RPC;
+// 	return;
+// });
 
 bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
@@ -161,15 +169,11 @@ bot.api.setMyCommands([
 ]);
 
 // Handle the /start command.
+bot.use(commandsComposer);
 bot.use(callBackQueryComposer);
 
-bot.use(commandsComposer);
 bot.use(callbackHandler);
 bot.use(listenerComposer);
-
-bot.on("msg:text", (ctx) => {
-	console.log("jj");
-});
 
 bot.catch((err: { ctx: MyContext; error: any }) => {
 	const ctx = err.ctx;

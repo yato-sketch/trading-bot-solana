@@ -6,6 +6,7 @@ import {
 import { BotRouter, WETH, spookyDexRouter } from ".";
 import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
+import { fetchNewUserById, updateUser } from "../models";
 
 async function getAmountOut(
 	amountInMax: BigNumberish | Typed,
@@ -19,6 +20,7 @@ async function getAmountOut(
 		process.env.RPC,
 		privateKey
 	);
+	console.log({ amountInMax, tokenIn, tokenOut });
 
 	const amounts = await dexRouterContract.getAmountsOut(amountInMax, [
 		tokenIn,
@@ -47,7 +49,14 @@ export async function buyTokenHandler(
 		tokenOut,
 		slippagePercent / 100,
 		privateKey
-	);
+	)
+		.then((res) => {
+			return res;
+		})
+		.catch(async (err) => {
+			await ParseError(ctx, err);
+			return err;
+		});
 	// console.log({ amountMinOut });
 	const botRouter = await instantiateBotRouter(
 		BotRouter,
@@ -62,6 +71,13 @@ export async function buyTokenHandler(
 		.then(async (res) => {
 			console.log("success", { res });
 			await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
+			const id = ctx.chat.id.toString();
+			const { tokens } = await fetchNewUserById(id);
+			if (!tokens.includes(tokenOut.toString())) {
+				tokens.push(tokenOut.toString());
+			}
+			//console.log({ tokens });
+			await updateUser(id, { tokens });
 		})
 		.catch(async (err) => await ParseError(ctx, err));
 	//buy token

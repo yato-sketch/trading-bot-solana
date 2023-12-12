@@ -32,7 +32,7 @@ export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 	.row();
 
 export const accountMenu = new Menu<MyContext>("withdraw menu")
-	.text("Withdraw Eth", async (ctx) => {
+	.text("Withdraw FTM", async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");
 	})
 	.row()

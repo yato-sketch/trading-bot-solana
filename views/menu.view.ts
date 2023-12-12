@@ -325,7 +325,7 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 	.text("Buy", async (ctx) => await buyTokenController(ctx))
-	.text("Sell", async (ctx) => await sellTokenController(ctx))
+	.text("Sell", async (ctx) => await balancesController(ctx))
 	.row()
 	.text("Setting", async (ctx) => {
 		await ctx.deleteMessage();
@@ -361,8 +361,8 @@ export const buyMenu = (contractAdress: string) =>
 		.text(`Buy 20 FTM`, `buy-20-${contractAdress}`)
 		.text(`Buy X FTM`, `buy-custom-${contractAdress}`)
 		.row()
-		.text(`Refresh`);
-export const sellMenu = (contractAdress: string) =>
+		.text(`Refresh`, `refresh-buy|${contractAdress}`);
+export const sellMenu = (contractAdress: string, id: number) =>
 	new InlineKeyboard()
 		.text("Cancel", `cancel`)
 		.row()
@@ -383,5 +383,8 @@ export const sellMenu = (contractAdress: string) =>
 		.text(`Sell 50 %`, `sell-50-${contractAdress}`)
 		.text(`Sell X %`, `sell-custom-${contractAdress}`)
 		.row()
-		.text(`Refresh`);
+		.text("Prev", `prev-sell|${id - 1}`)
+		.text("Next", `next-sell|${id + 1}`)
+		.row()
+		.text(`Refresh`, `refresh-sell|${id}`);
 export { menuComposer };

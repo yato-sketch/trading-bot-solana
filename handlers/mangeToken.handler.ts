@@ -15,6 +15,7 @@ export async function TransactionLoading(ctx: MyContext) {
 	);
 }
 export async function ParseError(ctx: MyContext, err: any) {
+	console.log(err);
 	const info = JSON.parse(JSON.stringify(err)).info;
 	if (info) {
 		console.log(
@@ -22,7 +23,7 @@ export async function ParseError(ctx: MyContext, err: any) {
 			JSON.parse(JSON.stringify(err)).code
 		);
 	}
-	console.log(info);
+	console.log(JSON.parse(JSON.stringify(err)));
 	return await ctx.reply(
 		`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n \n ⚠️ ${
 			JSON.parse(JSON.stringify(err)).reason &&

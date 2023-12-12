@@ -5,7 +5,8 @@ import { configsCommand } from "./configs.command";
 import { WalletCommand } from "./wallet.command";
 import { ordersCommmand } from "./orders.command";
 import { tradeCommand } from "./trade.command";
-let commandsComposer = new Composer();
+import { MyContext } from "../bot";
+let commandsComposer = new Composer<MyContext>();
 
 let commands: any[] = [
 	{ name: "help", command: helpCommand },

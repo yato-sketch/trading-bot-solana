@@ -5,6 +5,10 @@ import { InlineKeyboard } from "grammy";
 import { CreateWallet, getWalletAddress } from "../web3";
 import { buyMenu } from "../views";
 import { buyTokenHandler } from "../handlers/buyToken.handler";
+import {
+	getTokenInfo,
+	getTokenSecDetails,
+} from "../handlers/fetchTokenDetails.handler";
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 export async function buyTokenConversation(
 	conversation: MyConversation,
@@ -39,10 +43,48 @@ export async function buyTokenConversation(
 		} else {
 			const symbol = await getSymbol(tokenAddress, rpc);
 			const decimal = await getDecimals(tokenAddress, rpc);
-			await ctx.reply(
-				`Token Details: \n  Symbol: ${symbol} \n \n   Decimal : ${decimal} `,
-				{ reply_markup: buyMenu(tokenAddress) }
-			);
+			const tokenDetails = await getTokenInfo(tokenAddress);
+			const SecDetails = await getTokenSecDetails(tokenAddress);
+
+			if (SecDetails) {
+				const {
+					buy_tax,
+
+					is_honeypot,
+					sell_tax,
+					lp_holder_count,
+					lp_total_supply,
+					total_supply,
+					honeypot_with_same_creator,
+					creator_address,
+				} = SecDetails[tokenAddress.toLowerCase()];
+				const {
+					pairAddress,
+					priceUsd,
+					volume,
+					liquidity,
+					priceChange,
+					fdv,
+				} = tokenDetails;
+
+				await ctx.reply(
+					`Token Details: \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${volume.h24} h6: ${volume.h6} h1:${volume.h1} m5: ${volume.m5} \n \n  Liquidity:  ${liquidity.usd} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${priceChange.h6} h1:${priceChange.h1} m5:${priceChange.m5} \n \n   Symbol: ${symbol} \n \n   Decimal : ${decimal} \n  Contract Sec Info\n Creator Address: ${creator_address} \n Honey Pot with Same Creator: ${honeypot_with_same_creator} \n Total Supply: ${total_supply} \n lp Total Supply: ${lp_total_supply} \n Lp Holder Count: ${lp_holder_count} \n Sell Tax: ${sell_tax} \n Buy Tax: ${buy_tax} \n Is honeyPot:${is_honeypot}`,
+					{ reply_markup: buyMenu(tokenAddress) }
+				);
+			} else {
+				const {
+					pairAddress,
+					priceUsd,
+					volume,
+					liquidity,
+					priceChange,
+					fdv,
+				} = tokenDetails;
+				await ctx.reply(
+					`Token Details: \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${volume.h24} h6: ${volume.h6} h1:${volume.h1} m5: ${volume.m5} \n \n  Liquidity:  ${liquidity.usd} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${priceChange.h6} h1:${priceChange.h1} m5:${priceChange.m5} \n \n   Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n  No Contract Sec Info\n  `,
+					{ reply_markup: buyMenu(tokenAddress) }
+				);
+			}
 		}
 	} else {
 		await ctx.reply("Invalid Token Address");
