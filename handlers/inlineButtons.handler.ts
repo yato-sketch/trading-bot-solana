@@ -1,10 +1,10 @@
 import { Composer, Context, InlineKeyboard } from "grammy";
 import { createToken } from "../views/create_token.view";
 import { MyContext } from "../bot";
-import { SafeToken, TokenDeployer } from "../web3";
+import { SafeToken, TokenDeployer, getWalletAddress } from "../web3";
 import { CreateWallet } from "../web3";
 import { setSessions } from ".";
-import { ethers, parseEther } from "ethers";
+import { ethers, formatUnits, parseEther } from "ethers";
 import {
 	DecimalObject,
 	TotalSupplyObject,
@@ -24,6 +24,7 @@ import {
 import { MangeTokenHandler } from "./mangeToken.handler";
 import { buyTokenHandler } from "./buyToken.handler";
 import { sellTokenHandler } from "./sellToken.handler";
+import { instantiateERC20Token } from "../web3/instantiate";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 async function goToIniTaxMenu(ctx: MyContext) {
@@ -185,15 +186,37 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	if (data.includes("sell-")) {
 		const query = data.split("-");
 		if (query[1].toString() !== "custom") {
-			const slippage = 40;
-			const tokenBalance = ctx.session.tokenBalance;
-			const sellingPercent = BigInt(parseInt(query[1]) / 100);
-			const amountOut = sellingPercent * tokenBalance;
-			const privateKey = ctx.session.privateKey;
 			const token = query[2];
-			sellTokenHandler(slippage, amountOut, token, privateKey, ctx);
+			const rpc = process.env.RPC;
+			const tokenC = instantiateERC20Token(
+				token,
+				rpc,
+				ctx.session.privateKey
+			);
+			const tokenBalance = await (
+				await tokenC
+			).balanceOf(await getWalletAddress(ctx.session.privateKey));
+			const slippage = 40;
+			const sellingPercent = BigInt((parseInt(query[1]) / 100) * 1000);
+			const amountOut =
+				BigInt(sellingPercent * tokenBalance) / BigInt(1000);
+			const privateKey = ctx.session.privateKey;
+
+			await sellTokenHandler(slippage, amountOut, token, privateKey, ctx);
 		} else {
-			console.log("selling Custom");
+			ctx.session.customSellToken = query[2];
+			const rpc = process.env.RPC;
+			const tokenC = instantiateERC20Token(
+				ctx.session.customSellToken,
+				rpc,
+				ctx.session.privateKey
+			);
+			const tokenBalance = await (
+				await tokenC
+			).balanceOf(await getWalletAddress(ctx.session.privateKey));
+			ctx.session.tokenBalance = tokenBalance;
+			// console.log("selling Custom");
+			await ctx.conversation.enter("setSellTradeAmountConversation");
 		}
 	}
 

@@ -16,6 +16,7 @@ import { setSessions } from "../handlers";
 import { tradepanelContoller } from "../controllers/tradePanel.controller";
 import { balancesController } from "../controllers/balances.controller";
 import { buyTokenController } from "../controllers/buyToken.controller";
+import { sellTokenController } from "../controllers/sellToken.controller";
 
 const menuComposer = new Composer();
 
@@ -324,7 +325,7 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 	.text("Buy", async (ctx) => await buyTokenController(ctx))
-	.text("Sell")
+	.text("Sell", async (ctx) => await sellTokenController(ctx))
 	.row()
 	.text("Setting", async (ctx) => {
 		await ctx.deleteMessage();

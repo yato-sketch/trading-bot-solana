@@ -7,6 +7,7 @@ import { Composer } from "grammy";
 import { CreateWallet, TokenDeployer } from "../web3";
 import { ethers } from "ethers";
 import { fetchNewUserById } from "../models";
+import { callBackQueryComposer } from "./inlineButtons.handler";
 const listenerComposer = new Composer();
 export async function callbackHandler() {}
 
@@ -25,4 +26,8 @@ export const WETH = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83";
 export const BotRouter = "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629";
 export const spookyDexRouter = "0xF491e7B69E4244ad4002BC14e878a34207E38c29";
 export const deployTokenHandler = async (ctx: MyContext) => {};
+
+callBackQueryComposer.on("msg", (ctx) => {
+	console.log("hererher");
+});
 export { listenerComposer };

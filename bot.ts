@@ -44,6 +44,7 @@ import { customBuyAmountConversation } from "./conversations/customBuyAmount.con
 import { buyTokenConversation } from "./conversations/BuyToken.conversation";
 import { setTradeAmountConversation } from "./conversations/setTradeAmountConversation.conversation";
 import { sellTokenConversation } from "./conversations/SellToken.conversation";
+import { setSellTradeAmountConversation } from "./conversations/setSellTradeAmount.conversation";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -74,6 +75,7 @@ interface SessionData {
 	tokens: string[];
 	notification: boolean;
 	customBuyToken: string;
+	customSellToken: string;
 	tokenBalance: any;
 }
 
@@ -109,6 +111,7 @@ function initial(): SessionData {
 		notification: false,
 		customBuyToken: "",
 		tokenBalance: "",
+		customSellToken: "",
 	};
 }
 
@@ -127,6 +130,12 @@ bot.use(
 	createConversation(
 		customBuyAmountConversation,
 		"customBuyAmountConversation"
+	)
+);
+bot.use(
+	createConversation(
+		setSellTradeAmountConversation,
+		"setSellTradeAmountConversation"
 	)
 );
 bot.use(
@@ -158,11 +167,8 @@ bot.use(commandsComposer);
 bot.use(callbackHandler);
 bot.use(listenerComposer);
 
-bot.on("message", (ctx) => {
+bot.on("msg:text", (ctx) => {
 	console.log("jj");
-	if (ctx.chat.type === "group") {
-		console.log("here");
-	}
 });
 
 bot.catch((err: { ctx: MyContext; error: any }) => {

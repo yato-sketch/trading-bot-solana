@@ -33,6 +33,7 @@ export async function sellTokenConversation(
 			await token
 		).balanceOf(await getWalletAddress(ctx.session.privateKey));
 		ctx.session.tokenBalance = tokenBalance;
+		ctx.session.customSellToken = tokenAddress;
 		await ctx.reply(
 			`Token Details: \n  Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n \n  Balance:${formatUnits(
 				tokenBalance,
