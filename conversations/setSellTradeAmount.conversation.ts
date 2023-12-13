@@ -1,10 +1,11 @@
 import { parseEther } from "ethers";
 import { MyConversation } from ".";
 import { MyContext } from "../bot";
-import { setSessions } from "../handlers";
+import { WETH, setSessions } from "../handlers";
 import { buyTokenHandler } from "../handlers/buyToken.handler";
 import { updateUser } from "../models";
 import { sellTokenHandler } from "../handlers/sellToken.handler";
+import { sellRouting } from "../handlers/routing.handler";
 
 export async function setSellTradeAmountConversation(
 	conversation: MyConversation,
@@ -22,11 +23,20 @@ export async function setSellTradeAmountConversation(
 		);
 		const amountOut = BigInt(sellingPercent * tokenBalance) / BigInt(1000);
 		const slippage = 40;
-		await sellTokenHandler(
-			slippage,
-			amountOut,
+		// await sellTokenHandler(
+		// 	slippage,
+		// 	amountOut,
+		// 	tokenAddress,
+		// 	ctx.session.privateKey,
+		// 	ctx
+		// );
+		await sellRouting(
+			WETH,
 			tokenAddress,
 			ctx.session.privateKey,
+			process.env.RPC,
+			slippage,
+			amountOut,
 			ctx
 		);
 	}

@@ -85,12 +85,10 @@ export const showSingleOrder = async (ctx: MyContext, orderId: number) => {
 
 export async function balancesController(ctx: MyContext) {
 	const orders = await getOrders(ctx);
-	if (orders.length > 0) {
+	if (orders && orders.length > 0) {
 		await showSingleOrder(ctx, 0);
 	} else {
 		console.log("here");
-		await ctx.reply(
-			`No Tokens Available Pls Import  Tokens \n Note: Go to Trading Panel To Import Tokens`
-		);
+		await ctx.reply(`No Order Available `);
 	}
 }

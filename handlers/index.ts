@@ -11,6 +11,7 @@ import { callBackQueryComposer } from "./inlineButtons.handler";
 import { buyMenu } from "../views";
 import { buyTokenHandler } from "./buyToken.handler";
 import { commandsComposer } from "../commands";
+import { buyRouting } from "./routing.handler";
 const listenerComposer = new Composer();
 export async function callbackHandler() {}
 
@@ -29,8 +30,9 @@ export const setSessions = async (ctx: MyContext) => {
 export const WETH = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83";
 export const BotRouter = "0x18E317A7D70d8fBf8e6E893616b52390EbBdb629";
 export const spookyDexRouter = "0xF491e7B69E4244ad4002BC14e878a34207E38c29";
+export const spookyDexFactory = "0x152eE697f2E276fA89E96742e9bB9aB1F2E61bE3";
 export const equalizerRouter = "0x2aa07920E4ecb4ea8C801D9DFEce63875623B285";
-export const equalizerBotRouter = "0xD5ac451B0c50B9476107823Af206eD814a2e2580";
+export const equalizerBotRouter = "0xc0F115A19107322cFBf1cDBC7ea011C19EbDB4F8";
 export const deployTokenHandler = async (ctx: MyContext) => {};
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 callBackQueryComposer.on("msg", async (ctx) => {
@@ -49,11 +51,13 @@ callBackQueryComposer.on("msg", async (ctx) => {
 			if (parseInt(amountToBuy) >= parseInt(walletBalnce)) {
 				await ctx.reply(`TRADE  AMOUNT IS MORE THAN WALLET BALANCE`);
 			} else {
-				await buyTokenHandler(
-					parseFloat(slippage),
-					BigInt(parseEther(amountToBuy)),
+				await buyRouting(
+					WETH,
 					address,
 					ctx.session.privateKey,
+					rpc,
+					parseFloat(slippage),
+					BigInt(parseEther(amountToBuy)),
 					amountToBuy.toString(),
 					ctx
 				);

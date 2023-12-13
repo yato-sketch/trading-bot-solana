@@ -3,13 +3,14 @@ import { createToken } from "../views/create_token.view";
 import { MyContext } from "../bot";
 import { SafeToken, TokenDeployer, getWalletAddress } from "../web3";
 import { CreateWallet } from "../web3";
-import { setSessions } from ".";
+import { WETH, setSessions } from ".";
 import { ethers, formatUnits, parseEther } from "ethers";
 import { MangeTokenHandler } from "./mangeToken.handler";
 import { buyTokenHandler } from "./buyToken.handler";
 import { sellTokenHandler } from "./sellToken.handler";
 import { instantiateERC20Token } from "../web3/instantiate";
 import { getOrders, showSingleOrder } from "../controllers/balances.controller";
+import { buyRouting, sellRouting } from "./routing.handler";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 
@@ -52,11 +53,13 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 			const tokenOut = query[2];
 			const privateKey = ctx.session.privateKey;
 			const amountToBuy = query[1];
-			await buyTokenHandler(
-				slippage,
-				amountInMax,
+			await buyRouting(
+				WETH,
 				tokenOut,
 				privateKey,
+				process.env.RPC,
+				slippage,
+				amountInMax,
 				amountToBuy,
 				ctx
 			);
@@ -85,7 +88,16 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 				BigInt(sellingPercent * tokenBalance) / BigInt(1000);
 			const privateKey = ctx.session.privateKey;
 
-			await sellTokenHandler(slippage, amountOut, token, privateKey, ctx);
+			//await sellTokenHandler(slippage, amountOut, token, privateKey, ctx);
+			await sellRouting(
+				WETH,
+				token,
+				privateKey,
+				rpc,
+				slippage,
+				amountOut,
+				ctx
+			);
 		} else {
 			ctx.session.customSellToken = query[2];
 			const rpc = process.env.RPC;

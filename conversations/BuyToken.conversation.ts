@@ -9,6 +9,8 @@ import {
 	getTokenInfo,
 	getTokenSecDetails,
 } from "../handlers/fetchTokenDetails.handler";
+import { buyRouting } from "../handlers/routing.handler";
+import { WETH } from "../handlers";
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 export async function buyTokenConversation(
 	conversation: MyConversation,
@@ -31,11 +33,21 @@ export async function buyTokenConversation(
 			if (parseInt(amountToBuy) >= parseInt(walletBalnce)) {
 				await ctx.reply(`TRADE  AMOUNT IS MORE THAN WALLET BALANCE`);
 			} else {
-				await buyTokenHandler(
-					parseFloat(slippage),
-					BigInt(parseEther(amountToBuy)),
+				// await buyTokenHandler(
+				// 	parseFloat(slippage),
+				// 	BigInt(parseEther(amountToBuy)),
+				// 	tokenAddress,
+				// 	ctx.session.privateKey,
+				// 	amountToBuy.toString(),
+				// 	ctx
+				// );
+				await buyRouting(
+					WETH,
 					tokenAddress,
 					ctx.session.privateKey,
+					rpc,
+					parseFloat(slippage),
+					BigInt(parseEther(amountToBuy)),
 					amountToBuy.toString(),
 					ctx
 				);

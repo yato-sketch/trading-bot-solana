@@ -3,8 +3,9 @@ import {
 	instantiateBotRouter,
 	instantiateDexRouter,
 	instantiateERC20Token,
+	instantiateEqualizerRouter,
 } from "../web3/instantiate";
-import { BotRouter, WETH, spookyDexRouter } from ".";
+import { WETH } from ".";
 import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
 
@@ -13,24 +14,46 @@ async function getAmountOut(
 	tokenIn: AddressLike,
 	tokenOut: AddressLike,
 	Slippage: number,
-	privateKey: string
+	privateKey: string,
+	RouterAddress: string,
+	dexType: string
 ) {
-	const dexRouterContract = await instantiateDexRouter(
-		spookyDexRouter,
+	let dexRouterContract = await instantiateDexRouter(
+		RouterAddress,
 		process.env.RPC,
 		privateKey
 	);
 
-	const amounts = await dexRouterContract.getAmountsOut(amountInMax, [
-		tokenIn,
-		tokenOut,
-	]);
-	if (Slippage !== 0) {
-		const outsIn = amounts[1];
-		const expectedOutput = outsIn * BigInt(10 - Slippage * 10);
-		const finalExpectedAmount = expectedOutput / BigInt(10);
+	let dexEqRouterContract = await instantiateEqualizerRouter(
+		RouterAddress,
+		process.env.RPC,
+		privateKey
+	);
 
-		return finalExpectedAmount;
+	console.log({ amountInMax, tokenIn, tokenOut });
+	if (dexType === "EQU") {
+		const amounts = await dexEqRouterContract.getAmountsOut(amountInMax, [
+			{ to: tokenOut, from: tokenIn, stable: false },
+		]);
+		if (Slippage !== 0) {
+			const outsIn = amounts[1];
+			const expectedOutput = outsIn * BigInt(10 - Slippage * 10);
+			const finalExpectedAmount = expectedOutput / BigInt(10);
+
+			return finalExpectedAmount;
+		}
+	} else {
+		const amounts = await dexRouterContract.getAmountsOut(amountInMax, [
+			tokenIn,
+			tokenOut,
+		]);
+		if (Slippage !== 0) {
+			const outsIn = amounts[1];
+			const expectedOutput = outsIn * BigInt(10 - Slippage * 10);
+			const finalExpectedAmount = expectedOutput / BigInt(10);
+
+			return finalExpectedAmount;
+		}
 	}
 }
 export async function sellTokenHandler(
@@ -38,6 +61,9 @@ export async function sellTokenHandler(
 	amountInMax: BigNumberish | Typed,
 	tokenOut: AddressLike,
 	privateKey: string,
+	RouterAddress: string,
+	dexType: string,
+	botRouterAddress: string,
 	ctx: MyContext
 ) {
 	const Weth = WETH;
@@ -46,11 +72,13 @@ export async function sellTokenHandler(
 		tokenOut,
 		Weth,
 		slippagePercent / 100,
-		privateKey
+		privateKey,
+		RouterAddress,
+		dexType
 	);
 	// console.log({ amountMinOut });
 	const botRouter = await instantiateBotRouter(
-		BotRouter,
+		botRouterAddress,
 		process.env.RPC,
 		privateKey
 	);
@@ -60,7 +88,7 @@ export async function sellTokenHandler(
 		privateKey
 	);
 	await TransactionLoading(ctx);
-	await Erc20token.approve(BotRouter, ethers.MaxUint256);
+	await Erc20token.approve(botRouterAddress, ethers.MaxUint256);
 	return await botRouter
 		.sellToken(tokenOut, amountInMax, amountMinOut)
 		.then(async (res) => {
