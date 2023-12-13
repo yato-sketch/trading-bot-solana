@@ -18,7 +18,7 @@ export async function walletController(ctx: MyContext) {
 		ctx.session.privateKey = pK;
 		ctx.session.walletAddress = pubK;
 		ctx.reply(
-			`${process.env.BOT_NAME} Account DETAILS \n \n  THESE DETAILS MUST BE KEPT PRIVATE \n \n privateKey:\n ${pK} \n \n WalletAddress:\n  ${pubK} \n Mnemonic:\n ${mnemonic}\n \n   FTM BALANCE:\n ${EthBalance} \n \n`,
+			`💳 ${process.env.BOT_NAME} Account DETAILS \n \n🚧 THESE DETAILS MUST BE KEPT PRIVATE 🚧\n \n🔐 PrivateKey:\n ${pK} \n \n🌐 WalletAddress:\n  ${pubK} \n🔡 Mnemonic:\n ${mnemonic}\n \n💰 FTM BALANCE:\n ${EthBalance} \n \n`,
 			{ reply_markup: accountMenu }
 		);
 	} else {

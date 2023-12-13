@@ -2,7 +2,7 @@ import { MyContext } from "../bot";
 export * from ".";
 export * from "./inlineButtons.handler";
 export * from "./GenerateWallet.handler";
-import { customStateContext, myState } from "../utils";
+import { boldenText, customStateContext, myState } from "../utils";
 import { Composer } from "grammy";
 import { CreateWallet, TokenDeployer, getWalletAddress } from "../web3";
 import { ethers, isAddress, parseEther } from "ethers";
@@ -12,6 +12,7 @@ import { buyMenu } from "../views";
 import { buyTokenHandler } from "./buyToken.handler";
 import { commandsComposer } from "../commands";
 import { buyRouting } from "./routing.handler";
+import { getTokenInfo, getTokenSecDetails } from "./fetchTokenDetails.handler";
 const listenerComposer = new Composer();
 export async function callbackHandler() {}
 
@@ -65,10 +66,97 @@ callBackQueryComposer.on("msg", async (ctx) => {
 		} else {
 			const symbol = await getSymbol(address, rpc);
 			const decimal = await getDecimals(address, rpc);
-			await ctx.reply(
-				`Token Details: \n  Symbol: ${symbol} \n \n   Decimal : ${decimal} `,
-				{ reply_markup: buyMenu(address) }
-			);
+			const tokenDetails = await getTokenInfo(address);
+			const SecDetails = await getTokenSecDetails(address);
+			if (SecDetails) {
+				const {
+					buy_tax,
+
+					is_honeypot,
+					sell_tax,
+					lp_holder_count,
+					lp_total_supply,
+					total_supply,
+					honeypot_with_same_creator,
+					creator_address,
+				} = SecDetails[address.toLowerCase()];
+				const {
+					pairAddress,
+					priceUsd,
+					volume,
+					liquidity,
+					priceChange,
+					fdv,
+				} = tokenDetails;
+
+				await ctx.reply(
+					`${boldenText(
+						symbol
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+						volume.h24
+					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+						volume.h1
+					)} \n⏳ M5: ${boldenText(
+						volume.m5
+					)} \n \n📈Liquidity📈:  ${boldenText(
+						liquidity.usd
+					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
+						priceChange.h24
+					)} \n🕐 H6:${boldenText(
+						priceChange.h6
+					)} \n🕐 H1:${boldenText(
+						priceChange.h1
+					)} \n🕐 H5:${boldenText(
+						priceChange.m5
+					)}  \n  \n🔣 Symbol: ${symbol}  \n🔣 Decimal:${decimal}\n  \n ${boldenText(
+						"🔒 Contract Sec Info 🔒"
+					)}\n👨‍🎨 Creator Address: ${boldenText(
+						creator_address
+					)} \n🎭 Honey Pot with Same Creator: ${boldenText(
+						honeypot_with_same_creator
+					)} \n📊 Total Supply: ${boldenText(
+						total_supply
+					)} \n💰 lp Total Supply: ${lp_total_supply} \n👤 Lp Holder Count: ${boldenText(
+						lp_holder_count
+					)} \n📝 Sell Tax: ${boldenText(
+						sell_tax
+					)} \n📝 Buy Tax: ${boldenText(
+						buy_tax
+					)} \n🍯 Is honeyPot:${boldenText(is_honeypot)}`,
+					{ reply_markup: buyMenu(address), parse_mode: "HTML" }
+				);
+			} else {
+				const {
+					pairAddress,
+					priceUsd,
+					volume,
+					liquidity,
+					priceChange,
+					fdv,
+				} = tokenDetails;
+				await ctx.reply(
+					`${boldenText(
+						symbol
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+						volume.h24
+					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+						volume.h1
+					)} \n⏳ M5: ${boldenText(
+						volume.m5
+					)} \n \n📈Liquidity📈:  ${boldenText(
+						liquidity.usd
+					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
+						priceChange.h24
+					)} \n🕐 H6:${boldenText(
+						priceChange.h6
+					)} \n🕐 H1:${boldenText(
+						priceChange.h1
+					)} \n🕐 H5:${boldenText(
+						priceChange.m5
+					)}  \n  \n  No Contract Sec Info\n  `,
+					{ reply_markup: buyMenu(address) }
+				);
+			}
 		}
 	} else {
 		callBackQueryComposer.use(commandsComposer);

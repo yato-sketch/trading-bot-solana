@@ -32,16 +32,16 @@ export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
 	.row();
 
 export const accountMenu = new Menu<MyContext>("withdraw menu")
-	.text("Withdraw FTM", async (ctx) => {
+	.text("🏦 Withdraw FTM 🏦", async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");
 	})
 	.row()
-	.text("Import Wallet", (ctx) => {
+	.text("📤 Import Wallet 📤", (ctx) => {
 		ctx.reply(`Replace Wallets Todo`);
 	})
 	.row()
-	.text("show Rewards", (ctx) => ctx.reply("show rewards"))
-	.text("bot Usage analytics");
+	.text("💰 Show Rewards 💰", (ctx) => ctx.reply("show rewards"))
+	.text("📈 Bot Usage analytics 📈");
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",
 	async (ctx) => {

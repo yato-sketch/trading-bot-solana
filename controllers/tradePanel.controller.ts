@@ -18,10 +18,9 @@ export async function tradepanelContoller(_ctx: MyContext) {
 	const { autoBuy, slippage } = newuserData;
 	const amountofTrades = 0;
 	await _ctx.reply(
-		`Welcome to  Quant Trading Bot \n \n  FTM fastest, simplest and cheapest trading bot
-		Gas price: ${gasPrice} GWEI \n \n Wallet Address: \n ${walletAddress} \n \n Balance:\n ${NativeBalance} FTM \n \n  Auto Buy:\n ${autoBuy} \n \n Slippage: ${
+		`🎉 Welcome to  QuanBot 🎉 \n \nFTM fastest 🚀, simplest ✨ and cheapest 🤑 trading bot 🤖 \n🚗 Gas price: ${gasPrice} GWEI \n \n💳 Wallet Address: \n${walletAddress} \n \n💰Balance:\n${NativeBalance} FTM \n \nAuto Buy:\n${autoBuy} \n \nSlippage 📉: ${
 			slippage ? slippage : "No Slippage"
-		} \n \n Amount Of Trades: \n ${amountofTrades}   \n \n Click on settings To Set Trade Config \n Note: If you have Auto Buy enable make sure you import tokens`,
+		} \n \nAmount Of Trades 💹: \n${amountofTrades}   \n \n⬇️ Click on settings To Set Trade Config ⚙️ ⬇️ \nNote 📝: If you have Auto Buy just paste to Buy`,
 		{
 			reply_markup: TradingMenu,
 		}

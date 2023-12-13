@@ -33,7 +33,7 @@ export async function GenerateWallet(ctx: MyContext) {
 	if (newuserData) {
 		//console.log({ userData });
 		ctx.reply(
-			`Welcome to ${process.env.BOT_NAME} Token deployer Bot \n  \n 1. /config  checkout trade configs \n 2. /trade to start trading`
+			`👋 Welcome to ${process.env.BOT_NAME} 💥  \n  \n 1. /config  ⚙️ checkout trade configs \n 2. /trade 💰 Easily fund your wallet to start trading with`
 		);
 	} else {
 		await createUserDetails(ctx);

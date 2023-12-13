@@ -6,6 +6,7 @@ import { sellMenu } from "../views";
 import { IERC20__factory } from "../types/contracts";
 import { instantiateERC20Token } from "../web3/instantiate";
 import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
+import { boldenText } from "../utils";
 const { getDecimals, getSymbol, EthBalance, tokenBalanceOf } =
 	new CreateWallet();
 export async function sellTokenConversation(
@@ -39,21 +40,26 @@ export async function sellTokenConversation(
 		ctx.session.tokenBalance = tokenBalance;
 		ctx.session.customSellToken = tokenAddress;
 		await ctx.reply(
-			`Token Details: \n \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${
+			`🔘 ${boldenText(
+				symbol
+			)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
+				priceUsd
+			)} USD \n🔗 PairAddress: ${boldenText(
+				pairAddress
+			)} \n📉 Volume: \n⏳ H24: ${boldenText(
 				volume.h24
-			} h6: ${volume.h6} h1:${volume.h1} m5: ${
+			)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+				volume.h1
+			)} \n⏳ M5: ${boldenText(
 				volume.m5
-			} \n \n  Liquidity:  ${
+			)} \n \n📈Liquidity📈:  ${boldenText(
 				liquidity.usd
-			} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${
-				priceChange.h6
-			} h1:${priceChange.h1} m5:${
-				priceChange.m5
-			}  Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n \n  Balance:${formatUnits(
-				tokenBalance,
-				decimal
-			)}`,
-			{ reply_markup: sellMenu(tokenAddress, 1) }
+			)} USD 💰 \n \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
+				priceChange.h24
+			)} \n🕐 H6:${boldenText(priceChange.h6)} \n🕐 H1:${boldenText(
+				priceChange.h1
+			)} \n🕐 H5:${boldenText(priceChange.m5)}  `,
+			{ reply_markup: sellMenu(tokenAddress, 1, pairAddress) }
 		);
 	} else {
 		await ctx.reply("Invalid Token Address");

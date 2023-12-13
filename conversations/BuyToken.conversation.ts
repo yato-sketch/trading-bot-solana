@@ -11,6 +11,7 @@ import {
 } from "../handlers/fetchTokenDetails.handler";
 import { buyRouting } from "../handlers/routing.handler";
 import { WETH } from "../handlers";
+import { boldenText } from "../utils";
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 export async function buyTokenConversation(
 	conversation: MyConversation,
@@ -80,8 +81,40 @@ export async function buyTokenConversation(
 				} = tokenDetails;
 
 				await ctx.reply(
-					`Token Details: \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${volume.h24} h6: ${volume.h6} h1:${volume.h1} m5: ${volume.m5} \n \n  Liquidity:  ${liquidity.usd} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${priceChange.h6} h1:${priceChange.h1} m5:${priceChange.m5} \n \n   Symbol: ${symbol} \n \n   Decimal : ${decimal} \n  Contract Sec Info\n Creator Address: ${creator_address} \n Honey Pot with Same Creator: ${honeypot_with_same_creator} \n Total Supply: ${total_supply} \n lp Total Supply: ${lp_total_supply} \n Lp Holder Count: ${lp_holder_count} \n Sell Tax: ${sell_tax} \n Buy Tax: ${buy_tax} \n Is honeyPot:${is_honeypot}`,
-					{ reply_markup: buyMenu(tokenAddress) }
+					`${boldenText(
+						symbol
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+						volume.h24
+					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+						volume.h1
+					)} \n⏳ M5: ${boldenText(
+						volume.m5
+					)} \n \n📈Liquidity📈:  ${boldenText(
+						liquidity.usd
+					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
+						priceChange.h24
+					)} \n🕐 H6:${boldenText(
+						priceChange.h6
+					)} \n🕐 H1:${boldenText(
+						priceChange.h1
+					)} \n🕐 H5:${boldenText(
+						priceChange.m5
+					)}  \n  \n🔣 Symbol: ${symbol}  \n🔣 Decimal:${decimal}\n  \n ${boldenText(
+						"🔒 Contract Sec Info 🔒"
+					)}\n👨‍🎨 Creator Address: ${boldenText(
+						creator_address
+					)} \n🎭 Honey Pot with Same Creator: ${boldenText(
+						honeypot_with_same_creator
+					)} \n📊 Total Supply: ${boldenText(
+						total_supply
+					)} \n💰 lp Total Supply: ${lp_total_supply} \n👤 Lp Holder Count: ${boldenText(
+						lp_holder_count
+					)} \n📝 Sell Tax: ${boldenText(
+						sell_tax
+					)} \n📝 Buy Tax: ${boldenText(
+						buy_tax
+					)} \n🍯 Is honeyPot:${boldenText(is_honeypot)}`,
+					{ reply_markup: buyMenu(tokenAddress), parse_mode: "HTML" }
 				);
 			} else {
 				const {
@@ -93,7 +126,25 @@ export async function buyTokenConversation(
 					fdv,
 				} = tokenDetails;
 				await ctx.reply(
-					`Token Details: \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${volume.h24} h6: ${volume.h6} h1:${volume.h1} m5: ${volume.m5} \n \n  Liquidity:  ${liquidity.usd} USD\n \n  PriceChange:\n h24:${priceChange.h24} h6:${priceChange.h6} h1:${priceChange.h1} m5:${priceChange.m5} \n \n   Symbol: ${symbol} \n \n   Decimal : ${decimal}  \n  No Contract Sec Info\n  `,
+					`${boldenText(
+						symbol
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+						volume.h24
+					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+						volume.h1
+					)} \n⏳ M5: ${boldenText(
+						volume.m5
+					)} \n \n📈Liquidity📈:  ${boldenText(
+						liquidity.usd
+					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
+						priceChange.h24
+					)} \n🕐 H6:${boldenText(
+						priceChange.h6
+					)} \n🕐 H1:${boldenText(
+						priceChange.h1
+					)} \n🕐 H5:${boldenText(
+						priceChange.m5
+					)}  \n  \n  No Contract Sec Info\n  `,
 					{ reply_markup: buyMenu(tokenAddress) }
 				);
 			}

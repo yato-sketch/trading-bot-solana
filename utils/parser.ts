@@ -22,6 +22,8 @@ export const TotalSupplyObject = {
 	"100-million": 100000000,
 };
 
+export const boldenText = (text: string) => `<b>${text}</b>`;
+
 export function trimAddress(walletAddress: string, length = 8) {
 	if (walletAddress.length <= length) {
 		return walletAddress; // No need to trim if it's shorter than the specified length

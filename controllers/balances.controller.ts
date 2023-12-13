@@ -7,6 +7,7 @@ import { fetchNewUserById, updateUser } from "../models";
 import { CreateWallet, getWalletAddress } from "../web3";
 import { formatUnits, id } from "ethers";
 import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
+import { boldenText } from "../utils";
 const { tokenBalanceOf, getSymbol, getDecimals } = new CreateWallet();
 
 const testEditMenu = new InlineKeyboard()
@@ -25,16 +26,35 @@ const tokenBalanceView = async (
 	const { pairAddress, priceUsd, volume, liquidity, priceChange } =
 		tokenDetails;
 	await ctx.reply(
-		`Token Details \n \n \n priceUsd::${priceUsd} USD \n  PairAddress: ${pairAddress} \n Volume: \n h24: ${
+		`🔘 ${boldenText(
+			symbol
+		)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
+			priceUsd
+		)} USD \n🔗 PairAddress: ${boldenText(
+			pairAddress
+		)} \n📉 Volume: \n⏳ H24: ${boldenText(
 			volume.h24
-		} h6: ${volume.h6} h1:${volume.h1} m5: ${
-			volume.m5
-		} \n \n  Liquidity:  ${liquidity.usd} USD\n \n  PriceChange:\n h24:${
+		)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
+			volume.h1
+		)} \n⏳ M5: ${boldenText(volume.m5)} \n \n📈Liquidity📈:  ${boldenText(
+			liquidity.usd
+		)} USD 💰 \n \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
 			priceChange.h24
-		} h6:${priceChange.h6} h1:${priceChange.h1} m5:${
+		)} \n🕐 H6:${boldenText(priceChange.h6)} \n🕐 H1:${boldenText(
+			priceChange.h1
+		)} \n🕐 H5:${boldenText(
 			priceChange.m5
-		} Token Symbol:  ${symbol} \n Your Token  Balance: ${balance.toString()} \n Token Decimal: ${decimal.toString()}`,
-		{ reply_markup: sellMenu(contractAddress, id) }
+		)}   \n💰 Your Token  Balance: ${boldenText(
+			balance.toString()
+		)} ${symbol} \n🔣 Token Decimal:${boldenText(
+			decimal.toString()
+		)} \n💸 Balance Worth:${boldenText(
+			(parseFloat(priceUsd) * parseFloat(balance.toString())).toString()
+		)} USD`,
+		{
+			reply_markup: sellMenu(contractAddress, id, pairAddress),
+			parse_mode: "HTML",
+		}
 	);
 };
 export const getOrders = async (ctx: MyContext) => {
