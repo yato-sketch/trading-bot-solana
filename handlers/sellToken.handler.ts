@@ -8,6 +8,7 @@ import {
 import { WETH } from ".";
 import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
+import { pointsHandler } from "./points.handler";
 
 async function getAmountOut(
 	amountInMax: BigNumberish | Typed,
@@ -93,6 +94,7 @@ export async function sellTokenHandler(
 		.sellToken(tokenOut, amountInMax, amountMinOut)
 		.then(async (res) => {
 			console.log("success", { res });
+			await pointsHandler(ctx, 50);
 			await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
 		})
 		.catch(async (err) => await ParseError(ctx, err));

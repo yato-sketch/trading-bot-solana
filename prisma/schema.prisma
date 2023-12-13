@@ -8,16 +8,19 @@ generator client {
 }
 
 model User {
-  id         String   @id @default(auto()) @map("_id") @db.ObjectId
-  tgId       String   @unique
-  userName   String?
-  privateKey String?
-  mnemonic   String
-  autoBuy    Boolean
-  autoSell   Boolean
-  slippage   String
-  buyAmount  String
-  sellAmount String
-  tokens     String[]
-  rewards    String
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  tgId          String   @unique
+  userName      String?
+  privateKey    String?
+  mnemonic      String
+  autoBuy       Boolean
+  autoSell      Boolean
+  slippage      String
+  buyAmount     String
+  sellAmount    String
+  tokens        String[]
+  referrer      Int
+  referralCount Int
+  points        Int
+  TradeVolume   Int
 }

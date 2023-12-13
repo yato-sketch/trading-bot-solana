@@ -104,12 +104,15 @@ export async function buyTokenHandler(
 			console.log("success", { res });
 			await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
 			const id = ctx.chat.id.toString();
-			const { tokens } = await fetchNewUserById(id);
+			const { tokens, TradeVolume } = await fetchNewUserById(id);
 			if (!tokens.includes(tokenOut.toString())) {
 				tokens.push(tokenOut.toString());
 			}
 			//console.log({ tokens });
-			await updateUser(id, { tokens });
+			await updateUser(id, {
+				tokens,
+				TradeVolume: TradeVolume + parseFloat(amountToBuy),
+			});
 		})
 		.catch(async (err) => await ParseError(ctx, err));
 	//buy token

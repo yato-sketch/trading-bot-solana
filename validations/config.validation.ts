@@ -21,6 +21,7 @@ async function validate() {
 	const scanurl = process.env.SCAN_URL;
 	const graphClient = process.env.GRAPH_CLIENT;
 	const deployerContract = process.env.DEPLOYER_CONTRACT_ADDRESS;
+	const botUserName = process.env.BOT_USER_NAME;
 	if (
 		!botToken ||
 		!monogo ||
@@ -30,7 +31,8 @@ async function validate() {
 		!scanurl ||
 		!etherScanAPiKEy ||
 		!graphClient ||
-		!deployerContract
+		!deployerContract ||
+		!botUserName
 	) {
 		throw error("Configurations are missing");
 	} else {
