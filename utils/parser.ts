@@ -23,6 +23,7 @@ export const TotalSupplyObject = {
 };
 
 export const boldenText = (text: string) => `<b>${text}</b>`;
+export const makeCopiable = (text: string) => `<code>${text}</code>`;
 
 export function trimAddress(walletAddress: string, length = 8) {
 	if (walletAddress.length <= length) {

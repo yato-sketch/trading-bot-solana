@@ -1,5 +1,6 @@
 import { MyContext } from "../bot";
 import { fetchNewUserById } from "../models";
+import { boldenText, makeCopiable } from "../utils";
 import { accountMenu } from "../views";
 import { getWalletAddress } from "../web3";
 import { CreateWallet } from "../web3";
@@ -19,9 +20,18 @@ export async function walletController(ctx: MyContext) {
 
 		ctx.session.privateKey = pK;
 		ctx.session.walletAddress = pubK;
+
 		ctx.reply(
-			`💳 ${process.env.BOT_NAME} Account DETAILS \n \n🚧 THESE DETAILS MUST BE KEPT PRIVATE 🚧\n \n🔐 PrivateKey:\n ${pK} \n \n🌐 WalletAddress:\n  ${pubK} \n🔡 Mnemonic:\n ${mnemonic}\n \n💰 FTM BALANCE:\n ${EthBalance} \n \nYour Referral Link: ${refLink} \nNumber of Referrals: ${referralCount} \nBullets: ${points}  \n \n`,
-			{ reply_markup: accountMenu }
+			`💳 ${process.env.BOT_NAME} ACCOUNT DETAILS \n \n🚧 ${boldenText(
+				"THESE DETAILS MUST BE KEPT PRIVATE"
+			)} 🚧\n \n🔐 PrivateKey:\n ${boldenText(
+				makeCopiable(pK)
+			)}  \n \n🌐 WalletAddress:\n  ${makeCopiable(
+				pubK
+			)} \n🔡 Mnemonic:\n ${makeCopiable(
+				mnemonic
+			)}\n  \n💰 FTM BALANCE:\n ${EthBalance} \n \nYour Referral Link: ${refLink} \nNumber of Referrals: ${referralCount} \nBullets: ${points}  \n \n`,
+			{ reply_markup: accountMenu, parse_mode: "HTML" }
 		);
 	} else {
 		ctx.reply("User Data Not Found");
