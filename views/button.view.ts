@@ -5,6 +5,7 @@ import { CreateWallet, SafeToken } from "../web3";
 import { ethers, parseEther, parseUnits } from "ethers";
 import { callBackQueryComposer } from "../handlers";
 import { TransactionLoading, ParseError } from "../handlers/mangeToken.handler";
+import { rewardsController } from "../controllers/rewards.controller";
 const Wallet = new CreateWallet();
 const { WalletSigner, getTransactionReciept } = Wallet;
 
@@ -40,7 +41,7 @@ export const accountMenu = new Menu<MyContext>("withdraw menu")
 		ctx.reply(`Replace Wallets Todo`);
 	})
 	.row()
-	.text("💰 Show Rewards 💰", (ctx) => ctx.reply("show rewards"))
+	.text("💰 Show Rewards 💰", async (ctx) => rewardsController(ctx))
 	.text("📈 Bot Usage analytics 📈");
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",

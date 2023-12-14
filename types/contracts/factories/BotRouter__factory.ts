@@ -68,6 +68,44 @@ const _abi = [
     type: "event",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "BuytradeCounter",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
+    ],
+    name: "SelltradeCounter",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "admin",
     outputs: [
@@ -170,6 +208,11 @@ const _abi = [
         internalType: "uint256",
         name: "amountOutMin",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "referrer",
+        type: "address",
       },
     ],
     name: "sellToken",

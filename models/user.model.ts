@@ -35,3 +35,8 @@ export async function updateUser(id: string, updateData: Partial<Trader>) {
 export async function fetchNewUserById(id: string) {
 	return await prisma.user.findUnique({ where: { tgId: id } });
 }
+export async function getAllUsers() {
+	return await prisma.user.findMany({
+		select: { points: true, id: true, userName: true },
+	});
+}

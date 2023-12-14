@@ -11,6 +11,8 @@ import { sellTokenHandler } from "./sellToken.handler";
 import { instantiateERC20Token } from "../web3/instantiate";
 import { getOrders, showSingleOrder } from "../controllers/balances.controller";
 import { buyRouting, sellRouting } from "./routing.handler";
+import { getTasks } from "./tasks.handler";
+import { getLeaderboard } from "./leaderboard.handler";
 const Wallet = new CreateWallet();
 const { WalletSigner } = Wallet;
 
@@ -19,6 +21,16 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const data = ctx.callbackQuery.data;
 	const msgId = ctx.msg.message_id;
 	await setSessions(ctx as any);
+
+	if (data.includes("show-reward")) {
+		const query = data.split("|")[1];
+		if (query === "task") {
+			await getTasks(ctx, msgId);
+		}
+		if (query === "leaderboard") {
+			await getLeaderboard(ctx, msgId);
+		}
+	}
 
 	if (data.includes("refresh-sell")) {
 		const query = data.split("|")[1];

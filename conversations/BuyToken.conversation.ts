@@ -18,7 +18,7 @@ export async function buyTokenConversation(
 	ctx: MyContext
 ) {
 	await ctx.reply(
-		`${process.env.BOT_NAME} Buys \n \n Buying is simple with Shuriken. Here's a few ways you can sell : \n \n  ✍ Ethereum Address \n Paste in a token address the bot will detect the token`
+		`${process.env.BOT_NAME} Buys \n \n Buying is simple with ${process.env.BOT_NAME}. Here's a few ways you can sell : \n \n  ✍ Ethereum Address \n Paste in a token address the bot will detect the token`
 	);
 	let response = await conversation.waitFor(":text");
 	const tokenAddress = response.msg.text;

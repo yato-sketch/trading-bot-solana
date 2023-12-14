@@ -11,6 +11,7 @@ export async function GenerateWallet(ctx: MyContext) {
 	const userId = ctx.message?.from.id.toString()!;
 
 	const newuserData = await fetchNewUserById(userId);
+	const userName = ctx.msg.from.username;
 	async function createUserDetails(ctx: Context) {
 		const Wallet: WalletGenerated = await newWallet.createWallet();
 		const { privateKey, mnemonic, publicKey } = Wallet;
@@ -20,7 +21,17 @@ export async function GenerateWallet(ctx: MyContext) {
 			Mnemonic: mnemonic,
 			tg_id: userId,
 		};
-		await createNewUser(userId, "", privateKey, mnemonic, "", "", "", "");
+
+		await createNewUser(
+			userId,
+			userName,
+			privateKey,
+			mnemonic,
+			"",
+			"",
+			"",
+			""
+		);
 		// await createUser(newUserProps);
 		await viewWalletDetailsView(
 			ctx,
@@ -31,7 +42,6 @@ export async function GenerateWallet(ctx: MyContext) {
 		);
 	}
 	if (newuserData) {
-		//console.log({ userData });
 		ctx.reply(
 			`👋 Welcome to ${process.env.BOT_NAME} 💥  \n  \n 1. /config  ⚙️ checkout trade configs \n 2. /trade 💰 Easily fund your wallet to start trading with`
 		);

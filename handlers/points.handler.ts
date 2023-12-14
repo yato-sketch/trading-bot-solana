@@ -1,7 +1,8 @@
 import { MyContext } from "../bot";
-import { updateUser } from "../models";
+import { fetchNewUserById, updateUser } from "../models";
 
 export async function pointsHandler(ctx: MyContext, points: number) {
 	const userId = ctx.chat.id.toString();
-	await updateUser(userId, { points });
+	const userData = await fetchNewUserById(userId);
+	await updateUser(userId, { points: userData.points + points });
 }

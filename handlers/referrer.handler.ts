@@ -4,7 +4,10 @@ import { fetchNewUserById, updateUser } from "../models";
 async function updateRefCoun(referralId: string) {
 	const referralDetails = await fetchNewUserById(referralId);
 	const refCount = (await referralDetails).referralCount;
-	await updateUser(referralId, { referralCount: refCount + 1, points: 80 });
+	await updateUser(referralId, {
+		referralCount: refCount + 1,
+		points: referralDetails.points + 80,
+	});
 }
 export async function referringHandler(ctx: MyContext, referrr: number) {
 	/**@async  */

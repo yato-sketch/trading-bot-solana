@@ -26,6 +26,8 @@ import type {
 export interface BotRouterInterface extends Interface {
   getFunction(
     nameOrSignature:
+      | "BuytradeCounter"
+      | "SelltradeCounter"
       | "admin"
       | "buyToken"
       | "calculateSlippage"
@@ -43,6 +45,14 @@ export interface BotRouterInterface extends Interface {
     nameOrSignatureOrTopic: "TokensPurchased" | "TokensSold"
   ): EventFragment;
 
+  encodeFunctionData(
+    functionFragment: "BuytradeCounter",
+    values: [AddressLike]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "SelltradeCounter",
+    values: [AddressLike]
+  ): string;
   encodeFunctionData(functionFragment: "admin", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "buyToken",
@@ -62,7 +72,7 @@ export interface BotRouterInterface extends Interface {
   ): string;
   encodeFunctionData(
     functionFragment: "sellToken",
-    values: [AddressLike, BigNumberish, BigNumberish]
+    values: [AddressLike, BigNumberish, BigNumberish, AddressLike]
   ): string;
   encodeFunctionData(
     functionFragment: "setAdmin",
@@ -85,6 +95,14 @@ export interface BotRouterInterface extends Interface {
     values: [AddressLike, BigNumberish]
   ): string;
 
+  decodeFunctionResult(
+    functionFragment: "BuytradeCounter",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "SelltradeCounter",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "admin", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "buyToken", data: BytesLike): Result;
   decodeFunctionResult(
@@ -206,6 +224,10 @@ export interface BotRouter extends BaseContract {
     event?: TCEvent
   ): Promise<this>;
 
+  BuytradeCounter: TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+
+  SelltradeCounter: TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+
   admin: TypedContractMethod<[], [string], "view">;
 
   buyToken: TypedContractMethod<
@@ -232,7 +254,8 @@ export interface BotRouter extends BaseContract {
     [
       tokenAddress: AddressLike,
       amountIn: BigNumberish,
-      amountOutMin: BigNumberish
+      amountOutMin: BigNumberish,
+      referrer: AddressLike
     ],
     [void],
     "nonpayable"
@@ -269,6 +292,12 @@ export interface BotRouter extends BaseContract {
   ): T;
 
   getFunction(
+    nameOrSignature: "BuytradeCounter"
+  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+  getFunction(
+    nameOrSignature: "SelltradeCounter"
+  ): TypedContractMethod<[arg0: AddressLike], [bigint], "view">;
+  getFunction(
     nameOrSignature: "admin"
   ): TypedContractMethod<[], [string], "view">;
   getFunction(
@@ -297,7 +326,8 @@ export interface BotRouter extends BaseContract {
     [
       tokenAddress: AddressLike,
       amountIn: BigNumberish,
-      amountOutMin: BigNumberish
+      amountOutMin: BigNumberish,
+      referrer: AddressLike
     ],
     [void],
     "nonpayable"

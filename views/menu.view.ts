@@ -17,6 +17,7 @@ import { tradepanelContoller } from "../controllers/tradePanel.controller";
 import { balancesController } from "../controllers/balances.controller";
 import { buyTokenController } from "../controllers/buyToken.controller";
 import { sellTokenController } from "../controllers/sellToken.controller";
+import { walletController } from "../controllers/wallet.controller";
 
 const menuComposer = new Composer();
 
@@ -331,10 +332,15 @@ export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 		await ctx.deleteMessage();
 		await configContoller(ctx);
 	})
-	.text("💳 Wallet")
+	.text("💳 Wallet", async (ctx) => await walletController(ctx))
 	.row()
-	.text("📊 My orders")
+	.text("📊 My orders", async (ctx) => await balancesController(ctx))
 	.row();
+
+export const rewardsMenu = () =>
+	new InlineKeyboard()
+		.text("To do Tasks", "show-reward|task")
+		.text("Learderboard", "show-reward|leaderboard");
 
 export const buyMenu = (contractAdress: string) =>
 	new InlineKeyboard()

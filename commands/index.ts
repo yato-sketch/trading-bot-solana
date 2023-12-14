@@ -5,6 +5,7 @@ import { configsCommand } from "./configs.command";
 import { WalletCommand } from "./wallet.command";
 import { ordersCommmand } from "./orders.command";
 import { tradeCommand } from "./trade.command";
+import { rewardsCommand } from "./rewards.command";
 import { MyContext } from "../bot";
 let commandsComposer = new Composer<MyContext>();
 
@@ -15,6 +16,7 @@ let commands: any[] = [
 	{ name: "wallet", command: WalletCommand },
 	{ name: "orders", command: ordersCommmand },
 	{ name: "trade", command: tradeCommand },
+	{ name: "rewards", command: rewardsCommand },
 ];
 
 for (let index = 0; index < commands.length; index++) {

@@ -166,6 +166,7 @@ bot.api.setMyCommands([
 	{ command: "wallet", description: "Wallet details" },
 	{ command: "orders", description: "checkout pnl and opened Trades" },
 	{ command: "trade", description: "Start Trading" },
+	{ command: "rewards", description: "See Rewards" },
 ]);
 
 // Handle the /start command.
