@@ -15,7 +15,6 @@ let commands: any[] = [
 	{ name: "config", command: configsCommand },
 	{ name: "wallet", command: WalletCommand },
 	{ name: "orders", command: ordersCommmand },
-	{ name: "trade", command: tradeCommand },
 	{ name: "rewards", command: rewardsCommand },
 ];
 

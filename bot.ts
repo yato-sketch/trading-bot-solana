@@ -32,6 +32,7 @@ import {
 	fundContractButton,
 	TradingMenu,
 	settingMenu,
+	returnToMainMenu,
 } from "./views";
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
@@ -46,6 +47,7 @@ import { setTradeAmountConversation } from "./conversations/setTradeAmountConver
 import { sellTokenConversation } from "./conversations/SellToken.conversation";
 import { setSellTradeAmountConversation } from "./conversations/setSellTradeAmount.conversation";
 import { CreateWallet } from "./web3";
+import { importWalletConversation } from "./conversations/importWallet.conversation";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -135,6 +137,9 @@ bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
 bot.use(createConversation(buyTokenConversation, "buyTokenConversation"));
 bot.use(createConversation(sellTokenConversation, "sellTokenConversation"));
 bot.use(
+	createConversation(importWalletConversation, "importWalletConversation")
+);
+bot.use(
 	createConversation(
 		customBuyAmountConversation,
 		"customBuyAmountConversation"
@@ -154,18 +159,17 @@ bot.use(accountMenu);
 bot.use(fundContractButton);
 bot.use(settingMenu);
 bot.use(TradingMenu);
+
 bot.use(settingMenu);
 
-bot.use(createConversation(setCustomTotalSupply, "setCustomTotalSupply"));
 bot.use(menuComposer);
 
 bot.api.setMyCommands([
 	{ command: "help", description: "Help and Support " },
-	{ command: "start", description: "Get Started with the trading bot" },
+	{ command: "start", description: "Start Tradding" },
 	{ command: "config", description: "configure trading settings" },
 	{ command: "wallet", description: "Wallet details" },
 	{ command: "orders", description: "checkout pnl and opened Trades" },
-	{ command: "trade", description: "Start Trading" },
 	{ command: "rewards", description: "See Rewards" },
 ]);
 

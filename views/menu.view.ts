@@ -18,6 +18,7 @@ import { balancesController } from "../controllers/balances.controller";
 import { buyTokenController } from "../controllers/buyToken.controller";
 import { sellTokenController } from "../controllers/sellToken.controller";
 import { walletController } from "../controllers/wallet.controller";
+import { rewardsController } from "../controllers/rewards.controller";
 
 const menuComposer = new Composer();
 
@@ -325,16 +326,22 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 	});
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
-	.text(" 🏷️ Buy", async (ctx) => await buyTokenController(ctx))
-	.text("💸 Sell", async (ctx) => await balancesController(ctx))
+	.text(" 🏷️ Wallets", async (ctx) => await walletController(ctx))
+	.text("💸 Gas Presets")
 	.row()
-	.text("⚙️ Setting", async (ctx) => {
-		await ctx.deleteMessage();
-		await configContoller(ctx);
+	.text("⚙️ Quick Setting")
+	.text("💳 Trade Setting")
+	.row()
+	.text("📊 Transfer")
+	.text("📊 Track Tokens", async (ctx) => {
+		await setSessions(ctx);
+		await balancesController(ctx);
 	})
-	.text("💳 Wallet", async (ctx) => await walletController(ctx))
 	.row()
-	.text("📊 My orders", async (ctx) => await balancesController(ctx))
+	.text("📊 Copytrade", async (ctx) => ctx.reply("Coming Soon"))
+	.text("📊 Sniper", async (ctx) => ctx.reply("Coming Soon"))
+	.row()
+	.text("Referral", async (ctx) => await rewardsController(ctx))
 	.row();
 
 export const rewardsMenu = () =>
@@ -387,6 +394,49 @@ export const sellMenu = (
 		.text("Nextn ➡️", `next-sell|${id + 1}`)
 		.row()
 		.text(`🔄 Refresh 🔄`, `refresh-sell|${id}`);
+};
+
+export const returnToMainMenu = new InlineKeyboard().text(
+	"Return",
+	"main-menu-return"
+);
+export const gasPresetMenu = () => {
+	let isFast = false;
+	let isSlow = false;
+	let isAverage = false;
+	let isMaxSpee = false;
+	const rendertext = (isBool) => {
+		if (isBool) {
+			return redLight;
+		} else {
+			return greenLight;
+		}
+	};
+	return new Menu("gasmenu")
+		.text(`${rendertext(isSlow)} Slow`, (ctx) => {
+			isSlow = true;
+			isFast = false;
+			isAverage = false;
+			isMaxSpee = false;
+			ctx.menu.update();
+		})
+		.text(`${rendertext(isFast)}} Fast`, (ctx) => {
+			isSlow = false;
+			isFast = true;
+			isAverage = false;
+			isMaxSpee = false;
+			ctx.menu.update();
+		})
+		.row()
+		.text(`${rendertext(isAverage)}} Average`, (ctx) => {
+			isSlow = false;
+			isFast = false;
+			isAverage = true;
+			isMaxSpee = false;
+			ctx.menu.update();
+		})
+		.text("Max Speed", (ctx) => ctx.menu.update())
+		.row();
 };
 
 export { menuComposer };

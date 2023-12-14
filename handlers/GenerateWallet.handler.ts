@@ -6,6 +6,7 @@ import { createNewUser, fetchNewUserById } from "../models";
 
 import { MyContext } from "../bot";
 import { viewWalletDetailsView } from "../views";
+import { tradepanelContoller } from "../controllers/tradePanel.controller";
 export async function GenerateWallet(ctx: MyContext) {
 	const newWallet = new CreateWallet();
 	const userId = ctx.message?.from.id.toString()!;
@@ -42,9 +43,7 @@ export async function GenerateWallet(ctx: MyContext) {
 		);
 	}
 	if (newuserData) {
-		ctx.reply(
-			`👋 Welcome to ${process.env.BOT_NAME} 💥  \n  \n 1. /config  ⚙️ checkout trade configs \n 2. /trade 💰 Easily fund your wallet to start trading with`
-		);
+		await tradepanelContoller(ctx);
 	} else {
 		await createUserDetails(ctx);
 	}

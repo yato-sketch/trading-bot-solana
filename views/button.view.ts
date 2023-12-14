@@ -37,12 +37,10 @@ export const accountMenu = new Menu<MyContext>("withdraw menu")
 		await ctx.conversation.enter("withdrawEthConversation");
 	})
 	.row()
-	.text("📤 Import Wallet 📤", (ctx) => {
-		ctx.reply(`Replace Wallets Todo`);
+	.text("📤 Import Wallet 📤", async (ctx) => {
+		await ctx.conversation.enter("importWalletConversation");
 	})
-	.row()
-	.text("💰 Show Rewards 💰", async (ctx) => rewardsController(ctx))
-	.text("📈 Bot Usage analytics 📈");
+	.row();
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",
 	async (ctx) => {
