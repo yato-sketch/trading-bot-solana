@@ -59,7 +59,9 @@ export async function sellTokenConversation(
 			)} \n🕐 H6:${boldenText(priceChange.h6)} \n🕐 H1:${boldenText(
 				priceChange.h1
 			)} \n🕐 H5:${boldenText(priceChange.m5)}  `,
-			{ reply_markup: sellMenu(tokenAddress, 1, pairAddress) }
+			{
+				reply_markup: sellMenu(tokenAddress, 1, pairAddress),
+			}
 		);
 	} else {
 		await ctx.reply("Invalid Token Address");

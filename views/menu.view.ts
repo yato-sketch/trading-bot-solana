@@ -362,8 +362,8 @@ export const sellMenu = (
 	contractAdress: string,
 	id: number,
 	pairAddress: string
-) =>
-	new InlineKeyboard()
+) => {
+	return new InlineKeyboard()
 		.text("🚫 Cancel", `cancel`)
 		.row()
 		.url(
@@ -381,4 +381,6 @@ export const sellMenu = (
 		.text("Nextn ➡️", `next-sell|${id + 1}`)
 		.row()
 		.text(`🔄 Refresh 🔄`, `refresh-sell|${id}`);
+};
+
 export { menuComposer };

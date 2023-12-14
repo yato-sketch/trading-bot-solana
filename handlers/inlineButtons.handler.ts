@@ -17,28 +17,30 @@ const { WalletSigner } = Wallet;
 const callBackQueryComposer = new Composer<MyContext>();
 callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	const data = ctx.callbackQuery.data;
-
+	const msgId = ctx.msg.message_id;
 	await setSessions(ctx as any);
 
 	if (data.includes("refresh-sell")) {
 		const query = data.split("|")[1];
-		await ctx.deleteMessage();
-		await showSingleOrder(ctx, parseInt(query));
+		console.log({ msgId });
+		//	await ctx.deleteMessage();
+
+		await showSingleOrder(ctx, parseInt(query), msgId);
 	}
 	if (data.includes("prev-sell")) {
 		const query = data.split("|")[1];
 
 		if (parseInt(query) >= 0) {
-			await ctx.deleteMessage();
-			await showSingleOrder(ctx, parseInt(query));
+			const message_id = data.split("|")[2];
+			await showSingleOrder(ctx, parseInt(query), msgId);
 		}
 	}
 	if (data.includes("next-sell")) {
 		const query = data.split("|")[1];
 		const orders = await getOrders(ctx);
+
 		if (parseInt(query) < orders.length) {
-			await ctx.deleteMessage();
-			await showSingleOrder(ctx, parseInt(query));
+			await showSingleOrder(ctx, parseInt(query), msgId);
 		}
 	}
 	if (data == "front") {
