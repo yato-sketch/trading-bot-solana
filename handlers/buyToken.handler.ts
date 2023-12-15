@@ -35,10 +35,12 @@ async function getAmountOut(
 		const amounts = await dexEqRouterContract.getAmountsOut(amountInMax, [
 			{ to: tokenOut, from: tokenIn, stable: false },
 		]);
+		console.log({ Slippage });
 		if (Slippage !== 0) {
 			const outsIn = amounts[1];
-			const expectedOutput = outsIn * BigInt(10 - Slippage * 10);
-			const finalExpectedAmount = expectedOutput / BigInt(10);
+			const multiplier = 100 - Slippage * 100;
+			const expectedOutput = outsIn * BigInt(multiplier);
+			const finalExpectedAmount = expectedOutput / BigInt(100);
 
 			return finalExpectedAmount;
 		}
@@ -49,8 +51,9 @@ async function getAmountOut(
 		]);
 		if (Slippage !== 0) {
 			const outsIn = amounts[1];
-			const expectedOutput = outsIn * BigInt(10 - Slippage * 10);
-			const finalExpectedAmount = expectedOutput / BigInt(10);
+			const multiplier = 100 - Slippage * 100;
+			const expectedOutput = outsIn * BigInt(multiplier);
+			const finalExpectedAmount = expectedOutput / BigInt(100);
 
 			return finalExpectedAmount;
 		}

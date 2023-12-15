@@ -46,12 +46,18 @@ callBackQueryComposer.on("msg", async (ctx) => {
 			await getWalletAddress(ctx.session.privateKey)
 		);
 
-		if (ctx.session.autoBuy) {
+		if (ctx.session.autoBuy == true) {
 			const amountToBuy = ctx.session.buyAmount;
 			const slippage = ctx.session.slippage;
 			console.log(parseInt(walletBalnce), parseInt(amountToBuy));
-			if (parseInt(amountToBuy) >= parseInt(walletBalnce)) {
-				await ctx.reply(`TRADE  AMOUNT IS MORE THAN WALLET BALANCE`);
+			if (
+				parseInt(amountToBuy) &&
+				parseFloat(amountToBuy) > 0 &&
+				parseFloat(amountToBuy) >= parseFloat(walletBalnce)
+			) {
+				await ctx.reply(
+					`TRADE  AMOUNT IS MORE THAN WALLET BALANCE OR NOT SET`
+				);
 			} else {
 				await buyRouting(
 					WETH,

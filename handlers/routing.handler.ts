@@ -86,7 +86,9 @@ export async function sellRouting(
 			ctx
 		);
 	} else {
-		await ctx.reply(`Routing Error`);
+		await ctx.reply(
+			`Routing Error: Token Pair on Spooky  or Eqaulier \n Pls Check Again`
+		);
 	}
 }
 

@@ -9,7 +9,7 @@ import { rewardsController } from "../controllers/rewards.controller";
 const Wallet = new CreateWallet();
 const { WalletSigner, getTransactionReciept } = Wallet;
 
-export const accountMenu = new Menu<MyContext>("withdraw menu")
+export const accountMenu = new Menu<MyContext>("withdraw-menu")
 	.text("🏦 Withdraw FTM 🏦", async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");
 	})
@@ -17,7 +17,8 @@ export const accountMenu = new Menu<MyContext>("withdraw menu")
 	.text("📤 Import Wallet 📤", async (ctx) => {
 		await ctx.conversation.enter("importWalletConversation");
 	})
-	.row();
+	.row()
+	.back("Return to Main Panel");
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",
 	async (ctx) => {

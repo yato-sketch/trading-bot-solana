@@ -19,6 +19,7 @@ import { buyTokenController } from "../controllers/buyToken.controller";
 import { sellTokenController } from "../controllers/sellToken.controller";
 import { walletController } from "../controllers/wallet.controller";
 import { rewardsController } from "../controllers/rewards.controller";
+import { accountMenu } from "./button.view";
 
 const menuComposer = new Composer();
 
@@ -302,11 +303,11 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 	});
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
-	.text(" 🏷️ Wallets", async (ctx) => await walletController(ctx))
+	.submenu(" 🏷️ Wallets", "withdraw-menu")
 	.submenu("💸 Gas Presets", "gasmenu")
 	.row()
 	.submenu("⚙️ Quick Setting", "quick-settings")
-	.text("💳 Trade Setting", async (ctx) => await configContoller(ctx))
+	.submenu("💳 Trade Setting", "setting-menu")
 	.row()
 	.text(
 		"📊 Transfer",
@@ -427,10 +428,12 @@ export const gasPresetMenu = new Menu<MyContext>("gasmenu")
 	.back("Go Back");
 export const quickSettingsMenu = new Menu<MyContext>("quick-settings")
 	.text(
-		async (ctx) =>
-			ctx.session.autoBuy
+		async (ctx) => {
+			await setSessions(ctx);
+			return ctx.session.autoBuy
 				? `${greenLight} Auto Buy `
-				: `${redLight} Auto Buy`,
+				: `${redLight} Auto Buy`;
+		},
 		async (ctx) => {
 			await setSessions(ctx);
 			await updateUser(ctx.chat?.id?.toString(), {
@@ -442,10 +445,13 @@ export const quickSettingsMenu = new Menu<MyContext>("quick-settings")
 	)
 	.row()
 	.text(
-		(ctx) =>
-			ctx.session.buyAmount === "1" || ctx.session.buyAmount === "2"
+		async (ctx) => {
+			await setSessions(ctx);
+			return ctx.session.buyAmount === "1" ||
+				ctx.session.buyAmount === "2"
 				? " ==🧰 Custom Buy  Amount 🧰=="
-				: `=== ${ctx.session.buyAmount} FTM Custom Buy  Amount ===`,
+				: `=== ${ctx.session.buyAmount} FTM Custom Buy  Amount ===`;
+		},
 		async (ctx) =>
 			await ctx.conversation.enter("customBuyAmountConversation")
 	)
@@ -455,6 +461,8 @@ export const quickSettingsMenu = new Menu<MyContext>("quick-settings")
 	})
 	.row()
 	.back("Go Back");
+TradingMenu.register(settingMenu);
+TradingMenu.register(accountMenu);
 TradingMenu.register(quickSettingsMenu);
 TradingMenu.register(gasPresetMenu);
 export { menuComposer };

@@ -9,7 +9,7 @@ export async function customBuyAmountConversation(
 	ctx: MyContext
 ) {
 	await setSessions(ctx);
-	await ctx.deleteMessage();
+
 	await ctx.reply(
 		"Pls kindly Enter the Amount FTM to buy when you click on buy: "
 	);
@@ -31,8 +31,6 @@ export async function customBuyAmountConversation(
 			`Buy Trading Amount Set ${response.msg.text.toString()} `
 		);
 	}
-
-	await configContoller(ctx);
 
 	//save database
 }

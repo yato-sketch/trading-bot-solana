@@ -141,18 +141,15 @@ bot.use(
 		"setSellTradeAmountConversation"
 	)
 );
+// bot.use(accountMenu);
 bot.use(
 	createConversation(setTradeAmountConversation, "setTradeAmountConversation")
 );
 bot.use(gasPresetMenu);
 
-bot.use(createConversation(importTokenConversation, "importTokenConversation"));
-bot.use(accountMenu);
 bot.use(fundContractButton);
 bot.use(settingMenu);
 bot.use(TradingMenu);
-
-bot.use(settingMenu);
 
 bot.use(menuComposer);
 

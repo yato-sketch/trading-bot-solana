@@ -25,7 +25,7 @@ export async function tradepanelContoller(_ctx: MyContext) {
 			walletAddress
 		)} \n \n💰Balance:\n${NativeBalance} FTM \n  \nSlippage 📉: ${
 			slippage ? slippage : "No Slippage"
-		} `,
+		} %`,
 		{
 			reply_markup: TradingMenu,
 			parse_mode: "HTML",
