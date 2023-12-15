@@ -145,7 +145,7 @@ export async function buyTokenConversation(
 					)} \n🕐 H5:${boldenText(
 						priceChange.m5
 					)}  \n  \n  No Contract Sec Info\n  `,
-					{ reply_markup: buyMenu(tokenAddress) }
+					{ reply_markup: buyMenu(tokenAddress, pairAddress) }
 				);
 			}
 		}

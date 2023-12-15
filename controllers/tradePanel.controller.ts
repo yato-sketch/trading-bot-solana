@@ -19,7 +19,9 @@ export async function tradepanelContoller(_ctx: MyContext) {
 	const { autoBuy, slippage } = newuserData;
 	const amountofTrades = 0;
 	await _ctx.reply(
-		`💮 Snow Trading Bot ⬩ Sniper ⬩ Copytrade ⬩ More \n  \nChain: FTM\n🚗 Gas price: ${gasPrice} GWEI \n \n💳 Wallet Address: \n${makeCopiable(
+		`💮 ${
+			process.env.BOT_NAME
+		} ⬩ Sniper ⬩ Copytrade ⬩ More \n  \nChain: FTM\n🚗 Gas price: ${gasPrice} GWEI \n \n💳 Wallet Address: \n${makeCopiable(
 			walletAddress
 		)} \n \n💰Balance:\n${NativeBalance} FTM \n  \nSlippage 📉: ${
 			slippage ? slippage : "No Slippage"

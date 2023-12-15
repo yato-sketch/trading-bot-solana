@@ -303,13 +303,15 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 	.text(" 🏷️ Wallets", async (ctx) => await walletController(ctx))
-
 	.submenu("💸 Gas Presets", "gasmenu")
 	.row()
-	.text("⚙️ Quick Setting")
-	.text("💳 Trade Setting")
+	.submenu("⚙️ Quick Setting", "quick-settings")
+	.text("💳 Trade Setting", async (ctx) => await configContoller(ctx))
 	.row()
-	.text("📊 Transfer")
+	.text(
+		"📊 Transfer",
+		async (ctx) => await ctx.conversation.enter("withdrawEthConversation")
+	)
 	.text("📊 Track Tokens", async (ctx) => {
 		await setSessions(ctx);
 		await balancesController(ctx);
@@ -326,22 +328,16 @@ export const rewardsMenu = () =>
 		.text("To do Tasks", "show-reward|task")
 		.text("Learderboard", "show-reward|leaderboard");
 
-export const buyMenu = (contractAdress: string) =>
+export const buyMenu = (contractAdress: string, pair: string) =>
 	new InlineKeyboard()
 		.text("🚫 Cancel", `cancel`)
 		.row()
 		.url(
 			"💻 Gecko Terminal",
-			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
+			`https://www.geckoterminal.com/ftm/pools/${pair}`
 		)
-		.url(
-			"🔎 Etherscan",
-			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
-		)
-		.url(
-			"📱 Dexscreen",
-			"https://dexscreener.com/fantom/0x449fedbacc22cd3d835d966c0fa00552fb6bd3f4"
-		)
+		.url("🔎 Etherscan", `https://ftmscan.com/address/${pair}`)
+		.url("📱 Dexscreen", `https://dexscreener.com/fantom/${pair}`)
 		.row()
 		.text(`💸 Buy 100 FTM`, `buy-100-${contractAdress}`)
 		.text(`💸 Buy 20 FTM`, `buy-20-${contractAdress}`)
@@ -358,9 +354,9 @@ export const sellMenu = (
 		.row()
 		.url(
 			"💻 Gecko Terminal ",
-			`https://dexscreener.com/fantom/${pairAddress}`
+			`https://www.geckoterminal.com/ftm/pools/${pairAddress}`
 		)
-		.url("🔎 Etherscan", `https://dexscreener.com/fantom/${pairAddress}`)
+		.url("🔎 Etherscan", `https://ftmscan.com/address/${pairAddress}`)
 		.url("📱 Dexscreen", `https://dexscreener.com/fantom/${pairAddress}`)
 		.row()
 		.text(`💸 Sell 100 %`, `sell-100-${contractAdress}`)
@@ -378,20 +374,87 @@ export const returnToMainMenu = new InlineKeyboard().text(
 	"main-menu-return"
 );
 export const gasPresetMenu = new Menu<MyContext>("gasmenu")
-	.text(` Slow`, (ctx) => {
-		ctx.menu.update();
-	})
-	.text(` Fast`, (ctx) => {
-		ctx.menu.update();
-	})
+	.text(
+		async (ctx) =>
+			ctx.session.isSlow ? `${greenLight} Slow` : `${redLight} Slow`,
+		(ctx) => {
+			ctx.session.isSlow = true;
+			ctx.session.isAverage = false;
+			ctx.session.isFast = false;
+			ctx.session.isMaxSpeed = false;
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) =>
+			ctx.session.isFast ? `${greenLight} Fast` : `${redLight} Fast`,
+		(ctx) => {
+			ctx.session.isFast = true;
+			ctx.session.isSlow = false;
+			ctx.session.isMaxSpeed = false;
+			ctx.session.isAverage = false;
+			ctx.menu.update();
+		}
+	)
 	.row()
-	.text(` Average`, (ctx) => {
-		ctx.menu.update();
-	})
-	.text(`Max Speed`, (ctx) => {
-		ctx.menu.update();
+	.text(
+		async (ctx) =>
+			ctx.session.isAverage
+				? `${greenLight} Average`
+				: `${redLight} Average`,
+		(ctx) => {
+			ctx.session.isAverage = true;
+			ctx.session.isSlow = false;
+			ctx.session.isFast = false;
+			ctx.session.isMaxSpeed = false;
+			ctx.menu.update();
+		}
+	)
+	.text(
+		async (ctx) =>
+			ctx.session.isMaxSpeed
+				? `${greenLight} Max Speed`
+				: `${redLight} Max Speed`,
+		(ctx) => {
+			ctx.session.isMaxSpeed = true;
+			ctx.session.isSlow = false;
+			ctx.session.isFast = false;
+			ctx.session.isAverage = false;
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.back("Go Back");
+export const quickSettingsMenu = new Menu<MyContext>("quick-settings")
+	.text(
+		async (ctx) =>
+			ctx.session.autoBuy
+				? `${greenLight} Auto Buy `
+				: `${redLight} Auto Buy`,
+		async (ctx) => {
+			await setSessions(ctx);
+			await updateUser(ctx.chat?.id?.toString(), {
+				autoBuy: !ctx.session.autoBuy,
+			});
+			await setSessions(ctx);
+			ctx.menu.update();
+		}
+	)
+	.row()
+	.text(
+		(ctx) =>
+			ctx.session.buyAmount === "1" || ctx.session.buyAmount === "2"
+				? " ==🧰 Custom Buy  Amount 🧰=="
+				: `=== ${ctx.session.buyAmount} FTM Custom Buy  Amount ===`,
+		async (ctx) =>
+			await ctx.conversation.enter("customBuyAmountConversation")
+	)
+	.row()
+	.text("Slippage", async (ctx) => {
+		await ctx.conversation.enter("setcustomSlippageConversation");
 	})
 	.row()
 	.back("Go Back");
+TradingMenu.register(quickSettingsMenu);
 TradingMenu.register(gasPresetMenu);
 export { menuComposer };

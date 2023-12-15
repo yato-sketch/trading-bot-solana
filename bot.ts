@@ -41,6 +41,7 @@ import { sellTokenConversation } from "./conversations/SellToken.conversation";
 import { setSellTradeAmountConversation } from "./conversations/setSellTradeAmount.conversation";
 import { CreateWallet } from "./web3";
 import { importWalletConversation } from "./conversations/importWallet.conversation";
+import { setcustomSlippageConversation } from "./conversations/setCustomSlippage.conversation";
 export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
@@ -63,6 +64,10 @@ interface SessionData {
 	customBuyToken: string;
 	customSellToken: string;
 	tokenBalance: any;
+	isSlow: boolean;
+	isFast: boolean;
+	isAverage: boolean;
+	isMaxSpeed: boolean;
 }
 
 // Create an instance of the `Bot` class and pass your bot token to it.
@@ -83,13 +88,17 @@ function initial(): SessionData {
 		autoBuy: false,
 		autoSell: false,
 		slippage: "",
-		buyAmount: "",
-		sellAmount: "",
+		buyAmount: "0",
+		sellAmount: "0",
 		tokens: [],
 		notification: false,
 		customBuyToken: "",
 		tokenBalance: "",
 		customSellToken: "",
+		isAverage: false,
+		isMaxSpeed: false,
+		isFast: false,
+		isSlow: false,
 	};
 }
 
@@ -113,6 +122,12 @@ bot.use(createConversation(buyTokenConversation, "buyTokenConversation"));
 bot.use(createConversation(sellTokenConversation, "sellTokenConversation"));
 bot.use(
 	createConversation(importWalletConversation, "importWalletConversation")
+);
+bot.use(
+	createConversation(
+		setcustomSlippageConversation,
+		"setcustomSlippageConversation"
+	)
 );
 bot.use(
 	createConversation(
