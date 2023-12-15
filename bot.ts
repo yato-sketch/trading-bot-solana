@@ -8,14 +8,7 @@ import {
 } from "grammy";
 import { session } from "grammy";
 import { commandsComposer } from "./commands";
-import {
-	setCustomTotalSupply,
-	setCustomInitTax,
-	setTokenMetadataConversation,
-	setCustomFinalTaxConversation,
-	fundContractConversation,
-	importTokenConversation,
-} from "./conversations";
+import { importTokenConversation } from "./conversations";
 import {
 	ConversationFlavor,
 	conversations,
@@ -27,12 +20,12 @@ import {
 	initTaxMenu,
 	finalTaxMenu,
 	decimalMenu,
-	DeployTokenMenu,
 	menuComposer,
 	fundContractButton,
 	TradingMenu,
 	settingMenu,
 	returnToMainMenu,
+	gasPresetMenu,
 } from "./views";
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
@@ -53,16 +46,6 @@ export type MyContext = Context &
 	ConversationFlavor;
 interface SessionData {
 	walletAddress: string | null;
-	isSetTotalSupply: boolean;
-	totalSupply: number;
-	isInitTaxSet: boolean;
-	initTax: number;
-	isFinTaxSet: boolean;
-	finTax: number;
-	symbolIsSet: boolean;
-	tokenSymbol: string;
-	marketingWalletIsSet: boolean;
-	marketingWalletAddress: string;
 	tokenName: string;
 	tokenNameIsSet: boolean;
 	tokenDecimalsSet: boolean;
@@ -88,20 +71,12 @@ const bot = new Bot<MyContext>(process.env.BOT_TOKEN || "not bot token"); // <--
 function initial(): SessionData {
 	return {
 		walletAddress: null,
-		isSetTotalSupply: false,
-		isInitTaxSet: false,
-		isFinTaxSet: false,
-		symbolIsSet: false,
-		marketingWalletIsSet: false,
 		tokenNameIsSet: false,
 		tokenDecimalsSet: false,
 		tokendecimal: 0,
-		totalSupply: 0,
-		tokenSymbol: "",
-		marketingWalletAddress: "",
+
 		tokenName: "",
-		finTax: 0,
-		initTax: 0,
+
 		privateKey: "",
 		amountAmountLiqtoAdd: "",
 		userName: "",
@@ -154,6 +129,8 @@ bot.use(
 bot.use(
 	createConversation(setTradeAmountConversation, "setTradeAmountConversation")
 );
+bot.use(gasPresetMenu);
+
 bot.use(createConversation(importTokenConversation, "importTokenConversation"));
 bot.use(accountMenu);
 bot.use(fundContractButton);

@@ -1,9 +1,5 @@
 import { Conversation, ConversationFlavor } from "@grammyjs/conversations";
 import { MyContext } from "../bot";
-export * from "./setCustomTotalSupply.conversation";
-export * from "./setCustomInitTax.conversation";
-export * from "./setTokenMetadata.conversation";
-export * from "./setCustomFinalTax.conversation";
 export * from "./withdrawEth.conversations";
 export * from "./fundContract.conversation";
 export * from "./importToken.conversation";

@@ -9,29 +9,6 @@ import { rewardsController } from "../controllers/rewards.controller";
 const Wallet = new CreateWallet();
 const { WalletSigner, getTransactionReciept } = Wallet;
 
-export const DeployTokenMenu = new Menu<MyContext>("deployer-menu")
-	.text("Deploy Token", (ctx) => {
-		const {
-			tokenName,
-			tokenSymbol,
-			tokendecimal,
-			marketingWalletAddress,
-			finTax,
-			initTax,
-			totalSupply,
-		} = ctx.session;
-		console.log({
-			tokenName,
-			tokenSymbol,
-			tokendecimal,
-			marketingWalletAddress,
-			finTax,
-			initTax,
-			totalSupply,
-		});
-	})
-	.row();
-
 export const accountMenu = new Menu<MyContext>("withdraw menu")
 	.text("🏦 Withdraw FTM 🏦", async (ctx) => {
 		await ctx.conversation.enter("withdrawEthConversation");

@@ -9,7 +9,7 @@ import {
 } from "../utils";
 import { Composer } from "grammy";
 import { myState } from "../utils";
-import { DeployTokenMenu } from "./button.view";
+
 import { configContoller } from "../controllers/config.controller";
 import { updateUser } from "../models";
 import { setSessions } from "../handlers";
@@ -24,30 +24,6 @@ const menuComposer = new Composer();
 
 const redLight = "🔴";
 const greenLight = "🟢";
-async function goToIniTaxMenu(ctx: MyContext) {
-	await ctx.reply(`Total Supply Set to: ${ctx.session.totalSupply} ✅`);
-	await ctx.reply("Set Inital Tax ", { reply_markup: initTaxMenu });
-}
-
-async function gotoDecimal(ctx: MyContext) {
-	await ctx.reply(`Final Tax is Set to: ${ctx.session.finTax} ✅`);
-	await ctx.reply("Set Token Decimal ", { reply_markup: decimalMenu });
-}
-async function goToSetTokenMetadata(ctx: MyContext) {
-	await ctx.reply(`Token Decimal is Set to: ${ctx.session.tokendecimal} ✅`);
-	await ctx.conversation.enter("setTokenMetadataConversation");
-}
-export const totalSupplyKeyBoard = new InlineKeyboard()
-	.text("Set Total Supply")
-	.row()
-	.text("1 billion", "total-supply|1-billion")
-	.text("1 million", "total-supply|1-million")
-	.row()
-	.text("10 million", "total-supply|10-million")
-	.text("100 million", "total-supply|100-million")
-	.row()
-	.text("Custom  TotalSupply", "total-supply|custom")
-	.row();
 
 export const initTaxMenu = new InlineKeyboard()
 	.text("2 %", "init-tax|2-%")
@@ -327,7 +303,8 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 	.text(" 🏷️ Wallets", async (ctx) => await walletController(ctx))
-	.text("💸 Gas Presets")
+
+	.submenu("💸 Gas Presets", "gasmenu")
 	.row()
 	.text("⚙️ Quick Setting")
 	.text("💳 Trade Setting")
@@ -400,43 +377,21 @@ export const returnToMainMenu = new InlineKeyboard().text(
 	"Return",
 	"main-menu-return"
 );
-export const gasPresetMenu = () => {
-	let isFast = false;
-	let isSlow = false;
-	let isAverage = false;
-	let isMaxSpee = false;
-	const rendertext = (isBool) => {
-		if (isBool) {
-			return redLight;
-		} else {
-			return greenLight;
-		}
-	};
-	return new Menu("gasmenu")
-		.text(`${rendertext(isSlow)} Slow`, (ctx) => {
-			isSlow = true;
-			isFast = false;
-			isAverage = false;
-			isMaxSpee = false;
-			ctx.menu.update();
-		})
-		.text(`${rendertext(isFast)}} Fast`, (ctx) => {
-			isSlow = false;
-			isFast = true;
-			isAverage = false;
-			isMaxSpee = false;
-			ctx.menu.update();
-		})
-		.row()
-		.text(`${rendertext(isAverage)}} Average`, (ctx) => {
-			isSlow = false;
-			isFast = false;
-			isAverage = true;
-			isMaxSpee = false;
-			ctx.menu.update();
-		})
-		.text("Max Speed", (ctx) => ctx.menu.update())
-		.row();
-};
-
+export const gasPresetMenu = new Menu<MyContext>("gasmenu")
+	.text(` Slow`, (ctx) => {
+		ctx.menu.update();
+	})
+	.text(` Fast`, (ctx) => {
+		ctx.menu.update();
+	})
+	.row()
+	.text(` Average`, (ctx) => {
+		ctx.menu.update();
+	})
+	.text(`Max Speed`, (ctx) => {
+		ctx.menu.update();
+	})
+	.row()
+	.back("Go Back");
+TradingMenu.register(gasPresetMenu);
 export { menuComposer };
