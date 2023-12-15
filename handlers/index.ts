@@ -124,7 +124,10 @@ callBackQueryComposer.on("msg", async (ctx) => {
 					)} \n📝 Buy Tax: ${boldenText(
 						buy_tax
 					)} \n🍯 Is honeyPot:${boldenText(is_honeypot)}`,
-					{ reply_markup: buyMenu(address), parse_mode: "HTML" }
+					{
+						reply_markup: buyMenu(address, pairAddress),
+						parse_mode: "HTML",
+					}
 				);
 			} else {
 				const {
@@ -155,7 +158,7 @@ callBackQueryComposer.on("msg", async (ctx) => {
 					)} \n🕐 H5:${boldenText(
 						priceChange.m5
 					)}  \n  \n  No Contract Sec Info\n  `,
-					{ reply_markup: buyMenu(address) }
+					{ reply_markup: buyMenu(address, pairAddress) }
 				);
 			}
 		}

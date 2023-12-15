@@ -114,7 +114,10 @@ export async function buyTokenConversation(
 					)} \n📝 Buy Tax: ${boldenText(
 						buy_tax
 					)} \n🍯 Is honeyPot:${boldenText(is_honeypot)}`,
-					{ reply_markup: buyMenu(tokenAddress), parse_mode: "HTML" }
+					{
+						reply_markup: buyMenu(tokenAddress, pairAddress),
+						parse_mode: "HTML",
+					}
 				);
 			} else {
 				const {
