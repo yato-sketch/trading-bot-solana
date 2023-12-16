@@ -18,7 +18,7 @@ export async function customBuyAmountConversation(
 		await updateUser(ctx.chat.id.toString(), {
 			buyAmount: response.msg.text.toString(),
 		});
-		await ctx.reply(`Buy Trading Amount St `);
+		await ctx.reply(`Buy Trading Amount Set`);
 	} else {
 		await ctx.reply(
 			"Invalid Value! \n Pls kindly Enter the Amount FTM to buy when you click on buy: "

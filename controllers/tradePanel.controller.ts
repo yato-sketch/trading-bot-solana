@@ -6,6 +6,7 @@ import { setSessions } from "../handlers";
 import { fetchNewUserById } from "../models";
 import { CreateWallet, getGasPrice, getWalletAddress } from "../web3";
 import { makeCopiable } from "../utils";
+import { formatUnits, parseUnits } from "ethers";
 
 const { EthBalance } = new CreateWallet();
 export async function tradepanelContoller(_ctx: MyContext) {
@@ -21,7 +22,9 @@ export async function tradepanelContoller(_ctx: MyContext) {
 	await _ctx.reply(
 		`💮 ${
 			process.env.BOT_NAME
-		} ⬩ Sniper ⬩ Copytrade ⬩ More \n  \nChain: FTM\n🚗 Gas price: ${gasPrice} GWEI \n \n💳 Wallet Address: \n${makeCopiable(
+		} ⬩ Sniper ⬩ Copytrade ⬩ More \n  \nChain: FTM\n🚗 Gas price: ${parseFloat(
+			formatUnits(gasPrice, "gwei")
+		).toFixed(2)} GWEI \n \n💳 Wallet Address: \n${makeCopiable(
 			walletAddress
 		)} \n \n💰Balance:\n${NativeBalance} FTM \n  \nSlippage 📉: ${
 			slippage ? slippage : "No Slippage"

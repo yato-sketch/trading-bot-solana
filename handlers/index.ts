@@ -2,7 +2,13 @@ import { MyContext } from "../bot";
 export * from ".";
 export * from "./inlineButtons.handler";
 export * from "./GenerateWallet.handler";
-import { boldenText, customStateContext, myState } from "../utils";
+import {
+	addHyperLink,
+	boldenText,
+	customStateContext,
+	makeCopiable,
+	myState,
+} from "../utils";
 import { Composer } from "grammy";
 import { CreateWallet, TokenDeployer, getWalletAddress } from "../web3";
 import { ethers, isAddress, parseEther } from "ethers";
@@ -97,39 +103,40 @@ callBackQueryComposer.on("msg", async (ctx) => {
 				} = tokenDetails;
 
 				await ctx.reply(
-					`${boldenText(
-						symbol
-					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
-						volume.h24
-					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
-						volume.h1
+					`🪙 ${boldenText(symbol)} (${addHyperLink(
+						symbol.toLowerCase(),
+						"https://ftmscan.com/address/" + pairAddress
+					)}) \n \nPrice USD: ${priceUsd} USD \nAddress: ${boldenText(
+						makeCopiable(pairAddress)
+					)} \n \n${boldenText("Volume")}: \n⏳ H24: ${boldenText(
+						makeCopiable(volume.h24)
+					)}  \n⏳ H6: ${boldenText(
+						makeCopiable(volume.h6)
 					)} \n⏳ M5: ${boldenText(
-						volume.m5
+						makeCopiable(volume.m5)
 					)} \n \n📈Liquidity📈:  ${boldenText(
-						liquidity.usd
-					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
-						priceChange.h24
-					)} \n🕐 H6:${boldenText(
-						priceChange.h6
-					)} \n🕐 H1:${boldenText(
-						priceChange.h1
-					)} \n🕐 H5:${boldenText(
-						priceChange.m5
-					)}  \n  \n🔣 Symbol: ${symbol}  \n🔣 Decimal:${decimal}\n  \n ${boldenText(
-						"🔒 Contract Sec Info 🔒"
-					)}\n👨‍🎨 Creator Address: ${boldenText(
-						creator_address
+						makeCopiable(liquidity.usd)
+					)} USD 💰  \n  \n🔣 Symbol: ${symbol}  \n🔣 Decimal:${makeCopiable(
+						decimal
+					)}\n  \n ${boldenText(
+						`🔒 ${boldenText("Contract Sec Info")} 🔒`
+					)}\n \n👨‍🎨 Creator Address: ${boldenText(
+						makeCopiable(creator_address)
 					)} \n🎭 Honey Pot with Same Creator: ${boldenText(
-						honeypot_with_same_creator
-					)} \n📊 Total Supply: ${boldenText(
-						total_supply
-					)} \n💰 lp Total Supply: ${lp_total_supply} \n👤 Lp Holder Count: ${boldenText(
-						lp_holder_count
-					)} \n📝 Sell Tax: ${boldenText(
-						sell_tax
+						makeCopiable(honeypot_with_same_creator)
+					)}\n  \n📊 Total Supply: ${boldenText(
+						makeCopiable(total_supply)
+					)} \n💰 lp Total Supply: ${makeCopiable(
+						makeCopiable(lp_total_supply)
+					)} \n👤 Lp Holder Count: ${boldenText(
+						makeCopiable(lp_holder_count)
+					)}\n  \n📝 Sell Tax: ${boldenText(
+						makeCopiable(sell_tax)
 					)} \n📝 Buy Tax: ${boldenText(
-						buy_tax
-					)} \n🍯 Is honeyPot:${boldenText(is_honeypot)}`,
+						makeCopiable(buy_tax)
+					)} \n🍯 Is honeyPot:${boldenText(
+						makeCopiable(is_honeypot)
+					)}`,
 					{
 						reply_markup: buyMenu(address, pairAddress),
 						parse_mode: "HTML",
@@ -145,9 +152,10 @@ callBackQueryComposer.on("msg", async (ctx) => {
 					fdv,
 				} = tokenDetails;
 				await ctx.reply(
-					`${boldenText(
-						symbol
-					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+					`🪙 ${boldenText(symbol)} ${addHyperLink(
+						symbol,
+						"https://ftmscan.com/"
+					)}} \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
 						volume.h24
 					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
 						volume.h1
@@ -155,15 +163,7 @@ callBackQueryComposer.on("msg", async (ctx) => {
 						volume.m5
 					)} \n \n📈Liquidity📈:  ${boldenText(
 						liquidity.usd
-					)} USD 💰  \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
-						priceChange.h24
-					)} \n🕐 H6:${boldenText(
-						priceChange.h6
-					)} \n🕐 H1:${boldenText(
-						priceChange.h1
-					)} \n🕐 H5:${boldenText(
-						priceChange.m5
-					)}  \n  \n  No Contract Sec Info\n  `,
+					)} USD 💰   \n  No Contract Sec Info\n  `,
 					{ reply_markup: buyMenu(address, pairAddress) }
 				);
 			}

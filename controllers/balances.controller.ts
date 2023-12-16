@@ -7,7 +7,7 @@ import { fetchNewUserById, updateUser } from "../models";
 import { CreateWallet, getWalletAddress } from "../web3";
 import { formatUnits, id } from "ethers";
 import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
-import { boldenText } from "../utils";
+import { boldenText, makeCopiable } from "../utils";
 const { tokenBalanceOf, getSymbol, getDecimals } = new CreateWallet();
 
 const testEditMenu = new InlineKeyboard()
@@ -36,7 +36,7 @@ const tokenBalanceView = async (
 			)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
 				priceUsd
 			)} USD \n🔗 PairAddress: ${boldenText(
-				pairAddress
+				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
 				volume.h24
 			)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
@@ -45,13 +45,7 @@ const tokenBalanceView = async (
 				volume.m5
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				liquidity.usd
-			)} USD 💰 \n \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
-				priceChange.h24
-			)} \n🕐 H6:${boldenText(priceChange.h6)} \n🕐 H1:${boldenText(
-				priceChange.h1
-			)} \n🕐 H5:${boldenText(
-				priceChange.m5
-			)}   \n💰 Your Token  Balance: ${boldenText(
+			)} USD 💰 \n \n    \n💰 Your Token  Balance: ${boldenText(
 				balance.toString()
 			)} ${symbol} \n🔣 Token Decimal:${boldenText(
 				decimal.toString()
@@ -72,7 +66,7 @@ const tokenBalanceView = async (
 			)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
 				priceUsd
 			)} USD \n🔗 PairAddress: ${boldenText(
-				pairAddress
+				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
 				volume.h24
 			)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
@@ -81,13 +75,7 @@ const tokenBalanceView = async (
 				volume.m5
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				liquidity.usd
-			)} USD 💰 \n \n PriceChange 🔺🔻\n🕐 H24:${boldenText(
-				priceChange.h24
-			)} \n🕐 H6:${boldenText(priceChange.h6)} \n🕐 H1:${boldenText(
-				priceChange.h1
-			)} \n🕐 H5:${boldenText(
-				priceChange.m5
-			)}   \n💰 Your Token  Balance: ${boldenText(
+			)} USD 💰 \n  \n💰 Your Token  Balance: ${boldenText(
 				balance.toString()
 			)} ${symbol} \n🔣 Token Decimal:${boldenText(
 				decimal.toString()

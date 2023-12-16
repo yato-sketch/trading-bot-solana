@@ -11,7 +11,7 @@ import {
 } from "../handlers/fetchTokenDetails.handler";
 import { buyRouting } from "../handlers/routing.handler";
 import { WETH } from "../handlers";
-import { boldenText } from "../utils";
+import { addHyperLink, boldenText, makeCopiable } from "../utils";
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 export async function buyTokenConversation(
 	conversation: MyConversation,
@@ -83,7 +83,9 @@ export async function buyTokenConversation(
 				await ctx.reply(
 					`${boldenText(
 						symbol
-					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${makeCopiable(
+						addHyperLink(process.env.SCAN, pairAddress)
+					)} \nVolume: \n⏳ H24: ${boldenText(
 						volume.h24
 					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
 						volume.h1
@@ -131,7 +133,9 @@ export async function buyTokenConversation(
 				await ctx.reply(
 					`${boldenText(
 						symbol
-					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${pairAddress} \nVolume: \n⏳ H24: ${boldenText(
+					)} Details \nPrice USD: ${priceUsd} USD \nPairAddress: ${makeCopiable(
+						pairAddress
+					)} \nVolume: \n⏳ H24: ${boldenText(
 						volume.h24
 					)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
 						volume.h1
@@ -155,4 +159,5 @@ export async function buyTokenConversation(
 	} else {
 		await ctx.reply("Invalid Token Address");
 	}
+	return;
 }

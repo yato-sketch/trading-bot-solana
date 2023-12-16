@@ -1,9 +1,13 @@
 import { Bot, CommandContext, Context } from "grammy";
 import { sleep } from "../web3/contracts-handler";
+import { askQuestion } from "../handlers/askquestion.handler";
+import { MyContext } from "../bot";
 
 export async function helpCommand(_ctx: CommandContext<Context>) {
 	await _ctx.reply(
 		`JOIN OUR TELEGRAM CHANNEL TO GET HELP \n ${process.env.BOT_NAME} `
 	);
+	//await askQuestion(_ctx as MyContext, "What is your Name?");
+
 	console.log("first", _ctx.message.message_id);
 }

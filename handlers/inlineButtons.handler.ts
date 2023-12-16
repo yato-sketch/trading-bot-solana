@@ -26,6 +26,10 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	if (data.includes("menu-return")) {
 		await tradepanelContoller(ctx);
 	}
+	if (data.includes("cancel")) {
+		ctx.deleteMessage();
+		await tradepanelContoller(ctx);
+	}
 
 	if (data.includes("show-reward")) {
 		const query = data.split("|")[1];
@@ -136,4 +140,5 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 
 	await ctx.answerCallbackQuery();
 });
+// callBackQueryComposer.hears("", (ctx) => {});
 export { callBackQueryComposer };

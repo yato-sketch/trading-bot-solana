@@ -298,8 +298,8 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 	.row()
 	.text("↩️ Return to trading Menu", async (ctx) => {
 		await ctx.deleteMessage();
-		await ctx.reply(`/trade go to trading  panel`);
-		//await tradepanelContoller(ctx);
+		// await ctx.reply(`/trade go to trading  panel`);
+		await tradepanelContoller(ctx);
 	});
 
 export const TradingMenu = new Menu<MyContext>("main-trading-menu")
@@ -340,8 +340,19 @@ export const buyMenu = (contractAdress: string, pair: string) =>
 		.url("🔎 Etherscan", `https://ftmscan.com/address/${pair}`)
 		.url("📱 Dexscreen", `https://dexscreener.com/fantom/${pair}`)
 		.row()
-		.text(`💸 Buy 100 FTM`, `buy-100-${contractAdress}`)
+		.text(`💸 Buy 10 FTM`, `buy-10-${contractAdress}`)
 		.text(`💸 Buy 20 FTM`, `buy-20-${contractAdress}`)
+		.row()
+		.text(`💸 Buy 50 FTM`, `buy-50-${contractAdress}`)
+		.text(`💸 Buy 100 FTM`, `buy-100-${contractAdress}`)
+		.row()
+		.text(`💸 Buy 200 FTM`, `buy-200-${contractAdress}`)
+		.text(`💸 Buy 400 FTM`, `buy-400-${contractAdress}`)
+		.row()
+		.text(`💸 Buy 600 FTM`, `buy-600-${contractAdress}`)
+		.text(`💸 Buy 1000 FTM`, `buy-1000-${contractAdress}`)
+		.row()
+		.text(`💸 Buy 2000 FTM`, `buy-2000-${contractAdress}`)
 		.text(`💸 Buy X FTM`, `buy-custom-${contractAdress}`)
 		.row()
 		.text(`🔄  Refresh 🔄 `, `refresh-buy|${contractAdress}`);
