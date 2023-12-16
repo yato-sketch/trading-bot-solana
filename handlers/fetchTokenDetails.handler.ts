@@ -1,5 +1,4 @@
 import axios from "axios";
-import { GoPlus, ErrorCode } from "@goplus/sdk-node";
 export async function getTokenInfo(tokenAddress: string) {
 	let config = {
 		method: "get",

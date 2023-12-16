@@ -18,7 +18,6 @@
 		"@1inch/limit-order-protocol": "^2.0.4",
 		"@goplus/sdk-node": "^1.0.9",
 		"@grammyjs/conversations": "^1.1.2",
-		"@grammyjs/hydrate": "^1.3.1",
 		"@grammyjs/i18n": "^1.0.1",
 		"@grammyjs/menu": "^1.2.1",
 		"@grammyjs/router": "^2.0.0",

@@ -14,7 +14,6 @@ import {
 	conversations,
 	createConversation,
 } from "@grammyjs/conversations";
-import { hydrate, HydrateFlavor } from "@grammyjs/hydrate";
 import { callbackHandler, listenerComposer } from "./handlers";
 import {
 	CreateTokenMenu,
@@ -44,7 +43,7 @@ import { setSellTradeAmountConversation } from "./conversations/setSellTradeAmou
 import { CreateWallet } from "./web3";
 import { importWalletConversation } from "./conversations/importWallet.conversation";
 import { setcustomSlippageConversation } from "./conversations/setCustomSlippage.conversation";
-export type MyContext = HydrateFlavor<Context> &
+export type MyContext = Context &
 	SessionFlavor<SessionData> &
 	ConversationFlavor;
 interface SessionData {
@@ -116,7 +115,6 @@ const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 // 	const rpc = process.env.RPC;
 // 	return;
 // });
-bot.use(hydrate());
 bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
 bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
