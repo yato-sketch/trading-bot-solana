@@ -24,3 +24,17 @@ model User {
   points        Int
   TradeVolume   Int
 }
+
+model Trades {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  tokenAddress  String
+  priceBoughtAt String
+  Orders        Orders? @relation(fields: [ordersId], references: [id])
+  ordersId      String? @db.ObjectId
+}
+
+model Orders {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  tgId     String   @unique
+  myTrades Trades[]
+}

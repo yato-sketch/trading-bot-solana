@@ -22,7 +22,7 @@ export async function setSellTradeAmountConversation(
 			(parseInt(response.msg.text) / 100) * 1000
 		);
 		const amountOut = BigInt(sellingPercent * tokenBalance) / BigInt(1000);
-		const slippage = 40;
+		const slippage = 10;
 		// await sellTokenHandler(
 		// 	slippage,
 		// 	amountOut,

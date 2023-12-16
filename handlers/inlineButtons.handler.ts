@@ -111,7 +111,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 			const tokenBalance = await (
 				await tokenC
 			).balanceOf(await getWalletAddress(ctx.session.privateKey));
-			const slippage = 40;
+			const slippage = 10;
 			const sellingPercent = BigInt((parseInt(query[1]) / 100) * 1000);
 			const amountOut =
 				BigInt(sellingPercent * tokenBalance) / BigInt(1000);
