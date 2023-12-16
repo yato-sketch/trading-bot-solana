@@ -35,7 +35,7 @@ export async function ParseError(ctx: MyContext, err: any) {
 			JSON.parse(JSON.stringify(err)).shortMessage &&
 			JSON.parse(JSON.stringify(err)).shortMessage
 		} ${
-			JSON.parse(JSON.stringify(err)).erro.message
+			JSON.parse(JSON.stringify(err)).error.message
 		} ⚠️\n ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`,
 		{ reply_markup: FaqButton }
 	);

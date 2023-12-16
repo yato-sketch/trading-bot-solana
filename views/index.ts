@@ -15,10 +15,10 @@ export async function viewWalletDetailsView(
 ) {
 	ctx.reply(
 		`🔒${boldenText(
-			" New Encrypted Ethereum Wallet Created"
-		)}.🔒  \n 💳 Wallet Address:\n ${makeCopiable(
+			" New Encrypted Fantom Wallet Created"
+		)}.🔒\n   \n 💳 Wallet Address:\n ${makeCopiable(
 			publicKey
-		)} \n 🔑 Private Key:\n${makeCopiable(
+		)}\n  \n 🔑 Private Key:\n${makeCopiable(
 			privateKey
 		)} \n🔍Mnemonic Phrase:\n${makeCopiable(
 			mnemonic
