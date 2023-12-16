@@ -3,10 +3,13 @@ import { getAllUsers } from "../models";
 import { rewardsMenu } from "../views";
 
 export async function getLeaderboard(ctx: MyContext, msgId: number) {
-	const user = await getAllUsers();
+	let user = await getAllUsers();
 	let leaderboard = `Name    | Points   `;
-	user.forEach((el) => {
-		leaderboard += `\n${el.userName} | ${el.points}`;
+	user.sort((a, b) => b.points - a.points);
+	user.forEach((el, id) => {
+		if (id <= 19) {
+			leaderboard += `\n${el.userName} | ${el.points}`;
+		}
 	});
 
 	await ctx.api.editMessageText(ctx.chat.id, msgId, leaderboard, {
