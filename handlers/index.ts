@@ -36,12 +36,12 @@ export const setSessions = async (ctx: MyContext) => {
 };
 
 export const WETH = "0x21be370D5312f44cB42ce377BC9b8a0cEF1A4C83";
-export const BotRouter = "0xA7c59f010700930003b33aB25a7a0679C860f29c";
+export const BotRouter = "0x3A2546551c9C9DAb69A0d5Adbe0da319a1b238a2";
 export const spookyDexRouter = "0xF491e7B69E4244ad4002BC14e878a34207E38c29";
 export const spookyDexFactory = "0x152eE697f2E276fA89E96742e9bB9aB1F2E61bE3";
 export const equalizerRouter = "0x2aa07920E4ecb4ea8C801D9DFEce63875623B285";
-export const equalizerBotRouter = "0x22753E4264FDDc6181dc7cce468904A80a363E44";
-export const DefaultRefWallet = "0x829ceb39FeE0155d63530de02450AbC3b6652602";
+export const equalizerBotRouter = "0x99574d43Ed40036B9De37cf270471a5Ac3E9895B";
+export const DefaultRefWallet = "0xE62d1016216F00E2832a16515C54AFB1c5B18a3a";
 export const deployTokenHandler = async (ctx: MyContext) => {};
 const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 callBackQueryComposer.on("msg", async (ctx) => {
