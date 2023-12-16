@@ -92,6 +92,7 @@ export async function sellTokenHandler(
 	);
 	await TransactionLoading(ctx);
 	const gasPrice = await getGasPrice(process.env.RPC);
+	ctx.reply("Approving Transaction");
 	await Erc20token.approve(botRouterAddress, ethers.MaxUint256, { gasPrice });
 	const userId = ctx.chat.id.toString();
 	const { referrer } = await fetchNewUserById(userId);
