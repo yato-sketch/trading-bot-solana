@@ -91,7 +91,8 @@ export async function sellTokenHandler(
 		privateKey
 	);
 	await TransactionLoading(ctx);
-	await Erc20token.approve(botRouterAddress, ethers.MaxUint256);
+	const gasPrice = await getGasPrice(process.env.RPC);
+	await Erc20token.approve(botRouterAddress, ethers.MaxUint256, { gasPrice });
 	const userId = ctx.chat.id.toString();
 	const { referrer } = await fetchNewUserById(userId);
 	if (referrer) {
@@ -102,7 +103,7 @@ export async function sellTokenHandler(
 		const gasPrice = await getGasPrice(process.env.RPC);
 		return await botRouter
 			.sellToken(tokenOut, amountInMax, amountMinOut, referrerAddress, {
-				gasPrice,
+				gasPrice: gasPrice * BigInt(2),
 			})
 			.then(async (res) => {
 				console.log("success", { res });
@@ -114,7 +115,7 @@ export async function sellTokenHandler(
 		const gasPrice = await getGasPrice(process.env.RPC);
 		return await botRouter
 			.sellToken(tokenOut, amountInMax, amountMinOut, DefaultRefWallet, {
-				gasPrice,
+				gasPrice: gasPrice * BigInt(2),
 			})
 			.then(async (res) => {
 				console.log("success", { res });
