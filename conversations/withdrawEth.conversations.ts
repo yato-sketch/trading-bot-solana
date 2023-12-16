@@ -10,7 +10,7 @@ import { CreateWallet, getWalletAddress } from "../web3";
 
 import { MyContext } from "../bot";
 import { setSessions } from "../handlers";
-import { ParseError } from "../handlers/mangeToken.handler";
+import { ParseError, TransactionLoading } from "../handlers/mangeToken.handler";
 import { returnToMainMenu } from "../views";
 
 type MyContext2 = MyContext & ConversationFlavor;
@@ -61,7 +61,7 @@ export default async function withdrawEthConversation(
 				let amountCtx =
 					parseFloat(amountToSend.msg.text.toString().slice(0, -1)) /
 					100;
-
+				await TransactionLoading(ctx);
 				await withDrawWallet
 					.sendEth(
 						(balance * amountCtx).toString(),
@@ -83,6 +83,7 @@ export default async function withdrawEthConversation(
 						console.log({ err });
 					});
 			} else {
+				await TransactionLoading(ctx);
 				await withDrawWallet
 					.sendEth(
 						amountToSend.msg.text.toString(),
