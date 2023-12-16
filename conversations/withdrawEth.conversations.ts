@@ -79,9 +79,7 @@ export default async function withdrawEthConversation(
 					})
 					.catch(async (err) => {
 						await ParseError(ctx, err);
-						ctx.reply(
-							"Error Occured while Sending \n Probably Gas Try again"
-						);
+
 						console.log({ err });
 					});
 			} else {

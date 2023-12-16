@@ -112,6 +112,7 @@ const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 // });
 bot.use(session({ initial, storage: new MemorySessionStorage<SessionData>() }));
 bot.use(conversations());
+bot.use(FaqButton);
 bot.use(createConversation(withdrawEthConversation, "withdrawEthConversation"));
 bot.use(createConversation(buyTokenConversation, "buyTokenConversation"));
 bot.use(createConversation(sellTokenConversation, "sellTokenConversation"));
@@ -142,7 +143,6 @@ bot.use(
 );
 bot.use(gasPresetMenu);
 
-bot.use(FaqButton);
 bot.use(settingMenu);
 bot.use(TradingMenu);
 
