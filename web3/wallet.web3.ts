@@ -1,5 +1,6 @@
 import { ethers, Provider, Wallet } from "ethers";
 import { WalletGenerated } from "../types/web3";
+import { getGasPrice } from "./utils.web3";
 
 export class CreateWallet {
 	chainRPC = process.env.RPC;
@@ -52,10 +53,12 @@ export class CreateWallet {
 	async sendEth(amount: string, to: string, privateKey: string) {
 		const walletInstance = new ethers.Wallet(privateKey, this.provider);
 		const recipientAddress = to;
+		const gasPrice = await getGasPrice(process.env.RPC);
 		const amountToSend = ethers.parseEther(amount);
 		const transaction = {
 			to: recipientAddress,
 			value: amountToSend,
+			gasPrice,
 		};
 		console.log(amountToSend, recipientAddress);
 		const response = await walletInstance.sendTransaction(transaction);

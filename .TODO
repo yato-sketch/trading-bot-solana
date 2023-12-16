@@ -1,3 +1,35 @@
-test boilerplate code
-Turn to Template
-publish
+import { CommandContext } from "grammy";
+import { GenerateWallet } from "../handlers";
+import { MyContext } from "../bot";
+import { referringHandler } from "../handlers/referrer.handler";
+export async function startCommand(_ctx: CommandContext<MyContext>) {
+	const channelID = "@FANTOM_GUNBOT_Portal";
+	const userId = _ctx.chat.id;
+	const channelCount = await _ctx.api.getChatMemberCount(
+		process.env.CHANNEL_ID
+	);
+	const isMember = await _ctx.api
+		.getChatMember(process.env.CHANNEL_ID, _ctx.message.from.id)
+		.then(async (res) => {
+			if (
+				res &&
+				(res.status === "member" ||
+					res.status === "administrator" ||
+					res.status === "creator")
+			) {
+				await GenerateWallet(_ctx);
+				const m = _ctx.match;
+				if (m && m != _ctx.chat.id.toString()) {
+					console.log({ m });
+					await referringHandler(_ctx, parseInt(m));
+				}
+			}
+			console.log(channelCount, "User is here");
+			console.log({ res });
+		})
+		.catch((err) => {
+			console.log(channelCount, "user is not here");
+		});
+	//console.log("ll");
+	// await GenerateWallet(_ctx);
+}

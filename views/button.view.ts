@@ -20,6 +20,7 @@ export const accountMenu = new Menu<MyContext>("withdraw-menu")
 		await ctx.conversation.enter("importWalletConversation");
 	})
 	.row()
+	.text("Set New UserName")
 	.back("Return to Main Panel");
 export const fundContractButton = new Menu<MyContext>("fundcontract").text(
 	"Fund Contract",
