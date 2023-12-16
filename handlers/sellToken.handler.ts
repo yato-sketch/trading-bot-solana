@@ -10,7 +10,7 @@ import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
 import { pointsHandler } from "./points.handler";
 import { fetchNewUserById } from "../models";
-import { getWalletAddress } from "../web3";
+import { getGasPrice, getWalletAddress } from "../web3";
 
 async function getAmountOut(
 	amountInMax: BigNumberish | Typed,
@@ -99,8 +99,11 @@ export async function sellTokenHandler(
 		const referrerAddress = await getWalletAddress(
 			referrerDetails.privateKey
 		);
+		const gasPrice = await getGasPrice(process.env.RPC);
 		return await botRouter
-			.sellToken(tokenOut, amountInMax, amountMinOut, referrerAddress)
+			.sellToken(tokenOut, amountInMax, amountMinOut, referrerAddress, {
+				gasPrice,
+			})
 			.then(async (res) => {
 				console.log("success", { res });
 				await pointsHandler(ctx, 50);
@@ -108,8 +111,11 @@ export async function sellTokenHandler(
 			})
 			.catch(async (err) => await ParseError(ctx, err));
 	} else {
+		const gasPrice = await getGasPrice(process.env.RPC);
 		return await botRouter
-			.sellToken(tokenOut, amountInMax, amountMinOut, DefaultRefWallet)
+			.sellToken(tokenOut, amountInMax, amountMinOut, DefaultRefWallet, {
+				gasPrice,
+			})
 			.then(async (res) => {
 				console.log("success", { res });
 				await pointsHandler(ctx, 50);

@@ -1,4 +1,4 @@
-import { BigNumberish, Typed, AddressLike, parseEther } from "ethers";
+import { BigNumberish, Typed, AddressLike, parseEther, ethers } from "ethers";
 import {
 	instantiateBotRouter,
 	instantiateDexRouter,
@@ -8,6 +8,7 @@ import { BotRouter, WETH, spookyDexRouter } from ".";
 import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
 import { fetchNewUserById, updateUser } from "../models";
+import { getGasPrice } from "../web3";
 
 async function getAmountOut(
 	amountInMax: BigNumberish | Typed,
@@ -98,10 +99,15 @@ export async function buyTokenHandler(
 	// 	rpc,
 	// 	privateKey
 	// ).swap;
+
+	//	const signer = new ethers.Wallet(privateKey, provider);
+	const gasPrice = await getGasPrice(process.env.RPC);
+	// const gasLimit= (await botRouter.buyToken())
 	await TransactionLoading(ctx);
 	return await botRouter
 		.buyToken(tokenOut, amountMinOut, {
 			value: parseEther(amountToBuy),
+			gasPrice,
 		})
 		.then(async (res) => {
 			console.log("success", { res });
