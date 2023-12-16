@@ -35,23 +35,27 @@ const tokenBalanceView = async (
 				symbol.toLowerCase(),
 				"https://ftmscan.com/address/" + pairAddress
 			)}) 🔘 \n \n💰 Price USD: ${boldenText(
-				priceUsd
+				makeCopiable(priceUsd)
 			)} USD \n🔗 PairAddress: ${boldenText(
 				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
-				volume.h24
-			)}  \n⏳ H6: ${boldenText(volume.h6)}\n⏳ M5: ${boldenText(
-				volume.m5
+				makeCopiable(volume.h24)
+			)}  \n⏳ H6: ${boldenText(
+				makeCopiable(volume.h6)
+			)}\n⏳ M5: ${boldenText(
+				makeCopiable(volume.m5)
 			)} \n \n📈Liquidity📈:  ${boldenText(
-				liquidity.usd
+				makeCopiable(liquidity.usd)
 			)} USD 💰 \n \n    \n💰 Your Token  Balance: ${boldenText(
-				balance.toString()
+				makeCopiable(balance.toString())
 			)} ${symbol} \n🔣 Token Decimal:${boldenText(
-				decimal.toString()
+				makeCopiable(decimal.toString())
 			)} \n💸 Balance Worth:${boldenText(
-				(
-					parseFloat(priceUsd) * parseFloat(balance.toString())
-				).toString()
+				makeCopiable(
+					(
+						parseFloat(priceUsd) * parseFloat(balance.toString())
+					).toString()
+				)
 			)} USD`,
 			{
 				reply_markup: sellMenu(contractAddress, id, pairAddress),
@@ -64,7 +68,7 @@ const tokenBalanceView = async (
 				symbol.toLowerCase(),
 				"https://ftmscan.com/address/" + pairAddress
 			)}) 🔘 \n \n💰 Price USD: ${boldenText(
-				priceUsd
+				makeCopiable(priceUsd)
 			)} USD \n🔗 PairAddress: ${boldenText(
 				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
