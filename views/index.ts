@@ -20,7 +20,7 @@ export async function viewWalletDetailsView(
 			publicKey
 		)}\n  \n 🔑 Private Key:\n${makeCopiable(
 			privateKey
-		)} \n🔍Mnemonic Phrase:\n${makeCopiable(
+		)}\n  \n🔍Mnemonic Phrase:\n${makeCopiable(
 			mnemonic
 		)} \n \n \n \n It is important to retain these details if you wish to access your wallet from outside this telegram account in the future, however, if these details are compromised it will grant full access to your wallet and funds. \n \n \n ---------------------------------------------\n**Store these details securely offline and then delete this message.**\n---------------------------------------------`,
 		{ parse_mode: "HTML" }
