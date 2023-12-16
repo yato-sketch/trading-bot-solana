@@ -338,7 +338,7 @@ export const buyMenu = (contractAdress: string, pair: string) =>
 			"💻 Gecko Terminal",
 			`https://www.geckoterminal.com/ftm/pools/${pair}`
 		)
-		.url("🔎 Etherscan", `https://ftmscan.com/address/${pair}`)
+		.url("🔎 FTMscan", `https://ftmscan.com/address/${pair}`)
 		.url("📱 Dexscreen", `https://dexscreener.com/fantom/${pair}`)
 		.row()
 		.text(`💸 Buy 10 FTM`, `buy-10-${contractAdress}`)
@@ -369,7 +369,7 @@ export const sellMenu = (
 			"💻 Gecko Terminal ",
 			`https://www.geckoterminal.com/ftm/pools/${pairAddress}`
 		)
-		.url("🔎 Etherscan", `https://ftmscan.com/address/${pairAddress}`)
+		.url("🔎 FTMscan", `https://ftmscan.com/address/${pairAddress}`)
 		.url("📱 Dexscreen", `https://dexscreener.com/fantom/${pairAddress}`)
 		.row()
 		.text(`💸 Sell 100 %`, `sell-100-${contractAdress}`)
