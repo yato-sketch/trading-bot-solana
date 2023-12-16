@@ -7,7 +7,7 @@ import { fetchNewUserById, updateUser } from "../models";
 import { CreateWallet, getWalletAddress } from "../web3";
 import { formatUnits, id } from "ethers";
 import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
-import { boldenText, makeCopiable } from "../utils";
+import { addHyperLink, boldenText, makeCopiable } from "../utils";
 const { tokenBalanceOf, getSymbol, getDecimals } = new CreateWallet();
 
 const testEditMenu = new InlineKeyboard()
@@ -31,17 +31,16 @@ const tokenBalanceView = async (
 		await ctx.api.editMessageText(
 			ctx.chat.id,
 			msgId,
-			`🔘 ${boldenText(
-				symbol
-			)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
+			`🔘 ${boldenText(symbol)} (${addHyperLink(
+				symbol.toLowerCase(),
+				"https://ftmscan.com/address/" + pairAddress
+			)}) 🔘 \n \n💰 Price USD: ${boldenText(
 				priceUsd
 			)} USD \n🔗 PairAddress: ${boldenText(
 				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
 				volume.h24
-			)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
-				volume.h1
-			)} \n⏳ M5: ${boldenText(
+			)}  \n⏳ H6: ${boldenText(volume.h6)}\n⏳ M5: ${boldenText(
 				volume.m5
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				liquidity.usd
@@ -61,28 +60,33 @@ const tokenBalanceView = async (
 		);
 	} else {
 		await ctx.reply(
-			`🔘 ${boldenText(
-				symbol
-			)} Token Details 🔘 \n \n💰 PriceUsd: ${boldenText(
+			`🔘 ${boldenText(symbol)} (${addHyperLink(
+				symbol.toLowerCase(),
+				"https://ftmscan.com/address/" + pairAddress
+			)}) 🔘 \n \n💰 Price USD: ${boldenText(
 				priceUsd
 			)} USD \n🔗 PairAddress: ${boldenText(
 				makeCopiable(pairAddress)
 			)} \n📉 Volume: \n⏳ H24: ${boldenText(
-				volume.h24
-			)}  \n⏳ H6: ${boldenText(volume.h6)} \n⏳H1: ${boldenText(
-				volume.h1
+				makeCopiable(volume.h24)
+			)}  \n⏳ H6: ${boldenText(
+				makeCopiable(volume.h6)
+			)} \n⏳H1: ${boldenText(
+				makeCopiable(volume.h1)
 			)} \n⏳ M5: ${boldenText(
-				volume.m5
+				makeCopiable(volume.m5)
 			)} \n \n📈Liquidity📈:  ${boldenText(
-				liquidity.usd
+				makeCopiable(liquidity.usd)
 			)} USD 💰 \n  \n💰 Your Token  Balance: ${boldenText(
-				balance.toString()
-			)} ${symbol} \n🔣 Token Decimal:${boldenText(
-				decimal.toString()
-			)} \n💸 Balance Worth:${boldenText(
-				(
-					parseFloat(priceUsd) * parseFloat(balance.toString())
-				).toString()
+				makeCopiable(balance.toString())
+			)} ${symbol} \n🔣 Token Decimal: ${boldenText(
+				makeCopiable(decimal.toString())
+			)} \n💸 Balance Worth: ${boldenText(
+				makeCopiable(
+					(
+						parseFloat(priceUsd) * parseFloat(balance.toString())
+					).toString()
+				)
 			)} USD`,
 			{
 				reply_markup: sellMenu(contractAddress, id, pairAddress),
