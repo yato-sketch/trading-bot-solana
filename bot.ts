@@ -155,8 +155,8 @@ bot.use(menuComposer);
 
 bot.api.setMyCommands([
 	{ command: "help", description: "Help and Support " },
-	{ command: "start", description: "Start Tradding" },
-	{ command: "config", description: "configure trading settings" },
+	{ command: "start", description: "Start Trading" },
+	{ command: "config", description: "configure trade settings" },
 	{ command: "wallet", description: "Wallet details" },
 	{ command: "orders", description: "checkout pnl and opened Trades" },
 	{ command: "rewards", description: "See Rewards" },
