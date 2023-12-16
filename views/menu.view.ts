@@ -94,7 +94,7 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 		}
 	)
 	.row()
-	.text("===📈 AUTO BUY 📈==")
+	.text("AUTO BUY")
 	.row()
 	.text(
 		async (ctx) =>
@@ -148,7 +148,7 @@ export const settingMenu = new Menu<MyContext>("setting-menu")
 	.text(
 		(ctx) =>
 			ctx.session.buyAmount === "1" || ctx.session.buyAmount === "2"
-				? " ==🧰 Custom 🧰=="
+				? " == Custom =="
 				: `=== ${ctx.session.buyAmount} Custom ===`,
 		async (ctx) =>
 			await ctx.conversation.enter("customBuyAmountConversation")
