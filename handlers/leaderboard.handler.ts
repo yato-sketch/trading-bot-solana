@@ -4,11 +4,11 @@ import { rewardsMenu } from "../views";
 
 export async function getLeaderboard(ctx: MyContext, msgId: number) {
 	let user = await getAllUsers();
-	let leaderboard = `Name    | Points   `;
+	let leaderboard = `Name    | Points  \nOnly top 20 trading activities will show on the Leaderboard `;
 	user.sort((a, b) => b.points - a.points);
 	user.forEach((el, id) => {
 		if (id <= 19) {
-			leaderboard += `\n${el.userName} | ${el.points}`;
+			leaderboard += `\n${id + 1} ${el.userName} | ${el.points}`;
 		}
 	});
 

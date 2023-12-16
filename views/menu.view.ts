@@ -328,7 +328,7 @@ export const TradingMenu = new Menu<MyContext>("main-trading-menu")
 export const rewardsMenu = () =>
 	new InlineKeyboard()
 		.text("To do Tasks", "show-reward|task")
-		.text("Learderboard", "show-reward|leaderboard");
+		.text("Leaderboard", "show-reward|leaderboard");
 
 export const buyMenu = (contractAdress: string, pair: string) =>
 	new InlineKeyboard()
