@@ -25,7 +25,7 @@ export async function ParseError(ctx: MyContext, err: any) {
 	}
 	console.log(JSON.parse(JSON.stringify(err)));
 	return await ctx.reply(
-		`❌ ❌ Error Occurred while Transaction was Processing ❌ ❌ \n \n ⚠️ ${
+		`❌  Error Occurred while Transaction was Processing ❌  \n \n ⚠️ ${
 			JSON.parse(JSON.stringify(err)).reason &&
 			JSON.parse(JSON.stringify(err)).reason
 		}⚠️ \n ${
@@ -34,9 +34,9 @@ export async function ParseError(ctx: MyContext, err: any) {
 		}\n   ⚠️ ${
 			JSON.parse(JSON.stringify(err)).shortMessage &&
 			JSON.parse(JSON.stringify(err)).shortMessage
-		} ${
+		} \n ${
 			JSON.parse(JSON.stringify(err)).error.message
-		} ⚠️\n ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`,
+		} ⚠️\n  \nPls Try Again`,
 		{ reply_markup: FaqButton }
 	);
 }
