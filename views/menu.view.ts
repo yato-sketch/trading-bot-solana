@@ -20,6 +20,7 @@ import { sellTokenController } from "../controllers/sellToken.controller";
 import { walletController } from "../controllers/wallet.controller";
 import { rewardsController } from "../controllers/rewards.controller";
 import { accountMenu } from "./button.view";
+import { faqController } from "../controllers/faq.controller";
 
 const menuComposer = new Composer();
 
@@ -472,6 +473,10 @@ export const quickSettingsMenu = new Menu<MyContext>("quick-settings")
 	})
 	.row()
 	.back("Go Back");
+export const FaqButton = new Menu<MyContext>("faq-button").text(
+	"FAQ",
+	async (ctx) => await faqController(ctx)
+);
 TradingMenu.register(settingMenu);
 TradingMenu.register(accountMenu);
 TradingMenu.register(quickSettingsMenu);

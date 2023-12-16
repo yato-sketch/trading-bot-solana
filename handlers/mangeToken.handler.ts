@@ -5,7 +5,7 @@ import { CreateWallet, SafeToken } from "../web3";
 import { NextFunction } from "grammy";
 import { parseTxData, verifyContractCode } from "../web3/contracts-handler";
 import { getUserDeployedTokensByTokenAddress } from "../models";
-import { fundContractButton } from "../views";
+import { FaqButton, fundContractButton } from "../views";
 const Wallet = new CreateWallet();
 const { WalletSigner, getTransactionReciept } = Wallet;
 
@@ -34,7 +34,8 @@ export async function ParseError(ctx: MyContext, err: any) {
 		}\n \n  ⚠️ ${
 			JSON.parse(JSON.stringify(err)).shortMessage &&
 			JSON.parse(JSON.stringify(err)).shortMessage
-		} ⚠️\n ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`
+		} ⚠️\n ⚠️\n  \n ⚠️ PLEASE KINDLY TRY AGAIN ⚠️`,
+		{ reply_markup: FaqButton }
 	);
 }
 

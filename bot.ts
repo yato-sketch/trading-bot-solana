@@ -26,6 +26,7 @@ import {
 	settingMenu,
 	returnToMainMenu,
 	gasPresetMenu,
+	FaqButton,
 } from "./views";
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
@@ -147,7 +148,7 @@ bot.use(
 );
 bot.use(gasPresetMenu);
 
-bot.use(fundContractButton);
+bot.use(FaqButton);
 bot.use(settingMenu);
 bot.use(TradingMenu);
 
