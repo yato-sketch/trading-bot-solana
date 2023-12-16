@@ -23,6 +23,7 @@ const listenerComposer = new Composer();
 export async function callbackHandler() {}
 
 export const setSessions = async (ctx: MyContext) => {
+	//	await ctx.conversation.exit();
 	const userDetails = await fetchNewUserById(ctx.chat?.id?.toString());
 	const pK = userDetails ? userDetails.privateKey : "";
 	const { autoBuy, slippage, buyAmount, sellAmount, tokens } = userDetails;

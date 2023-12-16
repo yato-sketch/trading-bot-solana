@@ -24,14 +24,17 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	await setSessions(ctx as any);
 
 	if (data.includes("menu-return")) {
+		await ctx.conversation.exit();
 		await tradepanelContoller(ctx);
 	}
 	if (data.includes("cancel")) {
 		ctx.deleteMessage();
+		await ctx.conversation.exit();
 		await tradepanelContoller(ctx);
 	}
 
 	if (data.includes("show-reward")) {
+		await ctx.conversation.exit();
 		const query = data.split("|")[1];
 		if (query === "task") {
 			await getTasks(ctx, msgId);
@@ -42,6 +45,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 	}
 
 	if (data.includes("refresh-sell")) {
+		await ctx.conversation.exit();
 		const query = data.split("|")[1];
 		console.log({ msgId });
 		//	await ctx.deleteMessage();
@@ -68,6 +72,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 		await ctx.deleteMessage();
 	}
 	if (data.includes("buy-")) {
+		await ctx.conversation.exit();
 		const query = data.split("-");
 		if (query[1].toString() !== "custom") {
 			console.log("jhdfjk");
@@ -93,6 +98,7 @@ callBackQueryComposer.on("callback_query:data", async (ctx) => {
 		}
 	}
 	if (data.includes("sell-")) {
+		await ctx.conversation.exit();
 		const query = data.split("-");
 		if (query[1].toString() !== "custom") {
 			const token = query[2];

@@ -11,10 +11,12 @@ const { WalletSigner, getTransactionReciept } = Wallet;
 
 export const accountMenu = new Menu<MyContext>("withdraw-menu")
 	.text("🏦 Withdraw FTM 🏦", async (ctx) => {
+		// await ctx.conversation.exit();
 		await ctx.conversation.enter("withdrawEthConversation");
 	})
 	.row()
 	.text("📤 Import Wallet 📤", async (ctx) => {
+		// await ctx.conversation.exit();
 		await ctx.conversation.enter("importWalletConversation");
 	})
 	.row()

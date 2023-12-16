@@ -2,8 +2,8 @@ import { Bot, CommandContext, Context } from "grammy";
 import { sleep } from "../web3/contracts-handler";
 import { askQuestion } from "../handlers/askquestion.handler";
 import { MyContext } from "../bot";
-
-export async function helpCommand(_ctx: CommandContext<Context>) {
+import { Conversation } from "@grammyjs/conversations";
+export async function helpCommand(_ctx: CommandContext<MyContext>) {
 	await _ctx.reply(
 		`JOIN OUR TELEGRAM CHANNEL TO GET HELP \n ${process.env.BOT_NAME} `
 	);

@@ -8,7 +8,13 @@ export async function setcustomSlippageConversation(
 	ctx: MyContext
 ) {
 	await ctx.reply(
-		`Reply to this message with your desired slippage percentage. Minimum is 0%.`
+		`Reply to this message with your desired slippage percentage. Minimum is 0%.`,
+		{
+			reply_markup: {
+				force_reply: true,
+				input_field_placeholder: "Slippage here",
+			},
+		}
 	);
 	let response = (await conversation.waitFor(":text")).msg.text;
 	if (response.includes("%")) {

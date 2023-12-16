@@ -47,7 +47,7 @@ export async function sellRouting(
 		swapPairForEqualizer !== ZeroAddress &&
 		swapPairForSpooky !== ZeroAddress
 	) {
-		await ctx.reply("Equalizer Route");
+		await ctx.reply("Selecting Equalizer Route");
 		return await sellTokenHandler(
 			slippage,
 			amountInMax,
@@ -60,7 +60,7 @@ export async function sellRouting(
 		);
 		//use eqalizer
 	} else if (swapPairForEqualizer != ZeroAddress) {
-		await ctx.reply("Equalizer Route");
+		await ctx.reply("Selecting Equalizer Route");
 		return await sellTokenHandler(
 			slippage,
 			amountInMax,
@@ -73,7 +73,7 @@ export async function sellRouting(
 		);
 		//  use equalizer
 	} else if (swapPairForSpooky != ZeroAddress) {
-		ctx.reply("Spooky Route");
+		ctx.reply("Selecting Spooky Route");
 		//use spooky
 		return await sellTokenHandler(
 			slippage,
@@ -129,7 +129,7 @@ export async function buyRouting(
 		swapPairForEqualizer !== ZeroAddress &&
 		swapPairForSpooky !== ZeroAddress
 	) {
-		await ctx.reply("Equalizer Route");
+		await ctx.reply("Selecting Equalizer Route");
 		return await buyTokenHandler(
 			slippage,
 			amountIn,
@@ -143,7 +143,7 @@ export async function buyRouting(
 		);
 		//use eqalizer
 	} else if (swapPairForEqualizer != ZeroAddress) {
-		await ctx.reply("Equalizer Route");
+		await ctx.reply("Selecting Equalizer Route");
 		return await buyTokenHandler(
 			slippage,
 			amountIn,
@@ -157,7 +157,7 @@ export async function buyRouting(
 		);
 		//  use equalizer
 	} else if (swapPairForSpooky != ZeroAddress) {
-		ctx.reply("Spooky Route");
+		ctx.reply("Selecting Spooky Route");
 		//use spooky
 		return await buyTokenHandler(
 			slippage,
@@ -171,6 +171,8 @@ export async function buyRouting(
 			BotRouter
 		);
 	} else {
-		await ctx.reply(`Routing Error`);
+		await ctx.reply(
+			`Routing Error: Token Pair on Spooky  or Eqaulier \n Pls Check Again`
+		);
 	}
 }
