@@ -95,51 +95,38 @@ export async function sellTokenHandler(
 	ctx.reply("Approving Transaction");
 	await Erc20token.approve(botRouterAddress, ethers.MaxUint256, {
 		gasPrice,
-	}).then(async (res) => {
-		const userId = ctx.chat.id.toString();
-		const { referrer } = await fetchNewUserById(userId);
-		if (referrer) {
-			const referrerDetails = await fetchNewUserById(referrer.toString());
-			const referrerAddress = await getWalletAddress(
-				referrerDetails.privateKey
-			);
-			const gasPrice = await getGasPrice(process.env.RPC);
-			return await botRouter
-				.sellToken(
-					tokenOut,
-					amountInMax,
-					amountMinOut,
-					referrerAddress,
-					{
-						gasPrice: gasPrice * BigInt(2),
-					}
-				)
-				.then(async (res) => {
-					console.log("success", { res });
-					await pointsHandler(ctx, 50);
-					await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
-				})
-				.catch(async (err) => await ParseError(ctx, err));
-		} else {
-			const gasPrice = await getGasPrice(process.env.RPC);
-			return await botRouter
-				.sellToken(
-					tokenOut,
-					amountInMax,
-					amountMinOut,
-					DefaultRefWallet,
-					{
-						gasPrice: gasPrice * BigInt(2),
-					}
-				)
-				.then(async (res) => {
-					console.log("success", { res });
-					await pointsHandler(ctx, 50);
-					await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
-				})
-				.catch(async (err) => await ParseError(ctx, err));
-		}
 	});
+	const userId = ctx.chat.id.toString();
+	const { referrer } = await fetchNewUserById(userId);
+	if (referrer) {
+		const referrerDetails = await fetchNewUserById(referrer.toString());
+		const referrerAddress = await getWalletAddress(
+			referrerDetails.privateKey
+		);
+		const gasPrice = await getGasPrice(process.env.RPC);
+		return await botRouter
+			.sellToken(tokenOut, amountInMax, amountMinOut, referrerAddress, {
+				gasPrice: gasPrice * BigInt(2),
+			})
+			.then(async (res) => {
+				console.log("success", { res });
+				await pointsHandler(ctx, 50);
+				await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
+			})
+			.catch(async (err) => await ParseError(ctx, err));
+	} else {
+		const gasPrice = await getGasPrice(process.env.RPC);
+		return await botRouter
+			.sellToken(tokenOut, amountInMax, amountMinOut, DefaultRefWallet, {
+				gasPrice: gasPrice * BigInt(2),
+			})
+			.then(async (res) => {
+				console.log("success", { res });
+				await pointsHandler(ctx, 50);
+				await ctx.reply(`${process.env.SCAN_URL}${res.hash}`);
+			})
+			.catch(async (err) => await ParseError(ctx, err));
+	}
 
 	//buy token
 }
