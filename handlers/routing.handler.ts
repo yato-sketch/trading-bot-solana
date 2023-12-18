@@ -94,7 +94,7 @@ export async function sellRouting(
 		);
 	} else {
 		await ctx.reply(
-			`Routing Error: Token Pair on Spooky  or Eqaulier \n Pls Check Again`
+			`Routing Error: Token Pair not on Spooky  or Eqaulizer \n Pls Check Again`
 		);
 	}
 }
