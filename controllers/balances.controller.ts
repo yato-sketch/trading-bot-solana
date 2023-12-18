@@ -36,21 +36,30 @@ const tokenBalanceView = async (
 	let totalTokens = 0;
 	for (let i = 0; i < ordersByContractAddress.length; i++) {
 		const { priceBoughtAt, amount } = ordersByContractAddress[i];
-		totalCost += parseFloat(priceBoughtAt) * parseFloat(amount);
+		totalCost = parseFloat(priceBoughtAt);
 		totalTokens += parseFloat(amount);
 	}
 	// Calculate current value of all tokens
-	const currentValue = totalTokens * parseFloat(priceUsd);
+	const currentValue = parseFloat(balance) * parseFloat(priceUsd);
 	console.log(currentValue);
 
 	// Calculate profit
 	const profit = currentValue - totalCost;
 
 	// Calculate net profit after subtracting total costs
-	const netProfit = profit - totalCost;
+	const netProfit =
+		parseFloat(priceUsd) * parseFloat(balance.toString()) -
+		parseFloat(balance) * parseFloat(totalCost.toString());
 	//calculate contract address order
-	const profitPercentage = (profit / totalCost) * 100;
-	const netProfitPercentage = (netProfit / totalCost) * 100;
+	const profitPercentage =
+		((parseFloat(priceUsd) * parseFloat(balance.toString())) /
+			parseFloat(balance)) *
+		parseFloat(totalCost.toString()) *
+		100;
+	const netProfitPercentage =
+		(netProfit / parseFloat(balance)) *
+		parseFloat(totalCost.toString()) *
+		100;
 
 	if (msgId > 0) {
 		//edit
@@ -78,9 +87,7 @@ const tokenBalanceView = async (
 				makeCopiable(netProfit.toString())
 			)}\n Profit Percentage:${boldenText(
 				makeCopiable(profitPercentage.toFixed(0))
-			)}\nProfit:${boldenText(
-				makeCopiable(profit.toString())
-			)} \n   \n💰 Your Token  Balance: ${boldenText(
+			)}\n \n   \n💰 Your Token  Balance: ${boldenText(
 				makeCopiable(balance.toString())
 			)} ${symbol} \n🔣 Token Decimal:${boldenText(
 				makeCopiable(decimal.toString())
@@ -116,12 +123,10 @@ const tokenBalanceView = async (
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				makeCopiable(liquidity.usd)
 			)} USD 💰 \n \nProfit and Loss\nNet Profit %: ${boldenText(
-				makeCopiable(netProfitPercentage.toString())
+				makeCopiable(netProfitPercentage.toFixed(2).toString())
 			)} \nNet Profit : ${boldenText(
 				makeCopiable(netProfit.toString())
-			)}\nProfit:${boldenText(
-				makeCopiable(profit.toString())
-			)} \n \n💰 Your Token  Balance: ${boldenText(
+			)}\n \n \n💰 Your Token  Balance: ${boldenText(
 				makeCopiable(balance.toString())
 			)} ${symbol} \n🔣 Token Decimal: ${boldenText(
 				makeCopiable(decimal.toString())
