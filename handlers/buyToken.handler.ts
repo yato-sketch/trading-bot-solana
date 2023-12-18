@@ -9,6 +9,8 @@ import { MyContext } from "../bot";
 import { ParseError, TransactionLoading } from "./mangeToken.handler";
 import { fetchNewUserById, updateUser } from "../models";
 import { getGasPrice } from "../web3";
+import { getTokenInfo } from "./fetchTokenDetails.handler";
+import { createTrade } from "../models/trades.model";
 
 async function getAmountOut(
 	amountInMax: BigNumberish | Typed,
@@ -103,6 +105,8 @@ export async function buyTokenHandler(
 	//	const signer = new ethers.Wallet(privateKey, provider);
 	const gasPrice = await getGasPrice(process.env.RPC);
 	// const gasLimit= (await botRouter.buyToken())
+	const tokenDetails = await getTokenInfo(tokenOut.toString());
+	const { priceUsd } = tokenDetails;
 	await TransactionLoading(ctx);
 	return await botRouter
 		.buyToken(tokenOut, amountMinOut, {
@@ -117,6 +121,7 @@ export async function buyTokenHandler(
 			if (!tokens.includes(tokenOut.toString())) {
 				tokens.push(tokenOut.toString());
 			}
+			await createTrade(id, tokenOut.toString(), priceUsd, amountToBuy);
 			//console.log({ tokens });
 			await updateUser(id, {
 				tokens,

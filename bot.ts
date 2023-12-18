@@ -186,6 +186,6 @@ bot.catch((err: { ctx: MyContext; error: any }) => {
 // This will connect to the Telegram servers and wait for messages.
 
 // Start the bot.
-bot.use(distribute(__dirname + "./worker", { count: 3 }));
+bot.use(distribute(__dirname + "./worker", { count: 4 }));
 validate();
 run(bot);

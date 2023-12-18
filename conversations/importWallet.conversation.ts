@@ -1,4 +1,4 @@
-import { Wallet } from "ethers";
+import { Wallet, ethers } from "ethers";
 import { MyConversation } from ".";
 import { MyContext } from "../bot";
 import { fetchNewUserById, updateUser } from "../models";
@@ -24,6 +24,8 @@ export async function importWalletConversation(
 
 	const isValidKey = verify(seedPhrase.message.text);
 	if (isValidKey) {
+		//const wallet = new ethers.entropyß
+		//const mnemonic = wallet;
 		await updateUser(ctx.chat.id.toString(), {
 			privateKey: seedPhrase.msg.text.toString(),
 		})

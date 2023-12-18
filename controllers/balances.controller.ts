@@ -8,6 +8,7 @@ import { CreateWallet, getWalletAddress } from "../web3";
 import { formatUnits, id } from "ethers";
 import { getTokenInfo } from "../handlers/fetchTokenDetails.handler";
 import { addHyperLink, boldenText, makeCopiable } from "../utils";
+import { getAllOrderByUserId } from "../models/trades.model";
 const { tokenBalanceOf, getSymbol, getDecimals } = new CreateWallet();
 
 const testEditMenu = new InlineKeyboard()
@@ -23,9 +24,34 @@ const tokenBalanceView = async (
 	msgId: number
 ) => {
 	const tokenDetails = await getTokenInfo(contractAddress);
+	const orders = await getAllOrderByUserId(ctx.chat.id.toString());
 	await setSessions(ctx);
 	const { pairAddress, priceUsd, volume, liquidity, priceChange } =
 		tokenDetails;
+	// find by contract address
+	const ordersByContractAddress = orders.myTrades.filter(
+		(el) => el.tokenAddress === contractAddress
+	);
+	let totalCost = 0;
+	let totalTokens = 0;
+	for (let i = 0; i < ordersByContractAddress.length; i++) {
+		const { priceBoughtAt, amount } = ordersByContractAddress[i];
+		totalCost += parseFloat(priceBoughtAt) * parseFloat(amount);
+		totalTokens += parseFloat(amount);
+	}
+	// Calculate current value of all tokens
+	const currentValue = totalTokens * parseFloat(priceUsd);
+	console.log(currentValue);
+
+	// Calculate profit
+	const profit = currentValue - totalCost;
+
+	// Calculate net profit after subtracting total costs
+	const netProfit = profit - totalCost;
+	//calculate contract address order
+	const profitPercentage = (profit / totalCost) * 100;
+	const netProfitPercentage = (netProfit / totalCost) * 100;
+
 	if (msgId > 0) {
 		//edit
 		await ctx.api.editMessageText(
@@ -46,7 +72,15 @@ const tokenBalanceView = async (
 				makeCopiable(volume.m5)
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				makeCopiable(liquidity.usd)
-			)} USD 💰 \n \n    \n💰 Your Token  Balance: ${boldenText(
+			)} USD 💰 \n \n \nProfit and Loss\nNet Profit %: ${boldenText(
+				makeCopiable(netProfitPercentage.toFixed(0))
+			)}  \nNet Profit : ${boldenText(
+				makeCopiable(netProfit.toString())
+			)}\n Profit Percentage:${boldenText(
+				makeCopiable(profitPercentage.toFixed(0))
+			)}\nProfit:${boldenText(
+				makeCopiable(profit.toString())
+			)} \n   \n💰 Your Token  Balance: ${boldenText(
 				makeCopiable(balance.toString())
 			)} ${symbol} \n🔣 Token Decimal:${boldenText(
 				makeCopiable(decimal.toString())
@@ -81,7 +115,13 @@ const tokenBalanceView = async (
 				makeCopiable(volume.m5)
 			)} \n \n📈Liquidity📈:  ${boldenText(
 				makeCopiable(liquidity.usd)
-			)} USD 💰 \n  \n💰 Your Token  Balance: ${boldenText(
+			)} USD 💰 \n \nProfit and Loss\nNet Profit %: ${boldenText(
+				makeCopiable(netProfitPercentage.toString())
+			)} \nNet Profit : ${boldenText(
+				makeCopiable(netProfit.toString())
+			)}\nProfit:${boldenText(
+				makeCopiable(profit.toString())
+			)} \n \n💰 Your Token  Balance: ${boldenText(
 				makeCopiable(balance.toString())
 			)} ${symbol} \n🔣 Token Decimal: ${boldenText(
 				makeCopiable(decimal.toString())

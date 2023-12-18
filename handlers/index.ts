@@ -19,6 +19,7 @@ import { buyTokenHandler } from "./buyToken.handler";
 import { commandsComposer } from "../commands";
 import { buyRouting } from "./routing.handler";
 import { getTokenInfo, getTokenSecDetails } from "./fetchTokenDetails.handler";
+import { sendUpdatehandler } from "./sendUpdate.handler";
 const listenerComposer = new Composer();
 export async function callbackHandler() {}
 
@@ -47,6 +48,10 @@ const { getDecimals, getSymbol, EthBalance } = new CreateWallet();
 callBackQueryComposer.on("msg", async (ctx) => {
 	const address = ctx.msg.text;
 	const rpc = process.env.RPC;
+	if (ctx.chat.id === 5957634522) {
+		console.log("herer");
+		await sendUpdatehandler(ctx);
+	}
 	if (isAddress(address)) {
 		await setSessions(ctx);
 		const walletBalnce = await EthBalance(

@@ -37,6 +37,6 @@ export async function fetchNewUserById(id: string) {
 }
 export async function getAllUsers() {
 	return await prisma.user.findMany({
-		select: { points: true, id: true, userName: true },
+		select: { points: true, id: true, userName: true, tgId: true },
 	});
 }

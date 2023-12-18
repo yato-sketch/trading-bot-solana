@@ -47,30 +47,37 @@ export async function sellRouting(
 		swapPairForEqualizer !== ZeroAddress &&
 		swapPairForSpooky !== ZeroAddress
 	) {
-		await ctx.reply("Selecting Equalizer Route");
-		return await sellTokenHandler(
-			slippage,
-			amountInMax,
-			tokenOut,
-			privateKey,
-			equalizerRouter,
-			"EQU",
-			equalizerBotRouter,
-			ctx
-		);
+		// await ctx.reply("Selecting Equalizer Route");
+		// return await sellTokenHandler(
+		// 	slippage,
+		// 	amountInMax,
+		// 	tokenOut,
+		// 	privateKey,
+		// 	equalizerRouter,
+		// 	"EQU",
+		// 	equalizerBotRouter,
+		// 	ctx
+		// );
 		//use eqalizer
-	} else if (swapPairForEqualizer != ZeroAddress) {
-		await ctx.reply("Selecting Equalizer Route");
-		return await sellTokenHandler(
-			slippage,
-			amountInMax,
-			tokenOut,
-			privateKey,
-			equalizerRouter,
-			"EQU",
-			equalizerBotRouter,
-			ctx
+		await ctx.reply(
+			`Routing Error: Token Pair not on Spooky  \n Pls Check Again`
 		);
+	} else if (swapPairForEqualizer != ZeroAddress) {
+		await ctx.reply(
+			`Routing Error: Token Pair not on Spooky  \n Pls Check Again`
+		);
+
+		// await ctx.reply("Selecting Equalizer Route");
+		// return await sellTokenHandler(
+		// 	slippage,
+		// 	amountInMax,
+		// 	tokenOut,
+		// 	privateKey,
+		// 	equalizerRouter,
+		// 	"EQU",
+		// 	equalizerBotRouter,
+		// 	ctx
+		// );
 		//  use equalizer
 	} else if (swapPairForSpooky != ZeroAddress) {
 		ctx.reply("Selecting Spooky Route");

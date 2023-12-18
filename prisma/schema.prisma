@@ -28,6 +28,7 @@ model User {
 model Trades {
   id            String  @id @default(auto()) @map("_id") @db.ObjectId
   tokenAddress  String
+  amount        String
   priceBoughtAt String
   Orders        Orders? @relation(fields: [ordersId], references: [id])
   ordersId      String? @db.ObjectId
