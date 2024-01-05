@@ -3,6 +3,7 @@ import {
 	BotRouter__factory,
 	EqualizerDexRouter__factory,
 	IERC20__factory,
+	Pair__factory,
 	SpookyDexRouter__factory,
 	SpookyFactory__factory,
 } from "../types/contracts";
@@ -52,4 +53,14 @@ export async function instantiateSpookyFactory(
 	const provider = new ethers.JsonRpcProvider(rpc);
 	const walletInstance = new ethers.Wallet(privateKey, provider);
 	return SpookyFactory__factory.connect(contractAdress, walletInstance);
+}
+
+export async function instantiatePair(
+	contractAdress: string,
+	rpc: string | ethers.FetchRequest,
+	privateKey: string | ethers.SigningKey
+) {
+	const provider = new ethers.JsonRpcProvider(rpc);
+	const walletInstance = new ethers.Wallet(privateKey, provider);
+	return Pair__factory.connect(contractAdress, walletInstance);
 }

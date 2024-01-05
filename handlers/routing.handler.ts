@@ -13,6 +13,7 @@ import {
 import { buyTokenHandler } from "./buyToken.handler";
 import { MyContext } from "../bot";
 import { sellTokenHandler } from "./sellToken.handler";
+import { Pair__factory } from "../types/contracts";
 export async function sellRouting(
 	Weth: string,
 	tokenOut: string,
@@ -47,6 +48,7 @@ export async function sellRouting(
 		swapPairForEqualizer !== ZeroAddress &&
 		swapPairForSpooky !== ZeroAddress
 	) {
+		const SpookyPair = 0;
 		// await ctx.reply("Selecting Equalizer Route");
 		return await sellTokenHandler(
 			slippage,
