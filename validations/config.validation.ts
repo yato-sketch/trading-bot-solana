@@ -34,6 +34,16 @@ async function validate() {
 		!deployerContract ||
 		!botUserName
 	) {
+		console.log(monogo);
+		console.log(botToken);
+		console.log(rpc); 
+		console.log(botName); 		
+		console.log(channelId); 
+		console.log(etherScanAPiKEy); 
+		console.log(scanurl); 
+		console.log(graphClient); 
+		console.log(deployerContract); 
+		console.log(botUserName); 
 		throw error("Configurations are missing");
 	} else {
 		console.info("Configurations Files are Saved");

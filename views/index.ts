@@ -16,13 +16,19 @@ export async function viewWalletDetailsView(
 	ctx.reply(
 		`🔒${boldenText(
 			" New Encrypted Fantom Wallet Created"
-		)}.🔒\n   \n 💳 Wallet Address:\n ${makeCopiable(
+		)}! 🎉\n  \n${boldenText(  
+			"🚨KEEP THE DETAILS BELOW SAFE! 🚨"
+		)}\n  \n 💳 Wallet Address:\n ${makeCopiable(
 			publicKey
 		)}\n  \n 🔑 Private Key:\n${makeCopiable(
 			privateKey
 		)}\n  \n🔍Mnemonic Phrase:\n${makeCopiable(
 			mnemonic
-		)} \n \n \n \n It is important to retain these details if you wish to access your wallet from outside this telegram account in the future, however, if these details are compromised it will grant full access to your wallet and funds. \n \n \n ---------------------------------------------\n**Store these details securely offline and then delete this message.**\n---------------------------------------------`,
+		)} \n \n \n \n⚠️${boldenText(
+			"It is important to retain these details if you wish to access your wallet from outside this telegram account in the future, however, if these details are compromised it will grant full access to your wallet and funds."
+		)}⚠️\n \n \n ---------------------------------------------\n 🚨${boldenText(
+			"STORE THESE DETAILS SECURELY OFFLINE AND THEN DELETE THIS MESSAGE."
+		)}🚨 \n---------------------------------------------`,
 		{ parse_mode: "HTML" }
 	);
 }

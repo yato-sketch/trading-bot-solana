@@ -5,13 +5,15 @@ import { rewardsMenu } from "../views";
 
 export async function getLeaderboard(ctx: MyContext, msgId: number) {
 	let user = await getAllUsers();
-	let leaderboard = `${boldenText(
+	let leaderboard = `🏆${boldenText(
+		" Leaderboard "
+		)}🏆 \n📍Only top 10 trading activities will show on the Leaderboard\n  \n${boldenText(
 		"Name"
-	)}    | Points  \nOnly top 10 trading activities will show on the Leaderboard `;
+	)}    |    Points  \n `;
 	user.sort((a, b) => b.points - a.points);
 	user.forEach((el, id) => {
 		if (id <= 9) {
-			leaderboard += `\n${id + 1} ${el.userName} | ${el.points}`;
+			leaderboard += `\n${id + 1}. ${el.userName} | ${el.points}`;
 		}
 	});
 

@@ -14,7 +14,7 @@ import {
 	conversations,
 	createConversation,
 } from "@grammyjs/conversations";
-import { callbackHandler, listenerComposer } from "./handlers";
+import { callbackHandler, listenerComposer, callBackQueryComposer } from "./handlers";
 import {
 	CreateTokenMenu,
 	initTaxMenu,
@@ -31,7 +31,6 @@ import {
 import { accountMenu } from "./views";
 import withdrawEthConversation from "./conversations/withdrawEth.conversations";
 import { freeStorage } from "@grammyjs/storage-free";
-import { callBackQueryComposer } from "./handlers";
 import { distribute, run, sequentialize } from "@grammyjs/runner";
 import validate from "./validations/config.validation";
 import { I18n } from "@grammyjs/i18n";

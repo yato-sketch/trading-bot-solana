@@ -7,3 +7,13 @@ ethers
 supabase
 
 ## Contributors
+
+
+## Little notes
+```npx prisma db push``` to connect db
+
+```npx prsma generate``` to start using prisma client
+
+```npx prisma studio``` to view database locally
+
+```npm run dev``` to run bot
